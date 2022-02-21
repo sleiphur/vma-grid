@@ -1,0 +1,132 @@
+
+.vma-grid-loading {
+
+
+  .swing {
+    position: relative;
+    display: inline-block;
+    animation: swing-loading 1.8s infinite linear;
+    vertical-align: middle;
+
+    .swing-dot {
+      width: 45%;
+      height: 45%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      border-radius: 100%;
+      opacity: 0.75;
+      animation: swing-dot-loading 2s infinite ease-in-out;
+    }
+
+    .swing-dot:nth-child(2) {
+      top: auto;
+      bottom: 0;
+      animation-delay: -1s;
+    }
+
+    &.mini {
+      width: @loading-mini-size;
+      height: @loading-mini-size;
+    }
+
+    &.small {
+      width: @loading-small-size;
+      height: @loading-small-size;
+    }
+
+    &.normal {
+      width: @loading-normal-size;
+      height: @loading-normal-size;
+    }
+
+    &.large {
+      width: @loading-large-size;
+      height: @loading-large-size;
+    }
+
+    &.x-large {
+      width: @loading-x-large-size;
+      height: @loading-x-large-size;
+    }
+
+    &.xx-large {
+      width: @loading-xx-large-size;
+      height: @loading-xx-large-size;
+    }
+
+    &.xxx-large {
+      width: @loading-xxx-large-size;
+      height: @loading-xxx-large-size;
+    }
+
+
+    &.default {
+      .swing-dot {
+          background-color: @loading-default-color;
+      }
+    }
+
+    &.primary {
+      .swing-dot {
+          background-color: @loading-primary-color;
+      }
+    }
+
+    &.success {
+      .swing-dot {
+          background-color: @loading-success-color;
+      }
+    }
+
+    &.warning {
+      .swing-dot {
+          background-color: @loading-warning-color;
+      }
+    }
+
+    &.danger {
+      .swing-dot {
+          background-color: @loading-danger-color;
+      }
+    }
+
+    &.currentColor {
+      .swing-dot {
+        background-color: currentColor;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes swing-loading {
+  .swing-loading-frames;
+}
+
+@keyframes swing-loading {
+  .swing-loading-frames;
+}
+
+.swing-loading-frames() {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes swing-dot-loading {
+  .swing-dot-loading-frames;
+}
+
+@keyframes swing-dot-loading {
+  .swing-dot-loading-frames;
+}
+
+.swing-dot-loading-frames() {
+  0%, 100% {
+    transform: scale(0.2); }
+  50% {
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,102 @@
+@import './common';
+
+// Loading
+//@loading-text-color: @gray-6;
+//@loading-text-font-size: @font-size-normal;
+@loading-mini-size: 18px;
+@loading-small-size: 20px;
+@loading-normal-size: 22px;
+@loading-large-size: 24px;
+@loading-x-large-size: 26px;
+@loading-xx-large-size: 28px;
+@loading-xxx-large-size: 30px;
+@loading-default-color: @gray-7;
+@loading-primary-color: @blue;
+@loading-success-color: @green;
+@loading-danger-color: @red;
+@loading-warning-color: @orange;
+
+@import 'styles/loading/plane-loading';
+@import 'styles/loading/chase-loading';
+@import 'styles/loading/bounce-loading';
+@import 'styles/loading/wave-loading';
+@import 'styles/loading/pulse-loading';
+@import 'styles/loading/flow-loading';
+@import 'styles/loading/swing-loading';
+@import 'styles/loading/circle-loading';
+@import 'styles/loading/circle-fade-loading';
+@import 'styles/loading/fold-loading';
+
+.vma-grid-loading {
+  display: inline-block;
+
+  &.vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .text {
+      margin: 0 @padding-base;
+    }
+  }
+
+  .text {
+    display: inline-block;
+    vertical-align: middle;
+
+    &.mini {
+      margin-left: @padding-base;
+      font-size: @font-size-mini;
+    }
+
+    &.small {
+      margin-left: @padding-base;
+      font-size: @font-size-small;
+    }
+
+    &.normal {
+      margin-left: @padding-base;
+      font-size: @font-size-normal;
+    }
+
+    &.large {
+      margin-left: @padding-base;
+      font-size: @font-size-large;
+    }
+
+    &.x-large {
+      margin-left: @padding-base;
+      font-size: @font-size-x-large;
+    }
+
+    &.xx-large {
+      margin-left: @padding-base;
+      font-size: @font-size-xx-large;
+    }
+
+    &.xxx-large {
+      margin-left: @padding-base;
+      font-size: @font-size-xxx-large;
+    }
+
+    &.default {
+      color: @loading-default-color;
+    }
+
+    &.primary {
+      color: @loading-primary-color;
+    }
+
+    &.success {
+      color: @loading-success-color;
+    }
+
+    &.warning {
+      color: @loading-warning-color;
+    }
+
+    &.danger {
+      color: @loading-danger-color;
+    }
+  }
+}

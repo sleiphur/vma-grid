@@ -1,0 +1,111 @@
+
+.vma-grid-loading {
+
+
+  .flow {
+    position: relative;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: middle;
+
+    .flow-dot {
+      width: 25%;
+      height: 25%;
+      border-radius: 50%;
+      opacity: 0.75;
+      animation: flow-loading 1.4s cubic-bezier(0.455, 0.03, 0.515, 0.955) 0s infinite both;
+    }
+
+    .flow-dot:nth-child(1) { animation-delay: -0.30s; }
+    .flow-dot:nth-child(2) { animation-delay: -0.15s; }
+
+    &.mini {
+      width: @loading-mini-size;
+      height: @loading-mini-size;
+    }
+
+    &.small {
+      width: @loading-small-size;
+      height: @loading-small-size;
+    }
+
+    &.normal {
+      width: @loading-normal-size;
+      height: @loading-normal-size;
+    }
+
+    &.large {
+      width: @loading-large-size;
+      height: @loading-large-size;
+    }
+
+    &.x-large {
+      width: @loading-x-large-size;
+      height: @loading-x-large-size;
+    }
+
+    &.xx-large {
+      width: @loading-xx-large-size;
+      height: @loading-xx-large-size;
+    }
+
+    &.xxx-large {
+      width: @loading-xxx-large-size;
+      height: @loading-xxx-large-size;
+    }
+
+
+    &.default {
+      .flow-dot {
+          background-color: @loading-default-color;
+      }
+    }
+
+    &.primary {
+      .flow-dot {
+          background-color: @loading-primary-color;
+      }
+    }
+
+    &.success {
+      .flow-dot {
+          background-color: @loading-success-color;
+      }
+    }
+
+    &.warning {
+      .flow-dot {
+          background-color: @loading-warning-color;
+      }
+    }
+
+    &.danger {
+      .flow-dot {
+          background-color: @loading-danger-color;
+      }
+    }
+
+    &.currentColor {
+      .flow-dot {
+        background-color: currentColor;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes flow-loading {
+  .flow-loading-frames;
+}
+
+@keyframes flow-loading {
+  .flow-loading-frames;
+}
+
+.flow-loading-frames() {
+  0%, 80%, 100% {
+    transform: scale(0.3); }
+  40% {
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,192 @@
+
+.vma-grid-loading {
+
+
+  .circle-fade {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+
+    .circle-fade-dot {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+
+      &:before {
+        content: '';
+        display: block;
+        width: 25%;
+        height: 25%;
+        border-radius: 100%;
+        animation: circle-fade-loading 1.2s infinite ease-in-out both;
+      }
+    }
+
+    .circle-fade-dot:nth-child(1) { transform: rotate(30deg); }
+    .circle-fade-dot:nth-child(2) { transform: rotate(60deg); }
+    .circle-fade-dot:nth-child(3) { transform: rotate(90deg); }
+    .circle-fade-dot:nth-child(4) { transform: rotate(120deg); }
+    .circle-fade-dot:nth-child(5) { transform: rotate(150deg); }
+    .circle-fade-dot:nth-child(6) { transform: rotate(180deg); }
+    .circle-fade-dot:nth-child(7) { transform: rotate(210deg); }
+    .circle-fade-dot:nth-child(8) { transform: rotate(240deg); }
+    .circle-fade-dot:nth-child(9) { transform: rotate(270deg); }
+    .circle-fade-dot:nth-child(10) { transform: rotate(300deg); }
+    .circle-fade-dot:nth-child(11) { transform: rotate(330deg); }
+    .circle-fade-dot:nth-child(1):before { animation-delay: -1.1s; }
+    .circle-fade-dot:nth-child(2):before { animation-delay: -1s; }
+    .circle-fade-dot:nth-child(3):before { animation-delay: -0.9s; }
+    .circle-fade-dot:nth-child(4):before { animation-delay: -0.8s; }
+    .circle-fade-dot:nth-child(5):before { animation-delay: -0.7s; }
+    .circle-fade-dot:nth-child(6):before { animation-delay: -0.6s; }
+    .circle-fade-dot:nth-child(7):before { animation-delay: -0.5s; }
+    .circle-fade-dot:nth-child(8):before { animation-delay: -0.4s; }
+    .circle-fade-dot:nth-child(9):before { animation-delay: -0.3s; }
+    .circle-fade-dot:nth-child(10):before { animation-delay: -0.2s; }
+    .circle-fade-dot:nth-child(11):before { animation-delay: -0.1s; }
+
+    &.mini {
+      width: @loading-mini-size;
+      height: @loading-mini-size;
+      .circle-fade-dot {
+        left: calc(@loading-mini-size * 0.15);
+        top: calc(@loading-mini-size * 0.15);
+        width: calc(@loading-mini-size * 0.7);
+        height: calc(@loading-mini-size * 0.7);
+      }
+    }
+
+    &.small {
+      width: @loading-small-size;
+      height: @loading-small-size;
+      .circle-fade-dot {
+        left: calc(@loading-small-size * 0.15);
+        top: calc(@loading-small-size * 0.15);
+        width: calc(@loading-small-size * 0.7);
+        height: calc(@loading-small-size * 0.7);
+      }
+    }
+
+    &.normal {
+      width: @loading-normal-size;
+      height: @loading-normal-size;
+      .circle-fade-dot {
+        left: calc(@loading-normal-size * 0.15);
+        top: calc(@loading-normal-size * 0.15);
+        width: calc(@loading-normal-size * 0.7);
+        height: calc(@loading-normal-size * 0.7);
+      }
+    }
+
+    &.large {
+      width: @loading-large-size;
+      height: @loading-large-size;
+      .circle-fade-dot {
+        left: calc(@loading-large-size * 0.15);
+        top: calc(@loading-large-size * 0.15);
+        width: calc(@loading-large-size * 0.7);
+        height: calc(@loading-large-size * 0.7);
+      }
+    }
+
+    &.x-large {
+      width: @loading-x-large-size;
+      height: @loading-x-large-size;
+      .circle-fade-dot {
+        left: calc(@loading-x-large-size * 0.15);
+        top: calc(@loading-x-large-size * 0.15);
+        width: calc(@loading-x-large-size * 0.7);
+        height: calc(@loading-x-large-size * 0.7);
+      }
+    }
+
+    &.xx-large {
+      width: @loading-xx-large-size;
+      height: @loading-xx-large-size;
+      .circle-fade-dot {
+        left: calc(@loading-xx-large-size * 0.15);
+        top: calc(@loading-xx-large-size * 0.15);
+        width: calc(@loading-xx-large-size * 0.7);
+        height: calc(@loading-xx-large-size * 0.7);
+      }
+    }
+
+    &.xxx-large {
+      width: @loading-xxx-large-size;
+      height: @loading-xxx-large-size;
+      .circle-fade-dot {
+        left: calc(@loading-xxx-large-size * 0.15);
+        top: calc(@loading-xxx-large-size * 0.15);
+        width: calc(@loading-xxx-large-size * 0.7);
+        height: calc(@loading-xxx-large-size * 0.7);
+      }
+    }
+
+
+    &.default {
+      .circle-fade-dot {
+        &:before {
+          background-color: @loading-default-color;
+        }
+      }
+    }
+
+    &.primary {
+      .circle-fade-dot {
+        &:before {
+          background-color: @loading-primary-color;
+        }
+      }
+    }
+
+    &.success {
+      .circle-fade-dot {
+        &:before {
+          background-color: @loading-success-color;
+        }
+      }
+    }
+
+    &.warning {
+      .circle-fade-dot {
+        &:before {
+          background-color: @loading-warning-color;
+        }
+      }
+    }
+
+    &.danger {
+      .circle-fade-dot {
+        &:before {
+          background-color: @loading-danger-color;
+        }
+      }
+    }
+
+    &.currentColor {
+      .circle-fade-dot {
+        &:before {
+          background-color: currentColor;
+        }
+      }
+    }
+  }
+}
+
+@-webkit-keyframes circle-fade-loading {
+  .circle-fade-loading-frames;
+}
+
+@keyframes circle-fade-loading {
+  .circle-fade-loading-frames;
+}
+
+.circle-fade-loading-frames() {
+  0%, 39%, 100% {
+    opacity: 0;
+    transform: scale(0.6);
+  } 40% {
+      opacity: 1;
+      transform: scale(1);
+    }
+}

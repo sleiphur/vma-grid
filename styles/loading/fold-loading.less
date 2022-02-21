@@ -1,0 +1,185 @@
+
+.vma-grid-loading {
+
+
+  .fold {
+    position: relative;
+    transform: rotateZ(45deg);
+    display: inline-block;
+    vertical-align: middle;
+
+    .fold-cube {
+      float: left;
+      width: 50%;
+      height: 50%;
+      position: relative;
+      transform: scale(0.95);
+      opacity: 0.75;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        animation: fold-loading 2.4s infinite linear both;
+        transform-origin: 100% 100%;
+      }
+    }
+
+    .fold-cube:nth-child(2) { transform: scale(0.95) rotateZ(90deg); }
+    .fold-cube:nth-child(4) { transform: scale(0.95) rotateZ(180deg); }
+    .fold-cube:nth-child(3) { transform: scale(0.95) rotateZ(270deg); }
+    .fold-cube:nth-child(2):before { animation-delay: 0.3s; }
+    .fold-cube:nth-child(4):before { animation-delay: 0.6s; }
+    .fold-cube:nth-child(3):before { animation-delay: 0.9s; }
+
+    &.mini {
+      width: calc(@loading-mini-size * 0.7);
+      height: calc(@loading-mini-size * 0.7);
+      //.fold-cube {
+      //  left: calc(@loading-mini-size * 0.15);
+      //  top: calc(@loading-mini-size * 0.15);
+      //  width: calc(@loading-mini-size * 0.7);
+      //  height: calc(@loading-mini-size * 0.7);
+      //}
+    }
+
+    &.small {
+      width: calc(@loading-small-size * 0.7);
+      height: calc(@loading-small-size * 0.7);
+      //.fold-cube {
+      //  left: calc(@loading-small-size * 0.15);
+      //  top: calc(@loading-small-size * 0.15);
+      //  width: calc(@loading-small-size * 0.7);
+      //  height: calc(@loading-small-size * 0.7);
+      //}
+    }
+
+    &.normal {
+      width: calc(@loading-normal-size * 0.7);
+      height: calc(@loading-normal-size * 0.7);
+      //.fold-cube {
+      //  left: calc(@loading-normal-size * 0.15);
+      //  top: calc(@loading-normal-size * 0.15);
+      //  width: calc(@loading-normal-size * 0.7);
+      //  height: calc(@loading-normal-size * 0.7);
+      //}
+    }
+
+    &.large {
+      width: calc(@loading-large-size * 0.7);
+      height: calc(@loading-large-size * 0.7);
+      //.fold-cube {
+      //  left: calc(@loading-large-size * 0.15);
+      //  top: calc(@loading-large-size * 0.15);
+      //  width: calc(@loading-large-size * 0.7);
+      //  height: calc(@loading-large-size * 0.7);
+      //}
+    }
+
+    &.x-large {
+      width: calc(@loading-x-large-size * 0.7);
+      height: calc(@loading-x-large-size * 0.7);
+      //.fold-cube {
+      //  left: calc(@loading-x-large-size * 0.15);
+      //  top: calc(@loading-x-large-size * 0.15);
+      //  width: calc(@loading-x-large-size * 0.7);
+      //  height: calc(@loading-x-large-size * 0.7);
+      //}
+    }
+
+    &.xx-large {
+      width: calc(@loading-xx-large-size * 0.7);
+      height: calc(@loading-xx-large-size * 0.7);
+      //.fold-cube {
+      //  left: calc(@loading-xx-large-size * 0.15);
+      //  top: calc(@loading-xx-large-size * 0.15);
+      //  width: calc(@loading-xx-large-size * 0.7);
+      //  height: calc(@loading-xx-large-size * 0.7);
+      //}
+    }
+
+    &.xxx-large {
+      width: calc(@loading-xxx-large-size * 0.7);
+      height: calc(@loading-xxx-large-size * 0.7);
+      //.fold-cube {
+      //  left: calc(@loading-xxx-large-size * 0.15);
+      //  top: calc(@loading-xxx-large-size * 0.15);
+      //  width: calc(@loading-xxx-large-size * 0.7);
+      //  height: calc(@loading-xxx-large-size * 0.7);
+      //}
+    }
+
+
+    &.default {
+      .fold-cube {
+        &:before {
+          background-color: @loading-default-color;
+        }
+      }
+    }
+
+    &.primary {
+      .fold-cube {
+        &:before {
+          background-color: @loading-primary-color;
+        }
+      }
+    }
+
+    &.success {
+      .fold-cube {
+        &:before {
+          background-color: @loading-success-color;
+        }
+      }
+    }
+
+    &.warning {
+      .fold-cube {
+        &:before {
+          background-color: @loading-warning-color;
+        }
+      }
+    }
+
+    &.danger {
+      .fold-cube {
+        &:before {
+          background-color: @loading-danger-color;
+        }
+      }
+    }
+
+    &.currentColor {
+      .fold-cube {
+        &:before {
+          background-color: currentColor;
+        }
+      }
+    }
+  }
+}
+
+@-webkit-keyframes fold-loading {
+  .fold-loading-frames;
+}
+
+@keyframes fold-loading {
+  .fold-loading-frames;
+}
+
+.fold-loading-frames() {
+  0%, 10% {
+    transform: perspective(140px) rotateX(-180deg);
+    opacity: 0;
+  } 25%, 75% {
+      transform: perspective(140px) rotateX(0deg);
+      opacity: 1;
+    } 90%, 100% {
+        transform: perspective(140px) rotateY(180deg);
+        opacity: 0;
+      }
+}

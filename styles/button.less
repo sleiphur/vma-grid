@@ -1,0 +1,334 @@
+@import './common';
+
+// Button
+@button-mini-height: 24px;
+@button-mini-font-size: @font-size-mini;
+@button-mini-line-height: @line-height-mini;
+@button-mini-padding: 5px;
+
+@button-small-height: 28px;
+@button-small-font-size: @font-size-small;
+@button-small-line-height: @line-height-small;
+@button-small-padding: 6px;
+
+@button-normal-height: 32px;
+@button-normal-font-size: @font-size-normal;
+@button-normal-line-height: @line-height-normal;
+@button-normal-padding: 7px;
+
+@button-large-height: 36px;
+@button-large-font-size: @font-size-large;
+@button-large-line-height: @line-height-large;
+@button-large-padding: 8px;
+
+@button-x-large-height: 40px;
+@button-x-large-font-size: @font-size-x-large;
+@button-x-large-line-height: @line-height-x-large;
+@button-x-large-padding: 9px;
+
+@button-xx-large-height: 44px;
+@button-xx-large-font-size: @font-size-xx-large;
+@button-xx-large-line-height: @line-height-xx-large;
+@button-xx-large-padding: 10px;
+
+@button-xxx-large-height: 48px;
+@button-xxx-large-font-size: @font-size-xxx-large;
+@button-xxx-large-line-height: @line-height-xxx-large;
+@button-xxx-large-padding: 11px;
+
+
+@button-default-color: @white;
+@button-default-background-color: @gray-7;
+@button-default-border-color: @gray-7;
+
+@button-primary-color: @white;
+@button-primary-background-color: @blue;
+@button-primary-border-color: @blue;
+
+@button-success-color: @white;
+@button-success-background-color: @green;
+@button-success-border-color: @green;
+
+@button-danger-color: @white;
+@button-danger-background-color: @red;
+@button-danger-border-color: @red;
+
+@button-warning-color: @white;
+@button-warning-background-color: @orange;
+@button-warning-border-color: @orange;
+
+@button-border-width: @border-width-base;
+@button-border-radius: @border-radius-small;
+@button-round-border-radius: @border-radius-max;
+@button-plain-background-color: @white;
+@button-disabled-opacity: @disabled-opacity;
+
+.vma-grid-button {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  height: @button-normal-height;
+  margin: 0;
+  padding: 0 @button-normal-padding;
+  font-size: @button-normal-font-size;
+  line-height: @button-normal-line-height;
+  text-align: center;
+  border-radius: @button-border-radius;
+  cursor: pointer;
+  transition: opacity @animation-duration-fast;
+  -webkit-appearance: none;
+  vertical-align: middle;
+
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    //background-color: @black;
+    border: inherit;
+    //border-color: @black;
+    border-radius: inherit; /* inherit parent's border radius */
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    content: ' ';
+  }
+
+  &:active::before {
+    opacity: 0.1;
+  }
+
+  &--loading,
+  &--disabled {
+    &::before {
+      display: none;
+    }
+  }
+
+  &.default {
+    color: @button-default-color;
+    background-color: @button-default-background-color;
+    border: @button-border-width solid @button-default-border-color;
+    &:not(.disabled) {
+      &:focus {
+        box-shadow: 0 0 0.25em 0 @button-default-color;
+      }
+      &:hover {
+        color: lighten(@button-default-background-color, 9%);
+      }
+    }
+  }
+
+  &.primary {
+    color: @button-primary-color;
+    background-color: @button-primary-background-color;
+    border: @button-border-width solid @button-primary-border-color;
+    &:not(.disabled):not(.plain) {
+      &:focus {
+        box-shadow: 0 0 0.25em 0 @button-primary-color;
+      }
+      &:hover {
+        background-color: lighten(@button-primary-background-color, 9%);
+      }
+    }
+  }
+
+  &.success {
+    color: @button-success-color;
+    background-color: @button-success-background-color;
+    border: @button-border-width solid @button-success-border-color;
+    &:not(.disabled):not(.plain) {
+      &:focus {
+        box-shadow: 0 0 0.25em 0 @button-success-color;
+      }
+      &:hover {
+        background-color: lighten(@button-success-background-color, 5%);
+      }
+    }
+  }
+
+  &.danger {
+    color: @button-danger-color;
+    background-color: @button-danger-background-color;
+    border: @button-border-width solid @button-danger-border-color;
+    &:not(.disabled):not(.plain) {
+      &:focus {
+        box-shadow: 0 0 0.25em 0 @button-danger-color;
+      }
+      &:hover {
+        background-color: lighten(@button-danger-background-color, 12%);
+      }
+    }
+  }
+
+  &.warning {
+    color: @button-warning-color;
+    background-color: @button-warning-background-color;
+    border: @button-border-width solid @button-warning-border-color;
+    &:not(.disabled):not(.plain) {
+      &:focus {
+        box-shadow: 0 0 0.25em 0 @button-warning-color;
+      }
+      &:hover {
+        background-color: lighten(@button-warning-background-color, 9%);
+      }
+    }
+  }
+
+  &.plain {
+    background-color: transparent;
+
+    &.primary {
+      color: @button-primary-background-color;
+      &:not(.disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @button-warning-color;
+        }
+        &:hover {
+          color: lighten(@button-primary-background-color, 9%);
+        }
+      }
+    }
+
+    &.success {
+      color: @button-success-background-color;
+      &:not(.disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @button-warning-color;
+        }
+        &:hover {
+          color: lighten(@button-success-background-color, 5%);
+        }
+      }
+    }
+
+    &.danger {
+      color: @button-danger-background-color;
+      &:not(.disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @button-warning-color;
+        }
+        &:hover {
+          color: lighten(@button-danger-background-color, 12%);
+        }
+      }
+    }
+
+    &.warning {
+      color: @button-warning-background-color;
+      &:not(.disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @button-warning-color;
+        }
+        &:hover {
+          color: lighten(@button-warning-background-color, 9%);
+        }
+      }
+    }
+
+  }
+  &.xxx-large {
+    padding: 0 @button-xxx-large-padding;
+    height: @button-xxx-large-height;
+    font-size: @button-xxx-large-font-size;
+    //line-height: @button-large-line-height;
+  }
+  &.xx-large {
+    padding: 0 @button-xx-large-padding;
+    height: @button-xx-large-height;
+    font-size: @button-xx-large-font-size;
+    //line-height: @button-large-line-height;
+  }
+  &.x-large {
+    padding: 0 @button-x-large-padding;
+    height: @button-x-large-height;
+    font-size: @button-x-large-font-size;
+    //line-height: @button-large-line-height;
+  }
+
+  &.large {
+    padding: 0 @button-large-padding;
+    height: @button-large-height;
+    font-size: @button-large-font-size;
+    //line-height: @button-large-line-height;
+  }
+
+  &.normal {
+    padding: 0 @button-normal-padding;
+    height: @button-normal-height;
+    font-size: @button-normal-font-size;
+    //line-height: @button-normal-line-height;
+  }
+
+  &.small {
+    height: @button-small-height;
+    padding: 0 @button-small-padding;
+    font-size: @button-small-font-size;
+    //line-height: @button-small-line-height;
+  }
+
+  &.loading {
+    //color: inherit;
+    //font-size: inherit;
+  }
+
+  &.mini {
+    height: @button-mini-height;
+    padding: 0 @button-mini-padding;
+    font-size: @button-mini-font-size;
+    //line-height: @button-mini-line-height;
+
+    & + .mini {
+      margin-left: @padding-base;
+    }
+  }
+
+  &.block {
+    display: block;
+    width: 100%;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: @button-disabled-opacity;
+  }
+
+  &.loading {
+    //cursor: default;
+  }
+
+  &.round {
+    border-radius: @button-round-border-radius;
+  }
+
+  &.square {
+    border-radius: 0;
+  }
+
+  // align-items are ignored when flex container is a button in legacy safari
+  // see: https://bugs.webkit.org/show_bug.cgi?id=169700
+  &.content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    // fix icon vertical align
+    // see: https://github.com/youzan/vant/issues/7617
+    &::before {
+      content: ' ';
+    }
+  }
+
+  &.icon {
+    font-size: 1.2em;
+    //line-height: inherit;
+  }
+
+  &.icon + &.text,
+  &.loading + &.text,
+  &.text + &.icon,
+  &.text + &.loading {
+    margin-left: @padding-base;
+  }
+}
