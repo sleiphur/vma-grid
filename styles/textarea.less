@@ -1,0 +1,258 @@
+@import './common';
+
+@textarea-mini-size: 12px;
+@textarea-mini-font-size: 12px;
+@textarea-small-size: 14px;
+@textarea-small-font-size: 14px;
+@textarea-normal-size: 16px;
+@textarea-normal-font-size: 16px;
+@textarea-large-size: 18px;
+@textarea-large-font-size: 18px;
+@textarea-x-large-size: 20px;
+@textarea-x-large-font-size: 20px;
+@textarea-xx-large-size: 22px;
+@textarea-xx-large-font-size: 22px;
+@textarea-xxx-large-size: 24px;
+@textarea-xxx-large-font-size: 24px;
+@textarea-default-color: @gray-7;
+@textarea-primary-color: @blue;
+@textarea-success-color: @green;
+@textarea-danger-color: @red;
+@textarea-warning-color: @orange;
+@textarea-disabled-color: @gray-5;
+@textarea-disabled-background-color: @gray-4;
+
+.vma-grid-textarea {
+  border-radius: 2px;
+  position: relative;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  //min-width: 180px;
+  display: flex;
+  line-height: 100%;
+
+  .count-helper{
+    position: absolute;
+    visibility: hidden;
+    height: auto;
+    width: auto;
+    min-width: 1px;
+  }
+  //
+  //.count-target-helper{
+  //  //white-space: nowrap;
+  //  left: 36px;
+  //  top: 360px;
+  //  opacity: 0.5;
+  //  position: absolute;
+  //  //visibility: hidden;
+  //  height: auto;
+  //  width: auto;
+  //  margin:0;
+  //  padding:0;
+  //  border: 1px;
+  //  white-space: pre-wrap;
+  //}
+
+  //&--lines {
+  //  background-color: #F0F0F0;
+  //  border: 1px solid #D7E2ED;
+  //  border-radius: 2px 0 0 2px;
+  //  border-right-width: 0;
+  //  padding: 0px 10px 12px 15px;
+  //  overflow: hidden;
+  //  position: relative;
+  //
+  //  &--inner {
+  //    position: absolute;
+  //  }
+  //  &-line {
+  //    margin: 0;
+  //    border: 0;
+  //    padding: 0;
+  //    text-align: right;
+  //  }
+  //}
+
+
+
+
+  &.is--disabled {
+    .prefix,
+    .suffix {
+      cursor: no-drop;
+    }
+  }
+
+  //&:not(.is--show-lines) {
+  //  .inner-textarea {
+  //    border-radius: 2px;
+  //  }
+  //}
+
+  &:not(.is--disabled) {
+    .clear-icon {
+      cursor: pointer;
+    }
+    &.is--active {
+      &.default {
+        .inner-textarea {
+          border-top: 1px solid @textarea-default-color;
+          border-bottom: 1px solid @textarea-default-color;
+          border-right: 1px solid @textarea-default-color;
+          border-left: 1px solid @textarea-default-color;
+        }
+      }
+
+      &.primary {
+        .inner-textarea {
+          border-top: 1px solid @textarea-primary-color;
+          border-bottom: 1px solid @textarea-primary-color;
+          border-right: 1px solid @textarea-primary-color;
+          border-left: 1px solid @textarea-primary-color;
+        }
+      }
+
+      &.success {
+        .inner-textarea {
+          border-top: 1px solid @textarea-success-color;
+          border-bottom: 1px solid @textarea-success-color;
+          border-right: 1px solid @textarea-success-color;
+          border-left: 1px solid @textarea-success-color;
+        }
+      }
+
+      &.warning {
+        .inner-textarea {
+          border-top: 1px solid @textarea-warning-color;
+          border-bottom: 1px solid @textarea-warning-color;
+          border-right: 1px solid @textarea-warning-color;
+          border-left: 1px solid @textarea-warning-color;
+        }
+      }
+
+      &.danger {
+        .inner-textarea {
+          border-top: 1px solid @textarea-danger-color;
+          border-bottom: 1px solid @textarea-danger-color;
+          border-right: 1px solid @textarea-danger-color;
+          border-left: 1px solid @textarea-danger-color;
+        }
+      }
+      //.inner-textarea {
+      //  border-top: 1px solid @blue;
+      //  border-bottom: 1px solid @blue;
+      //  border-right: 1px solid @blue;
+      //  border-left: 1px solid @blue;
+      //}
+      //.lines {
+      //  border-left: 1px solid @blue;
+      //  border-top: 1px solid @blue;
+      //  border-bottom: 1px solid @blue;
+      //  border-right: none;
+      //}
+      //&:not(.is--show-lines) {
+      //  .inner-textarea {
+      //    border-left: 1px solid @blue;
+      //  }
+      //}
+    }
+
+  }
+  &.xxx-large {
+    //line-height: calc(@textarea-large-size - 2px);
+    font-size: @textarea-xxx-large-font-size;
+    .inner-textarea {
+      min-height: @textarea-xxx-large-size;
+    }
+  }
+
+  &.xx-large {
+    //line-height: calc(@textarea-large-size - 2px);
+    font-size: @textarea-xx-large-font-size;
+    .inner-textarea {
+      min-height: @textarea-xx-large-size;
+    }
+  }
+
+  &.x-large {
+    //line-height: calc(@textarea-large-size - 2px);
+    font-size: @textarea-x-large-font-size;
+    .inner-textarea {
+      min-height: @textarea-x-large-size;
+    }
+  }
+
+  &.large {
+    //line-height: calc(@textarea-large-size - 2px);
+    font-size: @textarea-large-font-size;
+    .inner-textarea {
+      min-height: @textarea-large-size;
+    }
+  }
+
+  &.normal {
+    //height: @textarea-normal-size;
+    //line-height: calc(@textarea-normal-size - 2px);
+    font-size: @textarea-normal-font-size;
+    .inner-textarea {
+      min-height: @textarea-normal-size;
+    }
+  }
+
+  &.small {
+    //height: @textarea-small-size;
+    //line-height: calc(@textarea-small-size - 2px);
+    font-size: @textarea-small-font-size;
+    .inner-textarea {
+      min-height: @textarea-small-size;
+    }
+  }
+
+  &.mini {
+    //height: @textarea-mini-size;
+    //line-height: calc(@textarea-mini-size - 2px);
+    font-size: @textarea-mini-font-size;
+    .inner-textarea {
+      min-height: @textarea-mini-size;
+    }
+  }
+
+  .inner-textarea {
+
+    //border: 1px solid #D7E2ED;
+    margin: 0;
+    line-height: inherit;
+    width: 100%;
+    overflow: auto;
+    //height: 100%;
+    border-radius: 2px;
+    //border-radius: 0 2px 2px 0;
+    outline: 0;
+    padding: 1px;
+    color: @gray-8;
+    border: 1px solid @gray-4;
+    background-color: #fff;
+    box-shadow: none;
+    font-size: inherit;
+    &::placeholder {
+      color: @gray-5;
+    }
+    &[disabled] {
+      cursor: not-allowed;
+      color: @textarea-disabled-color;
+      background-color: @textarea-disabled-background-color;
+    }
+
+    &--wrap {
+      white-space: pre-wrap;
+    }
+
+    &--nowrap {
+      white-space: pre;
+    }
+  }
+
+
+}

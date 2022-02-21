@@ -10,6 +10,7 @@ const clickEvent = () => {
 };
 const selectedValues = ref<String>('2');
 const checkedValues = reactive(['2', '3']);
+const inputValue = ref<String>('测试文本');
 </script>
 
 <template>
@@ -58,6 +59,18 @@ const checkedValues = reactive(['2', '3']);
     <vma-grid-checkbox size="small" label="5" content="小型尺寸FromContent"></vma-grid-checkbox>
     <vma-grid-checkbox size="mini" label="6">迷你尺寸</vma-grid-checkbox>
   </vma-grid-checkbox-group>
+
+  <vma-grid-textarea size="mini" placeholder="迷你尺寸--disabled" disabled :rows="1" />
+  <vma-grid-textarea size="small" placeholder="小尺寸--readonly" readonly type="primary" />
+  <vma-grid-textarea placeholder="默认尺寸" v-model="inputValue" wrap :rows="16" type="success" />
+  <vma-grid-textarea
+      size="large"
+      placeholder="大尺寸--初始化rows=4"
+      :rows="4"
+      :wrap="false"
+      v-model="inputValue"
+      type="danger"
+  />
 </template>
 
 <style scoped>
