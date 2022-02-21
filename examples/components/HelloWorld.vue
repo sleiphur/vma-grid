@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import VmaGridFoobar from "../../src/foobar/src/foobar";
-import VmaGridIcon from "../../src/icon/src/icon";
+import {reactive, ref} from 'vue'
 
 defineProps<{ msg: string }>()
 
@@ -11,6 +9,7 @@ const clickEvent = () => {
   isLoading.value = !isLoading.value
 };
 const selectedValues = ref<String>('2');
+const checkedValues = reactive(['2', '3']);
 </script>
 
 <template>
@@ -51,6 +50,14 @@ const selectedValues = ref<String>('2');
     <vma-grid-radio label="4" size="small" content="选项4*"></vma-grid-radio>
     <vma-grid-radio size="mini" label="5">选项5</vma-grid-radio>
   </vma-grid-radio-group>
+
+  <vma-grid-checkbox-group v-model="checkedValues" size="mini" type="warning">
+    <vma-grid-checkbox size="large" label="2">大型尺寸</vma-grid-checkbox>
+    <vma-grid-checkbox label="3">默认尺寸</vma-grid-checkbox>
+    <vma-grid-checkbox size="normal" label="4">默认尺寸</vma-grid-checkbox>
+    <vma-grid-checkbox size="small" label="5" content="小型尺寸FromContent"></vma-grid-checkbox>
+    <vma-grid-checkbox size="mini" label="6">迷你尺寸</vma-grid-checkbox>
+  </vma-grid-checkbox-group>
 </template>
 
 <style scoped>
