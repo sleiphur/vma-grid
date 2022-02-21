@@ -10,6 +10,7 @@ const isLoading = ref(false);
 const clickEvent = () => {
   isLoading.value = !isLoading.value
 };
+const selectedValues = ref<String>('2');
 </script>
 
 <template>
@@ -42,6 +43,14 @@ const clickEvent = () => {
   <vma-grid-icon name="bookmark" size="mini" type="default"></vma-grid-icon>
   <vma-grid-loading size="mini">测试</vma-grid-loading>
   <vma-grid-button plain type="primary" size="mini" loading-text="加载中..." @click="clickEvent">点击这里</vma-grid-button>
+
+  <vma-grid-radio-group size="small" type="primary" v-model="selectedValues">
+    <vma-grid-radio size="large" label="1">选项1</vma-grid-radio>
+    <vma-grid-radio label="2">选项2</vma-grid-radio>
+    <vma-grid-radio size="normal" label="3" disabled>选项3</vma-grid-radio>
+    <vma-grid-radio label="4" size="small" content="选项4*"></vma-grid-radio>
+    <vma-grid-radio size="mini" label="5">选项5</vma-grid-radio>
+  </vma-grid-radio-group>
 </template>
 
 <style scoped>

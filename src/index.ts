@@ -5,12 +5,14 @@ import GridFoobar from './foobar'
 import GridIcon from './icon'
 import GridLoading from './loading'
 import GridButton from './button'
+import GridRadio from './radio'
 
 const components = [
     GridFoobar,
     GridIcon,
     GridLoading,
-    GridButton
+    GridButton,
+    GridRadio
 ]
 
 function install(app: App, options?: any) {
