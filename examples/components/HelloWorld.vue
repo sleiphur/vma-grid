@@ -6,6 +6,10 @@ import VmaGridIcon from "../../src/icon/src/icon";
 defineProps<{ msg: string }>()
 
 const count = ref(0)
+const isLoading = ref(false);
+const clickEvent = () => {
+  isLoading.value = !isLoading.value
+};
 </script>
 
 <template>
@@ -36,6 +40,8 @@ const count = ref(0)
 
   <vma-grid-foobar type="bar" style="width: 100px; height: 100px;">测试</vma-grid-foobar>
   <vma-grid-icon name="bookmark" size="mini" type="default"></vma-grid-icon>
+  <vma-grid-loading size="mini">测试</vma-grid-loading>
+  <vma-grid-button plain type="primary" size="mini" loading-text="加载中..." @click="clickEvent">点击这里</vma-grid-button>
 </template>
 
 <style scoped>

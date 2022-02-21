@@ -26,3 +26,5 @@ export default VmaGrid
 
 export * from './foobar'
 export * from './icon'
+export * from './loading'
+export * from './button'

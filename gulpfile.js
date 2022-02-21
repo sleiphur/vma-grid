@@ -34,7 +34,7 @@ gulp.task('copy_font', () =>
 gulp.task('build_style', () => {
   return merge(
     gulp
-      .src(`styles/**/*.less`)
+      .src(`styles/index.less`)
       .pipe(less())
       .pipe(
         prefixer({

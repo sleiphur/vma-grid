@@ -3,10 +3,14 @@ import { App } from 'vue'
 import VmaGrid from './vma-grid'
 import GridFoobar from './foobar'
 import GridIcon from './icon'
+import GridLoading from './loading'
+import GridButton from './button'
 
 const components = [
     GridFoobar,
-    GridIcon
+    GridIcon,
+    GridLoading,
+    GridButton
 ]
 
 function install(app: App, options?: any) {
