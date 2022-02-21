@@ -1,0 +1,359 @@
+@import './common';
+
+@radio-mini-size: 16px;
+@radio-small-size: 18px;
+@radio-normal-size: 20px;
+@radio-large-size: 22px;
+@radio-x-large-size: 24px;
+@radio-xx-large-size: 26px;
+@radio-xxx-large-size: 28px;
+@radio-mini-font-size: @font-size-mini;
+@radio-small-font-size: @font-size-small;
+@radio-normal-font-size: @font-size-normal;
+@radio-large-font-size: @font-size-large;
+@radio-x-large-font-size: @font-size-x-large;
+@radio-xx-large-font-size: @font-size-xx-large;
+@radio-xxx-large-font-size: @font-size-xxx-large;
+@radio-default-color: @gray-7;
+@radio-primary-color: @blue;
+@radio-success-color: @green;
+@radio-danger-color: @red;
+@radio-warning-color: @orange;
+@radio-disabled-color: @gray-5;
+@radio-border-color: @gray-5;
+@radio-transition-duration: @animation-duration-fast;
+
+.vma-grid-radio {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+
+
+  &.xxx-large {
+    height: @radio-xxx-large-size;
+    //line-height: calc(@radio-xxx-large-size - 2px);
+    font-size: @radio-xxx-large-font-size;
+  }
+
+  &.xx-large {
+    height: @radio-xx-large-size;
+    //line-height: calc(@radio-xx-large-size - 2px);
+    font-size: @radio-xx-large-font-size;
+  }
+
+  &.x-large {
+    height: @radio-x-large-size;
+    //line-height: calc(@radio-x-large-size - 2px);
+    font-size: @radio-x-large-font-size;
+  }
+
+  &.large {
+    height: @radio-large-size;
+    //line-height: calc(@radio-large-size - 2px);
+    font-size: @radio-large-font-size;
+  }
+
+  &.normal {
+    height: @radio-normal-size;
+    //line-height: calc(@radio-normal-size - 2px);
+    font-size: @radio-normal-font-size;
+  }
+
+  &.small {
+    height: @radio-small-size;
+    //line-height: calc(@radio-small-size - 2px);
+    font-size: @radio-small-font-size;
+  }
+
+  &.mini {
+    height: @radio-mini-size;
+    //line-height: calc(@radio-mini-size - 2px);
+    font-size: @radio-mini-font-size;
+  }
+
+  .input {
+    position: absolute;
+    height: 0;
+    width: 0;
+    border: none;
+    appearance: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .icon {
+    position: relative;
+    display: inline-block;
+    //border-radius: 50%;
+
+    transition-duration: @radio-transition-duration;
+    transition-property: color, border-color, background-color;
+    height: inherit;
+    .vma-grid-icon {
+      color: transparent;
+      border-radius: 50%;
+      border: 1px solid @gray-5;
+    }
+
+    &--default {
+      border-color: @radio-default-color;
+      .vma-grid-icon {
+        //color: @white;
+        //background-color: @radio-default-color;
+        border-color: @radio-default-color;
+      }
+    }
+
+    &--primary {
+      border-color: @radio-primary-color;
+      .vma-grid-icon {
+        //color: @white;
+        //background-color: @radio-primary-color;
+        border-color: @radio-primary-color;
+      }
+    }
+
+    &--success {
+      border-color: @radio-success-color;
+      .vma-grid-icon {
+        //color: @white;
+        //background-color: @radio-success-color;
+        border-color: @radio-success-color;
+      }
+    }
+
+    &--warning {
+      border-color: @radio-warning-color;
+      .vma-grid-icon {
+        //color: @white;
+        //background-color: @radio-warning-color;
+        border-color: @radio-warning-color;
+      }
+    }
+
+    &--danger {
+      border-color: @radio-danger-color;
+      .vma-grid-icon {
+        //color: @white;
+        //background-color: @radio-danger-color;
+        border-color: @radio-danger-color;
+      }
+    }
+
+    &--checked {
+      border-color: @radio-primary-color;
+      .vma-grid-icon {
+        color: @white;
+        background-color: @radio-primary-color;
+        border-color: @radio-primary-color;
+      }
+
+      &--default {
+        border-color: @radio-default-color;
+        .vma-grid-icon {
+          color: @white;
+          background-color: @radio-default-color;
+          border-color: @radio-default-color;
+        }
+      }
+
+      &--primary {
+        border-color: @radio-primary-color;
+        .vma-grid-icon {
+          color: @white;
+          background-color: @radio-primary-color;
+          border-color: @radio-primary-color;
+        }
+      }
+
+      &--success {
+        border-color: @radio-success-color;
+        .vma-grid-icon {
+          color: @white;
+          background-color: @radio-success-color;
+          border-color: @radio-success-color;
+        }
+      }
+
+      &--warning {
+        border-color: @radio-warning-color;
+        .vma-grid-icon {
+          color: @white;
+          background-color: @radio-warning-color;
+          border-color: @radio-warning-color;
+        }
+      }
+
+      &--danger {
+        border-color: @radio-danger-color;
+        .vma-grid-icon {
+          color: @white;
+          background-color: @radio-danger-color;
+          border-color: @radio-danger-color;
+        }
+      }
+    }
+
+
+
+    &--disabled {
+      border-color: @radio-disabled-color;
+      cursor: not-allowed;
+      .vma-grid-icon {
+        //color: @white;
+        background-color: @radio-disabled-color;
+        border-color: @radio-disabled-color;
+      }
+    }
+  }
+
+  .label {
+    position: relative;
+    display: inline-block;
+    //background: @white;
+    padding-left: 4px;
+    padding-right: 4px;
+    transition-duration: @radio-transition-duration;
+    transition-property: color, border-color, background-color;
+    &:not(.label--disabled) {
+      &:focus {
+        box-shadow: 0 0 0.25em 0 @radio-primary-color;
+      }
+      &:hover {
+        color: lighten(@radio-primary-color, 15%);
+      }
+    }
+
+    &--default {
+      color: @radio-default-color;
+      &:not(.label--disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @radio-default-color;
+        }
+        &:hover {
+          color: lighten(@radio-default-color, 15%);
+        }
+      }
+    }
+
+    &--primary {
+      color: @radio-primary-color;
+      &:not(.label--disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @radio-primary-color;
+        }
+        &:hover {
+          color: lighten(@radio-primary-color, 15%);
+        }
+      }
+    }
+
+    &--success {
+      color: @radio-success-color;
+      &:not(.label--disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @radio-success-color;
+        }
+        &:hover {
+          color: lighten(@radio-success-color, 15%);
+        }
+      }
+    }
+
+    &--warning {
+      color: @radio-warning-color;
+      &:not(.label--disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @radio-warning-color;
+        }
+        &:hover {
+          color: lighten(@radio-warning-color, 15%);
+        }
+      }
+    }
+
+    &--danger {
+      color: @radio-danger-color;
+      &:not(.label--disabled) {
+        &:focus {
+          box-shadow: 0 0 0.25em 0 @radio-danger-color;
+        }
+        &:hover {
+          color: lighten(@radio-danger-color, 15%);
+        }
+      }
+    }
+
+    &--checked {
+      color: @radio-primary-color;
+
+      &--default {
+        color: @radio-default-color;
+        &:not(.label--disabled) {
+          &:focus {
+            box-shadow: 0 0 0.25em 0 @radio-default-color;
+          }
+          &:hover {
+            color: lighten(@radio-default-color, 15%);
+          }
+        }
+      }
+
+      &--primary {
+        color: @radio-primary-color;
+        &:not(.label--disabled) {
+          &:focus {
+            box-shadow: 0 0 0.25em 0 @radio-primary-color;
+          }
+          &:hover {
+            color: lighten(@radio-primary-color, 15%);
+          }
+        }
+      }
+
+      &--success {
+        color: @radio-success-color;
+        &:not(.label--disabled) {
+          &:focus {
+            box-shadow: 0 0 0.25em 0 @radio-success-color;
+          }
+          &:hover {
+            color: lighten(@radio-success-color, 15%);
+          }
+        }
+      }
+
+      &--warning {
+        color: @radio-warning-color;
+        &:not(.label--disabled) {
+          &:focus {
+            box-shadow: 0 0 0.25em 0 @radio-warning-color;
+          }
+          &:hover {
+            color: lighten(@radio-warning-color, 15%);
+          }
+        }
+      }
+
+      &--danger {
+        color: @radio-danger-color;
+        &:not(.label--disabled) {
+          &:focus {
+            box-shadow: 0 0 0.25em 0 @radio-danger-color;
+          }
+          &:hover {
+            color: lighten(@radio-danger-color, 15%);
+          }
+        }
+      }
+    }
+
+    &--disabled {
+      cursor: not-allowed;
+      color: @radio-disabled-color;
+    }
+  }
+}
