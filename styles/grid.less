@@ -1,0 +1,517 @@
+@import './common';
+
+@grid-border-color: @gray-4;
+@grid-background-color: @gray-2;
+@grid-corner-color: @gray-5;
+
+@grid-mini-font-size: 12px;
+@grid-small-font-size: 14px;
+@grid-normal-font-size: 16px;
+@grid-large-font-size: 18px;
+@grid-x-large-font-size: 20px;
+@grid-xx-large-font-size: 22px;
+@grid-xxx-large-font-size: 24px;
+
+@grid-default-color: @gray-7;
+@grid-primary-color: @blue;
+@grid-success-color: @green;
+@grid-warning-color: @orange;
+@grid-danger-color: @red;
+
+@grid-resize-bar-default-color: @gray-7;
+@grid-resize-bar-primary-color: @blue;
+@grid-resize-bar-success-color: @green;
+@grid-resize-bar-warning-color: @orange;
+@grid-resize-bar-danger-color: @red;
+
+.vma-grid {
+  position: relative;
+  border: 1px solid @grid-default-color;
+  border-radius: 2px;
+  font-family: @base-font-family;
+  overflow: hidden;
+
+  table {
+    display: table;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: separate;
+    width: 100%;
+  }
+
+  tr {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  tr:nth-child(2n) {
+    background-color: inherit;
+  }
+
+  td {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  th {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cell-editor {
+    display: none;
+    position: absolute;
+    //background-color: @grid-cell-border-current-background-color;
+    opacity: 1;
+
+    textarea {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &.mini {
+    font-size: @grid-mini-font-size;
+  }
+
+  &.small {
+    font-size: @grid-small-font-size;
+  }
+
+  &.normal {
+    font-size: @grid-normal-font-size;
+  }
+
+  &.large {
+    font-size: @grid-large-font-size;
+  }
+
+  &.x-large {
+    font-size: @grid-x-large-font-size;
+  }
+
+  &.xx-large {
+    font-size: @grid-xx-large-font-size;
+  }
+
+  &.xxx-large {
+    font-size: @grid-xxx-large-font-size;
+  }
+
+  &.default {
+    border: 1px solid @grid-default-color;
+  }
+
+  &.primary {
+    border: 1px solid @grid-primary-color;
+  }
+
+  &.success {
+    border: 1px solid @grid-success-color;
+  }
+
+  &.warning {
+    border: 1px solid @grid-warning-color;
+  }
+
+  &.danger {
+    border: 1px solid @grid-danger-color;
+  }
+
+  .column-resize-bar {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    z-index: 8;
+    cursor: col-resize;
+    &:before {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 1px;
+      //background-color: @grid-resize-bar-default-color;
+    }
+    &.default {
+      background-color: @grid-default-color;
+    }
+
+    &.primary {
+      background-color: @grid-primary-color;
+    }
+
+    &.success {
+      background-color: @grid-success-color;
+    }
+
+    &.warning {
+      background-color: @grid-warning-color;
+    }
+
+    &.danger {
+      background-color: @grid-danger-color;
+    }
+  }
+
+  .row-resize-bar {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    z-index: 8;
+    cursor: row-resize;
+    &:before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 1px;
+      //background-color: @grid-resize-bar-default-color;
+
+    }
+    &.default {
+      background-color: @grid-default-color;
+    }
+
+    &.primary {
+      background-color: @grid-primary-color;
+    }
+
+    &.success {
+      background-color: @grid-success-color;
+    }
+
+    &.warning {
+      background-color: @grid-warning-color;
+    }
+
+    &.danger {
+      background-color: @grid-danger-color;
+    }
+  }
+
+  .header-wrapper {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    position: relative;
+    background-image: linear-gradient(@grid-background-color, @grid-background-color), linear-gradient(@grid-background-color, @grid-background-color);
+    background-repeat: no-repeat;
+    background-size: calc(100% - 1px) 100%, 100% calc(100% - 1px);
+    background-position:  0 0, 0 0;
+
+    &.left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+    }
+
+    &.right {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .header {
+      table-layout: fixed;
+      th.grid-corner {
+        position: relative;
+        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
+        background-repeat: no-repeat;
+        background-size: 1px 100%, 100% 1px;
+        background-position: right top, right bottom;
+        padding: 0;
+        margin: 2px;
+        font-size: inherit;
+        font-weight: normal;
+        transition: none;
+        cursor: default;
+        white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
+        height: inherit;
+
+        .corner {
+          float: right;
+          margin-right: 6px;
+          width: 0;
+          height: 0;
+          border: 5px solid;
+          border-color: transparent @grid-corner-color @grid-corner-color transparent;
+        }
+      }
+      th.column-indicator {
+        position: relative;
+        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
+        background-repeat: no-repeat;
+        background-size: 1px 100%, 100% 1px;
+        background-position: right top, right bottom;
+        padding: 0;
+        margin: 2px;
+        font-size: inherit;
+        font-weight: normal;
+        transition: none;
+        cursor: default;
+        white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
+        height: inherit;
+
+        .column-resize-handler {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 6px;
+          height: 100%;
+          text-align: center;
+          z-index: 1;
+          cursor: col-resize;
+          &:hover {
+
+            &.default {
+              background-color: lighten(@grid-default-color, 15%);
+            }
+
+            &.primary {
+              background-color: lighten(@grid-primary-color, 15%);
+            }
+
+            &.success {
+              background-color: lighten(@grid-success-color, 15%);
+            }
+
+            &.warning {
+              background-color: lighten(@grid-warning-color, 15%);
+            }
+
+            &.danger {
+              background-color: lighten(@grid-danger-color, 15%);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .body-wrapper {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: auto;
+    //height: 100%;
+    background: white;
+
+    &.normal {
+      //z-index: 10;
+    }
+
+    &.left {
+      overflow-x: hidden;
+      overflow-y: hidden;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 2;
+
+      .fixed-wrapper {
+        overflow-x: hidden;
+        overflow-y: auto;
+        top: 0;
+        left: 0;
+        position: absolute;
+        background-color: inherit;
+        z-index: 1;
+        border: 0;
+        .vma-grid--header-wrapper {
+          top: 0;
+          left: 0;
+          overflow: hidden;
+          position: absolute;
+          z-index: 3;
+        }
+        .vma-grid--body-wrapper {
+          top: 29px;
+          left: 0;
+          overflow-x: hidden;
+          overflow-y: auto;
+          position: absolute;
+          background-color: #ffffff;
+        }
+
+        &.border--shadow {
+          box-shadow: 2px 0 4px -2px rgba(0,0,0,.6);
+        }
+
+        &.border--full {
+
+        }
+
+        &.border--normal {
+          border: none;
+        }
+
+        &.border--outer {
+          border: none;
+        }
+
+        &.border--inner {
+
+        }
+
+        &.border--none {
+          border: none;
+        }
+      }
+
+    }
+
+    &.left-top {
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: none;
+    }
+
+    &.right {
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: absolute;
+      right: 0;
+      display: none;
+    }
+
+    &.top {
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: absolute;
+      top: 0;
+      display: none;
+    }
+
+
+
+    .body {
+      table-layout: fixed;
+      td.normal {
+        position: relative;
+        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
+        background-repeat: no-repeat;
+        background-size: 1px 100%, 100% 1px;
+        background-position: right top, right bottom;
+        padding: 0;
+        margin: 2px;
+        font-size: inherit;
+        font-weight: normal;
+        transition: none;
+        cursor: default;
+        //white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
+        height: inherit;
+
+        .cell {
+          white-space:nowrap;
+          overflow:hidden;
+          word-break:keep-all;
+          text-overflow:ellipsis;
+          //white-space: pre-line;
+          //word-break: break-all;
+          width: 100%;
+          height: inherit;
+          //line-height: 1.5;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          //&.column--current {
+          //  background-color: @grid-column-current-background-color;
+          //}
+          //&.cell--current {
+          //  //background-color: @grid-cell-current-background-color;
+          //  background-image: linear-gradient(@grid-cell-current-background-color, @grid-cell-current-background-color), linear-gradient(@grid-cell-current-background-color, @grid-cell-current-background-color);
+          //  background-repeat: no-repeat;
+          //  background-size: calc(100% - 1px) calc(100% - 1px), calc(100% - 1px) calc(100% - 5px);
+          //  background-position:  0 0, 0 0;
+          //}
+        }
+      }
+      td.row-indicator {
+        position: relative;
+        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
+        background-repeat: no-repeat;
+        background-size: 1px 100%, 100% 1px;
+        background-position: right top, right bottom;
+        padding: 0;
+        margin: 2px;
+        font-size: inherit;
+        font-weight: normal;
+        transition: none;
+        cursor: default;
+        //white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
+        height: inherit;
+
+        .cell {
+          white-space:nowrap;
+          overflow:hidden;
+          word-break:keep-all;
+          text-overflow:ellipsis;
+          //white-space: pre-line;
+          //word-break: break-all;
+          width: 100%;
+          height: inherit;
+          //line-height: 1.5;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          //&.column--current {
+          //  background-color: @grid-column-current-background-color;
+          //}
+          //&.cell--current {
+          //  //background-color: @grid-cell-current-background-color;
+          //  background-image: linear-gradient(@grid-cell-current-background-color, @grid-cell-current-background-color), linear-gradient(@grid-cell-current-background-color, @grid-cell-current-background-color);
+          //  background-repeat: no-repeat;
+          //  background-size: calc(100% - 1px) calc(100% - 1px), calc(100% - 1px) calc(100% - 5px);
+          //  background-position:  0 0, 0 0;
+          //}
+        }
+
+        .row-resize-handler {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 100%;
+          height: 6px;
+          text-align: center;
+          z-index: 1;
+          cursor: row-resize;
+          &:hover {
+            &.default {
+              background-color: lighten(@grid-default-color, 15%);
+            }
+
+            &.primary {
+              background-color: lighten(@grid-primary-color, 15%);
+            }
+
+            &.success {
+              background-color: lighten(@grid-success-color, 15%);
+            }
+
+            &.warning {
+              background-color: lighten(@grid-warning-color, 15%);
+            }
+
+            &.danger {
+              background-color: lighten(@grid-danger-color, 15%);
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+
+}

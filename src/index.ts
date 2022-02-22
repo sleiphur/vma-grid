@@ -8,6 +8,7 @@ import GridButton from './button'
 import GridRadio from './radio'
 import GridCheckbox from './checkbox'
 import GridTextarea from './textarea'
+import Grid from './grid'
 
 const components = [
     GridFoobar,
@@ -16,7 +17,8 @@ const components = [
     GridButton,
     GridRadio,
     GridCheckbox,
-    GridTextarea
+    GridTextarea,
+    Grid
 ]
 
 function install(app: App, options?: any) {
