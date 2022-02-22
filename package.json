@@ -71,5 +71,27 @@
     "vuepress": "^2.0.0-beta.35",
     "vuepress-plugin-typedoc": "^0.10.3"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sleiphur/vma-grid.git"
+  },
+  "keywords": [
+    "vma-grid",
+    "vue calc grid",
+    "vue grid"
+  ],
+  "author": {
+    "name": "Ma Hongming",
+    "email": "sleipnir.ma@foxmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/sleiphur/vma-grid/issues"
+  },
+  "homepage": "https://github.com/sleiphur/vma-grid#readme",
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
