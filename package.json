@@ -10,7 +10,7 @@
     "lib": "yarn run build && yarn run gulp build",
     "test": "jest",
     "test:unit": "jest test/*/unit",
-    "test:integration": "jest packages/*/test/integration",
+    "test:integration": "jest test/*/integration",
     "coverage": "jest --coverage",
     "coverage:unit": "yarn test:unit --coverage",
     "coverage:integration": "yarn test:integration --coverage",
