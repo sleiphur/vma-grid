@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 /yarn.lock
 /.npmrc
+/docs/.vuepress/.cache/
+/docs/.vuepress/.temp/
