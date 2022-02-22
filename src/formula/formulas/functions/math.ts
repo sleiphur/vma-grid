@@ -1,6 +1,7 @@
 import FormulaError from '../error'
 import { FormulaHelpers, Types, Factorials, Criteria } from '../helpers'
 import { Infix } from '../operators'
+import {isNumeric} from "../../../utils/validate/number";
 
 const H = FormulaHelpers
 
@@ -641,10 +642,15 @@ const MathFunctions = {
     let result = 0
     H.flattenParams(params, Types.NUMBER, true, (item: any, info: any) => {
       // literal will be parsed to given type (Type.NUMBER)
+      console.log(info, item)
       if (info.isLiteral) {
         result += item
       } else {
-        if (typeof item === 'number') result += item
+        if (typeof item === 'number') {
+          result += item
+        } else if (isNumeric(item)) {
+          result += Number(item)
+        }
       }
     })
     return result
