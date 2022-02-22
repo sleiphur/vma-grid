@@ -1,0 +1,12 @@
+stages:
+  - build
+
+job_build:
+  stage: build
+  only:
+    - master
+  script:
+    - yarn install
+    - yarn run build
+  tags:
+    - publish
