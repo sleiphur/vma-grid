@@ -30,7 +30,7 @@
     "src",
     "styles"
   ],
-  "peerDependencies": {
+  "dependencies": {
     "bahttext": "^2.1.0",
     "bessel": "^1.0.2",
     "chevrotain": "^10.1.1",
