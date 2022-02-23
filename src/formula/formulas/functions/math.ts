@@ -642,7 +642,7 @@ const MathFunctions = {
     let result = 0
     H.flattenParams(params, Types.NUMBER, true, (item: any, info: any) => {
       // literal will be parsed to given type (Type.NUMBER)
-      console.log(info, item)
+      // console.log(info, item)
       if (info.isLiteral) {
         result += item
       } else {
