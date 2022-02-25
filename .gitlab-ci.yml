@@ -7,6 +7,7 @@ job_build:
     - master
   script:
     - yarn install
+    - yarn run test
     - yarn run build
   tags:
     - publish
