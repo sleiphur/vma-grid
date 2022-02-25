@@ -4,7 +4,7 @@ stages:
 job_build:
   stage: build
   only:
-    - master
+    - main
   script:
     - yarn install
     - yarn run test
