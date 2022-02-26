@@ -65,5 +65,5 @@ export default {
   functions: {
     type: Object as PropType<VmaGridPropTypes.CustomFunction>,
     default: null,
-  }
+  },
 }
