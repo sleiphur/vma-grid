@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
+import {FormulaError, FormulaHelpers, Types} from "../../src/formula";
 
 defineProps<{ msg: string }>()
 
@@ -14,6 +15,21 @@ const inputValue = ref<String>('测试文本');
 
 const selectedSizeValue = ref<String>('small');
 const selectedThemeValue = ref<String>('primary');
+
+const customFunctions = reactive({
+  CHAR21: (number) => {
+    number = FormulaHelpers.accept(number, Types.NUMBER);
+    if (number > 255 || number < 1)
+      throw FormulaError.VALUE;
+    return String.fromCharCode(number + 21);
+  },
+  CHAR22: (number) => {
+    number = FormulaHelpers.accept(number, Types.NUMBER);
+    if (number > 255 || number < 1)
+      throw FormulaError.VALUE;
+    return String.fromCharCode(number + 22);
+  }
+})
 
 const gridData = reactive([{
   name: 'sheet 1ABC',
@@ -97,7 +113,7 @@ const gridData = reactive([{
       r: 1,
       c: 2,
       name: 'B1',
-      v: '123'
+      v: '35'
     },
     {
       r: 1,
@@ -136,10 +152,10 @@ const gridData = reactive([{
       v: '=2  *D2 + C1* 1.7'
     },
     {
-      r: 150,
+      r: 45,
       c: 30,
-      name: 'AD150',
-      v: 768
+      name: 'AD45',
+      v: '=CHAR21(B1)'
     }
   ]
 }, {
@@ -180,7 +196,9 @@ const gridData = reactive([{
     <code>components/HelloWorld.vue</code> to test hot module replacement.
   </p>
 
-  <vma-grid :data="gridData" :size="selectedSizeValue" :type="selectedThemeValue" resizeColumn resizeRow style="width: 100%; height: 800px;"></vma-grid>
+  <vma-grid :data="gridData" :size="selectedSizeValue" :type="selectedThemeValue"
+            :functions="customFunctions"
+            resizeColumn resizeRow style="width: 100%; height: 800px;"></vma-grid>
 
 
   <vma-grid-foobar type="bar" style="width: 100px; height: 100px;">测试</vma-grid-foobar>

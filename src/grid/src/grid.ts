@@ -701,6 +701,7 @@ export default defineComponent({
 
       // 对有向无环拓扑排序topological下，进行公式计算
       const parser = new FormulaParser({
+        functions: props.functions,
         onCell: (ref: any) =>
           gridReactiveData.currentSheetData[ref.row - 1][ref.col - 1].mv,
         onRange: (ref: any) => {

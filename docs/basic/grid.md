@@ -20,10 +20,13 @@
     <vma-grid-radio label="danger">danger</vma-grid-radio>
 </vma-grid-radio-group>
 
-<vma-grid :data="gridData" :size="selectedSizeValue" :type="selectedThemeValue" resizeColumn resizeRow style="width: 100%; height: 800px;"></vma-grid>
+<vma-grid :data="gridData" :size="selectedSizeValue"
+    :functions="customFunctions"
+    :type="selectedThemeValue" resizeColumn resizeRow style="width: 100%; height: 800px;"></vma-grid>
 
 <script lang="ts">
   import {defineComponent, reactive, ref} from 'vue';
+  import {FormulaError, FormulaHelpers, Types} from "../../../../../src/index";
   export default defineComponent({
     name: 'Button',
     setup() {
@@ -34,6 +37,21 @@
 
       const selectedSizeValue = ref<String>('small');
       const selectedThemeValue = ref<String>('primary');
+
+      const customFunctions = reactive({
+        CHAR21: (number) => {
+          number = FormulaHelpers.accept(number, Types.NUMBER);
+          if (number > 255 || number < 1)
+            throw FormulaError.VALUE;
+          return String.fromCharCode(number + 21);
+        },
+        CHAR22: (number) => {
+          number = FormulaHelpers.accept(number, Types.NUMBER);
+          if (number > 255 || number < 1)
+            throw FormulaError.VALUE;
+          return String.fromCharCode(number + 22);
+        }
+      });
 
       const gridData = reactive([{
         name: 'sheet 1ABC',
@@ -117,7 +135,7 @@
                 r: 1,
                 c: 2,
                 name: 'B1',
-                v: '123'
+                v: '35'
             },
             {
                 r: 1,
@@ -159,7 +177,7 @@
                 r: 36,
                 c: 30,
                 name: 'AD36',
-                v: 768
+                v: '=CHAR22(B1)'
             }
         ]
     }, {
@@ -191,6 +209,7 @@
         checkedValues,
         clickEvent,
         changeMethod,
+        customFunctions,
         gridData,
         inputValue,
       }

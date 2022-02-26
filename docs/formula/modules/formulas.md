@@ -373,7 +373,7 @@ ___
 
 #### Defined in
 
-src/formula/formulas/functions/math.ts:31
+src/formula/formulas/functions/math.ts:32
 
 ___
 
@@ -485,7 +485,7 @@ ___
 
 #### Defined in
 
-src/formula/formulas/functions/text.ts:45
+src/formula/formulas/functions/text.ts:46
 
 ___
 

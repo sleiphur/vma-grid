@@ -34,6 +34,7 @@ export namespace VmaGridPropTypes {
   export type GridDefaultRowHeight = number
   export type GridDefaultColumnWidth = number
   export type Loading = boolean
+  export type CustomFunction = Record<string, unknown>
 }
 
 export type VmaGridOptions = VmaGridProps
@@ -53,6 +54,7 @@ export interface VmaGridProps {
   gridRowHeight?: VmaGridPropTypes.GridDefaultRowHeight
   gridColumnWidth?: VmaGridPropTypes.GridDefaultColumnWidth
   loading?: VmaGridPropTypes.Loading
+  functions?: VmaGridPropTypes.CustomFunction
 }
 
 export interface VmaGridMethods {

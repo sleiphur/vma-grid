@@ -61,4 +61,9 @@ export default {
     type: Boolean as PropType<VmaGridPropTypes.Loading>,
     default: false,
   },
+
+  functions: {
+    type: Object as PropType<VmaGridPropTypes.CustomFunction>,
+    default: null,
+  }
 }

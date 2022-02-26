@@ -34,3 +34,19 @@ export * from './checkbox'
 export * from './checkbox-group'
 export * from './textarea'
 export * from './grid'
+
+export {
+    FormulaParser,
+    MAX_ROW,
+    MAX_COLUMN,
+    SSF,
+    DepParser,
+    FormulaError,
+    FormulaHelpers,
+    Types,
+    ReversedTypes,
+    Factorials,
+    WildCard,
+    Criteria,
+    Address,
+} from '../src/formula'

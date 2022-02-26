@@ -32,5 +32,5 @@ declare module './vma-grid' {
 }
 
 VmaGrid.install = install
-
+export * from './formula'
 export default VmaGrid

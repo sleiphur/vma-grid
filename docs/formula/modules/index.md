@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-src/formula/formulas/helpers.ts:482
+src/formula/formulas/helpers.ts:488
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-src/formula/formulas/helpers.ts:459
+src/formula/formulas/helpers.ts:465
 
 ___
 
@@ -141,4 +141,4 @@ ___
 
 #### Defined in
 
-src/formula/formulas/helpers.ts:461
+src/formula/formulas/helpers.ts:467
