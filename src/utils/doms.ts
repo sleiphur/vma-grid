@@ -3,7 +3,9 @@ const UA = inBrowser && window.navigator.userAgent.toLowerCase()
 const isIE = UA && /; msie|trident/i.test(UA) && !/ucbrowser/i.test(UA)
 const isEdge = UA && /edg/i.test(UA)
 const isChrome =
-  UA && /chrome|crios/i.test(UA) && !/opr|opera|chromium|edg|ucbrowser|googlebot/i.test(UA)
+  UA &&
+  /chrome|crios/i.test(UA) &&
+  !/opr|opera|chromium|edg|ucbrowser|googlebot/i.test(UA)
 const isChromium = UA && /chromium/i.test(UA)
 const isSafari =
   UA &&
@@ -13,11 +15,19 @@ const isFirefox = UA && /firefox|fxios/i.test(UA) && !/seamonkey/i.test(UA)
 const isOpera = UA && /opr|opera/i.test(UA)
 
 export const htmlElem =
-  typeof document === 'undefined' ? 0 : document ? document.querySelector('html') : 0
+  typeof document === 'undefined'
+    ? 0
+    : document
+    ? document.querySelector('html')
+    : 0
 export const documentElem = typeof document === 'undefined' ? 0 : document
 export const windowElem = typeof window === 'undefined' ? 0 : window
 
-function getNodeOffsetPos(elem: any, container: any, param: { top: number; left: number }): any {
+function getNodeOffsetPos(
+  elem: any,
+  container: any,
+  param: { top: number; left: number },
+): any {
   if (elem) {
     const parentElem = elem.parentNode
     param.top += elem.offsetTop
@@ -27,7 +37,9 @@ function getNodeOffsetPos(elem: any, container: any, param: { top: number; left:
       param.left -= parentElem.scrollLeft
     }
     if (
-      container && (elem === container || elem.offsetParent === container) ? 0 : elem.offsetParent
+      container && (elem === container || elem.offsetParent === container)
+        ? 0
+        : elem.offsetParent
     ) {
       return getNodeOffsetPos(elem.offsetParent, container, param)
     }
@@ -45,7 +57,12 @@ function getClsRE(cls: any) {
 }
 
 function hasClass(elem: any, cls: any) {
-  return elem && elem.className && elem.className.match && elem.className.match(getClsRE(cls))
+  return (
+    elem &&
+    elem.className &&
+    elem.className.match &&
+    elem.className.match(getClsRE(cls))
+  )
 }
 
 function getDomNode(): Record<string, unknown> {
@@ -90,15 +107,23 @@ export const DomTools = {
     evnt: any,
     container: any,
     queryCls?: string,
-    queryMethod?: (target: Element) => boolean
+    queryMethod?: (target: Element) => boolean,
   ) {
     let targetElem
     let target = evnt.target
     while (target && target.nodeType && target !== document) {
-      if (queryCls && hasClass(target, queryCls) && (!queryMethod || queryMethod(target))) {
+      if (
+        queryCls &&
+        hasClass(target, queryCls) &&
+        (!queryMethod || queryMethod(target))
+      ) {
         targetElem = target
       } else if (target === container) {
-        return { flag: queryCls ? !!targetElem : true, container, targetElem: targetElem }
+        return {
+          flag: queryCls ? !!targetElem : true,
+          container,
+          targetElem,
+        }
       }
       target = target.parentNode
     }

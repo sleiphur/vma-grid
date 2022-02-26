@@ -1,5 +1,5 @@
 export class VmaGridInstance {
-    readonly version = '0.0.0'
+  readonly version = '0.0.0'
 }
 
 export const VmaGrid = new VmaGridInstance()

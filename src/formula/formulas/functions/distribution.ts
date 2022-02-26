@@ -9,7 +9,14 @@ const H = FormulaHelpers
 const SQRT2PI = 2.5066282746310002
 
 const DistributionFunctions = {
-  'BETA.DIST': (x: any, alpha: any, beta: any, cumulative: any, a: any, b: any) => {
+  'BETA.DIST': (
+    x: any,
+    alpha: any,
+    beta: any,
+    cumulative: any,
+    a: any,
+    b: any,
+  ) => {
     x = H.accept(x, Types.NUMBER)
     alpha = H.accept(alpha, Types.NUMBER)
     beta = H.accept(beta, Types.NUMBER)
@@ -36,7 +43,12 @@ const DistributionFunctions = {
     return jStat.beta.inv(probability, alpha, beta) * (b - a) + a
   },
 
-  'BINOM.DIST': (numberS: any, trials: any, probabilityS: any, cumulative: any) => {
+  'BINOM.DIST': (
+    numberS: any,
+    trials: any,
+    probabilityS: any,
+    cumulative: any,
+  ) => {
     numberS = H.accept(numberS, Types.NUMBER)
     trials = H.accept(trials, Types.NUMBER)
     probabilityS = H.accept(probabilityS, Types.NUMBER)
@@ -55,7 +67,12 @@ const DistributionFunctions = {
       : jStat.binomial.pdf(numberS, trials, probabilityS)
   },
 
-  'BINOM.DIST.RANGE': (trials: any, probabilityS: any, numberS: any, numberS2: any) => {
+  'BINOM.DIST.RANGE': (
+    trials: any,
+    probabilityS: any,
+    numberS: any,
+    numberS2: any,
+  ) => {
     trials = H.accept(trials, Types.NUMBER)
     probabilityS = H.accept(probabilityS, Types.NUMBER)
     numberS = H.accept(numberS, Types.NUMBER)
@@ -75,8 +92,8 @@ const DistributionFunctions = {
     for (let i = numberS; i <= numberS2; i++) {
       result +=
         MathFunctions.COMBIN(trials, i) *
-        Math.pow(probabilityS, i) *
-        Math.pow(1 - probabilityS, trials - i)
+        probabilityS ** i *
+        (1 - probabilityS) ** (trials - i)
     }
     return result
   },
@@ -187,7 +204,7 @@ const DistributionFunctions = {
         )
           continue
         if (expected[i][j] === 0) throw FormulaError.DIV0
-        xsqr += Math.pow(actual[i][j] - expected[i][j], 2) / expected[i][j]
+        xsqr += (actual[i][j] - expected[i][j]) ** 2 / expected[i][j]
       }
     }
 
@@ -393,12 +410,12 @@ const DistributionFunctions = {
     }
 
     // If Deg_freedom1 is < 1, or Deg_freedom2 is < 1, F.INV.RT returns the #NUM! error value.
-    if (d1 < 1.0 || d1 >= Math.pow(10, 10)) {
+    if (d1 < 1.0 || d1 >= 10 ** 10) {
       throw FormulaError.NUM
     }
 
     // If Deg_freedom2 is < 1 or Deg_freedom2 is ≥ 10^10, F.INV.RT returns the #NUM! error value.
-    if (d2 < 1.0 || d2 >= Math.pow(10, 10)) {
+    if (d2 < 1.0 || d2 >= 10 ** 10) {
       throw FormulaError.NUM
     }
     // If Deg_freedom1 or Deg_freedom2 is not an integer, it is truncated.
@@ -845,9 +862,9 @@ const DistributionFunctions = {
     mean /= n
     let sigma = 0
     for (let i = 0; i < n; i++) {
-      sigma += Math.pow(range[i] - mean, 4)
+      sigma += (range[i] - mean) ** 4
     }
-    sigma /= Math.pow(jStat.stdev(range, true), 4)
+    sigma /= jStat.stdev(range, true) ** 4
     return (
       ((n * (n + 1)) / ((n - 1) * (n - 2) * (n - 3))) * sigma -
       (3 * (n - 1) * (n - 1)) / ((n - 2) * (n - 3))
@@ -895,7 +912,12 @@ const DistributionFunctions = {
 
   'MODE.SNGL': () => {},
 
-  'NEGBINOM.DIST': (number_f: any, number_s: any, probability_s: any, cumulative: any) => {
+  'NEGBINOM.DIST': (
+    number_f: any,
+    number_s: any,
+    probability_s: any,
+    cumulative: any,
+  ) => {
     // If any argument is nonnumeric, NEGBINOM.DIST returns the #VALUE! error value.
     number_f = H.accept(number_f, Types.NUMBER)
     number_s = H.accept(number_s, Types.NUMBER)
@@ -1148,11 +1170,9 @@ const DistributionFunctions = {
     }
 
     return cumulative
-      ? 1 - Math.exp(-Math.pow(x / beta, alpha))
-      : (Math.pow(x, alpha - 1) *
-          Math.exp(-Math.pow(x / beta, alpha)) *
-          alpha) /
-          Math.pow(beta, alpha)
+      ? 1 - Math.exp(-((x / beta) ** alpha))
+      : (x ** (alpha - 1) * Math.exp(-((x / beta) ** alpha)) * alpha) /
+          beta ** alpha
   },
 
   'Z.TEST': () => {},

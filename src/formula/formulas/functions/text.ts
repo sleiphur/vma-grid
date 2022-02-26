@@ -35,7 +35,8 @@ const toHalf = (set: any) => (c: any) =>
   set.delta
     ? String.fromCharCode(c.charCodeAt(0) - set.delta)
     : [...set.half][[...set.full].indexOf(c)]
-const re = (set: any, way: any) => set[`${way}RE`] || new RegExp(`[${set[way]}]`, 'g')
+const re = (set: any, way: any) =>
+  set[`${way}RE`] || new RegExp(`[${set[way]}]`, 'g')
 const sets = Object.keys(charsets).map((i) => charsets[i])
 const toFullWidth = (str0: any) =>
   sets.reduce((str, set) => str.replace(re(set, 'half'), toFull(set)), str0)

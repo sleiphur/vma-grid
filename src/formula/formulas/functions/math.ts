@@ -1,7 +1,7 @@
 import FormulaError from '../error'
 import { FormulaHelpers, Types, Factorials, Criteria } from '../helpers'
 import { Infix } from '../operators'
-import {isNumeric} from "../../../utils/validate/number";
+import { isNumeric } from '../../../utils/validate/number'
 
 const H = FormulaHelpers
 
@@ -25,7 +25,7 @@ function factorialDouble(n: any): any {
 }
 
 interface NumberDic {
-  [index: string]: number;
+  [index: string]: number
 }
 
 // https://support.office.com/en-us/article/excel-functions-by-category-5f91f4e9-7b42-46d2-9bd1-63f26a86c0eb
@@ -539,7 +539,7 @@ const MathFunctions = {
     number = H.accept(number, Types.NUMBER)
     digits = H.accept(digits, Types.NUMBER)
 
-    const multiplier = Math.pow(10, Math.abs(digits))
+    const multiplier = 10 ** Math.abs(digits)
     const sign = number > 0 ? 1 : -1
     if (digits > 0) {
       return (sign * Math.round(Math.abs(number) * multiplier)) / multiplier
@@ -554,7 +554,7 @@ const MathFunctions = {
     number = H.accept(number, Types.NUMBER)
     digits = H.accept(digits, Types.NUMBER)
 
-    const multiplier = Math.pow(10, Math.abs(digits))
+    const multiplier = 10 ** Math.abs(digits)
     const sign = number > 0 ? 1 : -1
     if (digits > 0) {
       const offset = (1 / multiplier) * 0.5
@@ -577,7 +577,7 @@ const MathFunctions = {
     number = H.accept(number, Types.NUMBER)
     digits = H.accept(digits, Types.NUMBER)
 
-    const multiplier = Math.pow(10, Math.abs(digits))
+    const multiplier = 10 ** Math.abs(digits)
     const sign = number > 0 ? 1 : -1
     if (digits > 0) {
       const offset = (1 / multiplier) * 0.5
@@ -607,9 +607,9 @@ const MathFunctions = {
         throw FormulaError.VALUE
       }
       if (i === 0) {
-        result = coefficient * Math.pow(x, n)
+        result = coefficient * x ** n
       } else {
-        result += coefficient * Math.pow(x, n + i * m)
+        result += coefficient * x ** (n + i * m)
       }
       i++
     })

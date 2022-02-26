@@ -50,10 +50,25 @@ const Postfix = {
   },
 }
 
-const type2Number: Partial<{ [index: string]: number, 'string': number, 'number': number, 'bigint': number, 'symbol': number, 'undefined': number, 'object': number, 'function': number }> = { boolean: 3, string: 2, number: 1 }
+const type2Number: Partial<{
+  [index: string]: number
+  string: number
+  number: number
+  bigint: number
+  symbol: number
+  undefined: number
+  object: number
+  function: number
+}> = { boolean: 3, string: 2, number: 1 }
 
 const Infix = {
-  compareOp: (value1: any, infix: any, value2: any, isArray1: any, isArray2: any) => {
+  compareOp: (
+    value1: any,
+    infix: any,
+    value2: any,
+    isArray1: any,
+    isArray2: any,
+  ) => {
     if (value1 == null) value1 = 0
     if (value2 == null) value2 = 0
     // for array: {1,2,3}, get the first element to compare
@@ -102,7 +117,13 @@ const Infix = {
     throw Error('Infix.compareOp: Should not reach here.')
   },
 
-  concatOp: (value1: any, infix: any, value2: any, isArray1: any, isArray2: any) => {
+  concatOp: (
+    value1: any,
+    infix: any,
+    value2: any,
+    isArray1: any,
+    isArray2: any,
+  ) => {
     if (value1 == null) value1 = ''
     if (value2 == null) value2 = ''
     // for array: {1,2,3}, get the first element to concat
@@ -121,7 +142,13 @@ const Infix = {
     return `${value1}${value2}`
   },
 
-  mathOp: (value1: any, infix: any, value2: any, isArray1: any, isArray2: any) => {
+  mathOp: (
+    value1: any,
+    infix: any,
+    value2: any,
+    isArray1: any,
+    isArray2: any,
+  ) => {
     if (value1 == null) value1 = 0
     if (value2 == null) value2 = 0
 

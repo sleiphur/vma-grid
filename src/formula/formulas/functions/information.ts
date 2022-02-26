@@ -4,7 +4,7 @@ import { FormulaHelpers, Types } from '../helpers'
 const H = FormulaHelpers
 
 interface NumberDic {
-  [index: string]: number;
+  [index: string]: number
 }
 
 const error2Number: NumberDic = {

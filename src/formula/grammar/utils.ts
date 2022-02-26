@@ -14,7 +14,8 @@ class Utils {
     this.context = context
   }
 
-  columnNameToNumber = (columnName: any) => Address.columnNameToNumber(columnName)
+  columnNameToNumber = (columnName: any) =>
+    Address.columnNameToNumber(columnName)
 
   /**
    * Parse the cell address only.

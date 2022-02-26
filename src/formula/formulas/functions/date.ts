@@ -387,7 +387,12 @@ const DateFunctions = {
     return sign * numWorkDays
   },
 
-  'NETWORKDAYS.INTL': (startDate: any, endDate: any, weekend: any, holidays: any) => {
+  'NETWORKDAYS.INTL': (
+    startDate: any,
+    endDate: any,
+    weekend: any,
+    holidays: any,
+  ) => {
     startDate = parseDate(startDate)
     endDate = parseDate(endDate)
     let sign = 1

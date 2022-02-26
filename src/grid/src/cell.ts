@@ -113,7 +113,7 @@ export default defineComponent({
       resizeBarElem.style.display = 'block'
 
       // 处理拖动事件
-      const updateEvent = function (event: MouseEvent) {
+      const updateEvent = (event: MouseEvent) => {
         event.stopPropagation()
         event.preventDefault()
         const offsetX = event.clientX - dragClientX
@@ -125,7 +125,7 @@ export default defineComponent({
 
       document.onmousemove = updateEvent
 
-      document.onmouseup = function () {
+      document.onmouseup = () => {
         document.onmousemove = domMousemove
         document.onmouseup = domMouseup
         resizeBarElem.style.display = 'none'
@@ -184,7 +184,7 @@ export default defineComponent({
       resizeBarElem.style.display = 'block'
 
       // 处理拖动事件
-      const updateEvent = function (event: MouseEvent) {
+      const updateEvent = (event: MouseEvent) => {
         event.stopPropagation()
         event.preventDefault()
         const offsetY = event.clientY - dragClientY
@@ -198,7 +198,7 @@ export default defineComponent({
 
       document.onmousemove = updateEvent
 
-      document.onmouseup = function () {
+      document.onmouseup = () => {
         document.onmousemove = domMousemove
         document.onmouseup = domMouseup
         resizeBarElem.style.display = 'none'

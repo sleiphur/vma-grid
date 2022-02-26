@@ -12,7 +12,13 @@ import Collection from '../../grammar/type/collection'
 const H = FormulaHelpers
 
 const ReferenceFunctions = {
-  ADDRESS: (rowNumber: any, columnNumber: any, absNum: any, a1: any, sheetText: any) => {
+  ADDRESS: (
+    rowNumber: any,
+    columnNumber: any,
+    absNum: any,
+    a1: any,
+    sheetText: any,
+  ) => {
     rowNumber = H.accept(rowNumber, Types.NUMBER)
     columnNumber = H.accept(columnNumber, Types.NUMBER)
     absNum = H.accept(absNum, Types.NUMBER, 1)
@@ -90,7 +96,12 @@ const ReferenceFunctions = {
     throw Error('ReferenceFunctions.COLUMNS should not reach here.')
   },
 
-  HLOOKUP: (lookupValue: any, tableArray: any, rowIndexNum: any, rangeLookup: any) => {
+  HLOOKUP: (
+    lookupValue: any,
+    tableArray: any,
+    rowIndexNum: any,
+    rangeLookup: any,
+  ) => {
     // preserve type of lookupValue
     lookupValue = H.accept(lookupValue)
     try {
@@ -155,7 +166,13 @@ const ReferenceFunctions = {
   },
 
   // Special
-  INDEX: (context: any, ranges: any, rowNum: any, colNum: any, areaNum: any) => {
+  INDEX: (
+    context: any,
+    ranges: any,
+    rowNum: any,
+    colNum: any,
+    areaNum: any,
+  ) => {
     // retrieve values
     rowNum = context.utils.extractRefValue(rowNum)
     rowNum = { value: rowNum.val, isArray: rowNum.isArray }
@@ -307,7 +324,12 @@ const ReferenceFunctions = {
     return result
   },
 
-  VLOOKUP: (lookupValue: any, tableArray: any, colIndexNum: any, rangeLookup: any) => {
+  VLOOKUP: (
+    lookupValue: any,
+    tableArray: any,
+    colIndexNum: any,
+    rangeLookup: any,
+  ) => {
     // preserve type of lookupValue
     lookupValue = H.accept(lookupValue)
     try {

@@ -461,7 +461,7 @@ const EngineeringFunctions = {
 
   IMABS: (iNumber: any) => {
     const { real, im } = parseIM(iNumber)
-    return Math.sqrt(Math.pow(real, 2) + Math.pow(im, 2))
+    return Math.sqrt(real ** 2 + im ** 2)
   },
 
   IMAGINARY: (iNumber: any) => parseIM(iNumber).im,
@@ -553,7 +553,7 @@ const EngineeringFunctions = {
     }
     const unit = unit1
 
-    const denominator = Math.pow(c, 2) + Math.pow(d, 2)
+    const denominator = c ** 2 + d ** 2
     return EngineeringFunctions.COMPLEX(
       (a * c + b * d) / denominator,
       (b * c - a * d) / denominator,
@@ -575,7 +575,7 @@ const EngineeringFunctions = {
   IMLN: (iNumber: any) => {
     const { real, im, unit } = parseIM(iNumber)
     return EngineeringFunctions.COMPLEX(
-      Math.log(Math.sqrt(Math.pow(real, 2) + Math.pow(im, 2))),
+      Math.log(Math.sqrt(real ** 2 + im ** 2)),
       Math.atan(im / real),
       unit,
     )
@@ -583,16 +583,14 @@ const EngineeringFunctions = {
 
   IMLOG10: (iNumber: any) => {
     const { real, im, unit } = parseIM(iNumber)
-    const realInput =
-      Math.log(Math.sqrt(Math.pow(real, 2) + Math.pow(im, 2))) / Math.log(10)
+    const realInput = Math.log(Math.sqrt(real ** 2 + im ** 2)) / Math.log(10)
     const imaginaryInput = Math.atan(im / real) / Math.log(10)
     return EngineeringFunctions.COMPLEX(realInput, imaginaryInput, unit)
   },
 
   IMLOG2: (iNumber: any) => {
     const { real, im, unit } = parseIM(iNumber)
-    const realInput =
-      Math.log(Math.sqrt(Math.pow(real, 2) + Math.pow(im, 2))) / Math.log(2)
+    const realInput = Math.log(Math.sqrt(real ** 2 + im ** 2)) / Math.log(2)
     const imaginaryInput = Math.atan(im / real) / Math.log(2)
     return EngineeringFunctions.COMPLEX(realInput, imaginaryInput, unit)
   },
@@ -602,7 +600,7 @@ const EngineeringFunctions = {
     number = H.accept(number, Types.NUMBER_NO_BOOLEAN)
 
     // calculate power of modules
-    const p = Math.pow(EngineeringFunctions.IMABS(iNumber), number)
+    const p = EngineeringFunctions.IMABS(iNumber) ** number
     // calculate argument
     const t = EngineeringFunctions.IMARGUMENT(iNumber)
 

@@ -160,7 +160,9 @@ FormulaError.ARG_MISSING = (args: any) =>
   // const {Types} = require('./helpers');
   new FormulaError(
     '#N/A',
-    `Argument type ${args.map((arg: any) => Types[arg]).join(', ')} is missing.`,
+    'Argument type ' +
+      `${args.map((arg: any) => Types[arg]).join(', ')}` +
+      ' is missing.',
   )
 
 /**
@@ -171,6 +173,7 @@ FormulaError.ARG_MISSING = (args: any) =>
  * @return {FormulaError}
  * @constructor
  */
-FormulaError.ERROR = (msg: any, details: any) => new FormulaError('#ERROR!', msg, details)
+FormulaError.ERROR = (msg: any, details: any) =>
+  new FormulaError('#ERROR!', msg, details)
 
 export default FormulaError

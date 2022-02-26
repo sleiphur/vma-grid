@@ -9,7 +9,10 @@ import {
   resolveComponent,
 } from 'vue'
 import { Guid } from '../../utils/guid'
-import { VmaGridRadioConstructor, VmaGridRadioPropTypes } from '../../../types/radio'
+import {
+  VmaGridRadioConstructor,
+  VmaGridRadioPropTypes,
+} from '../../../types/radio'
 import { VmaGridRadioGroupConstructor } from '../../../types/radio-group'
 
 export default defineComponent({

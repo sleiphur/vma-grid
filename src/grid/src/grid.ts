@@ -642,9 +642,9 @@ export default defineComponent({
                       c: fdItem.col - 1,
                       r: fdItem.row - 1,
                       children: [],
-                      ref: gridReactiveData.currentSheetData[
-                        fdItem.row - 1
-                      ][`${fdItem.col - 1}`],
+                      ref: gridReactiveData.currentSheetData[fdItem.row - 1][
+                        `${fdItem.col - 1}`
+                      ],
                     }
                   }
                 }

@@ -2,7 +2,7 @@ import FormulaError from './error'
 import Collection from '../grammar/type/collection'
 
 interface NumberDic {
-  [index: string]: number;
+  [index: string]: number
 }
 
 const Types: NumberDic = {
@@ -354,7 +354,13 @@ class FormulaHelpers {
    *                     only applicable when type is ARRAY.
    * @return {string|number|boolean|{}|Array}
    */
-  accept(param: any, type: any = null, defValue?: any, flat = true, allowSingleValue = false) {
+  accept(
+    param: any,
+    type: any = null,
+    defValue?: any,
+    flat = true,
+    allowSingleValue = false,
+  ) {
     // TODO: remove this array check
     if (Array.isArray(type)) type = type[0]
     if (param == null && defValue === undefined) {
