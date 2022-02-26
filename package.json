@@ -1,7 +1,7 @@
 {
   "name": "vma-grid",
   "private": false,
-  "version": "0.1.3",
+  "version": "0.1.4",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
