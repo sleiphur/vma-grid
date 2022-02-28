@@ -211,7 +211,6 @@ export default defineComponent({
               result.height = `${cellElem.offsetHeight}px`
               result.width = `${cellElem.offsetWidth}px`
             })
-          console.log(result)
           return result
         }
         return {}
