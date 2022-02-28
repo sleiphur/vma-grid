@@ -59,6 +59,7 @@ export interface VmaGridProps {
 
 export interface VmaGridMethods {
   recalculate(refresh: boolean): Promise<any>
+  calc(): void
 }
 
 export interface VmaGridReactiveData {
