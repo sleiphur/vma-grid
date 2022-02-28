@@ -20,7 +20,7 @@ import {
   VmaGridBodyPropTypes,
   VmaGridConstructor,
 } from '../../../types/grid'
-import {isNumeric} from "../../utils/validate/number";
+import { isNumeric } from '../../utils/validate/number'
 
 export default defineComponent({
   name: 'VmaGridBody',
@@ -77,7 +77,7 @@ export default defineComponent({
     } as unknown as VmaGridBodyConstructor
 
     const TextareaComponent = resolveComponent(
-        'vma-grid-textarea',
+      'vma-grid-textarea',
     ) as ComponentOptions
 
     const cfs = computed(() => columnConfigs)
@@ -183,39 +183,39 @@ export default defineComponent({
     })
 
     const calcCurrentCellPosition = computed(
-        (): Partial<{
-          left: string | number
-          top: string | number
-          height: string | number
-          width: string | number
-        }> => {
-          if ($vmaCalcGrid.reactiveData.currentCell) {
-            const result: Partial<{
-              left: string | number
-              top: string | number
-              height: string | number
-              width: string | number
-            }> = {}
-            const { r, c } = $vmaCalcGrid.reactiveData.currentCell
-            refGridBodyTable.value
-                .querySelectorAll(`[row="${r}"][col="${c! + 1}"]`)
-                .forEach((cellElem: any) => {
-                  result.left = `${
-                      cellElem.offsetLeft/* - refGridBody.value.scrollLeft*/
-                  }px`
-                  result.top = `${
-                      cellElem.offsetTop/* -
-                      refGridBody.value.scrollTop*/ /*+
-                      $vmaCalcGrid.reactiveData.gridHeaderHeight*/
-                  }px`
-                  result.height = `${cellElem.offsetHeight}px`
-                  result.width = `${cellElem.offsetWidth}px`
-                })
-            console.log(result)
-            return result
-          }
-          return {}
-        },
+      (): Partial<{
+        left: string | number
+        top: string | number
+        height: string | number
+        width: string | number
+      }> => {
+        if ($vmaCalcGrid.reactiveData.currentCell) {
+          const result: Partial<{
+            left: string | number
+            top: string | number
+            height: string | number
+            width: string | number
+          }> = {}
+          const { r, c } = $vmaCalcGrid.reactiveData.currentCell
+          refGridBodyTable.value
+            .querySelectorAll(`[row="${r}"][col="${c! + 1}"]`)
+            .forEach((cellElem: any) => {
+              result.left = `${
+                cellElem.offsetLeft /* - refGridBody.value.scrollLeft */
+              }px`
+              result.top = `${
+                cellElem.offsetTop /* -
+                      refGridBody.value.scrollTop */ /*+
+                      $vmaCalcGrid.reactiveData.gridHeaderHeight */
+              }px`
+              result.height = `${cellElem.offsetHeight}px`
+              result.width = `${cellElem.offsetWidth}px`
+            })
+          console.log(result)
+          return result
+        }
+        return {}
+      },
     )
 
     const renderVN = () =>
@@ -298,14 +298,15 @@ export default defineComponent({
                   class: ['cell-editor'],
                   size: $vmaCalcGrid.props.size,
                   type: $vmaCalcGrid.props.type,
-                  modelValue: $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                  modelValue:
+                    $vmaCalcGrid.reactiveData.currentCellEditorContent,
                   'onUpdate:modelValue': (value: any) => {
                     $vmaCalcGrid.reactiveData.currentCellEditorContent = value
                   },
                   style: {
                     display: $vmaCalcGrid.reactiveData.currentCellEditorActive
-                        ? 'block'
-                        : 'none',
+                      ? 'block'
+                      : 'none',
                     left: calcCurrentCellPosition.value.left,
                     top: calcCurrentCellPosition.value.top,
                     height: calcCurrentCellPosition.value.height,
@@ -320,10 +321,12 @@ export default defineComponent({
                     //   console.error(e)
                     // }
                     $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
-                        $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                      $vmaCalcGrid.reactiveData.currentCellEditorContent,
                     )
-                        ? Number($vmaCalcGrid.reactiveData.currentCellEditorContent)
-                        : $vmaCalcGrid.reactiveData.currentCellEditorContent
+                      ? Number(
+                          $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                        )
+                      : $vmaCalcGrid.reactiveData.currentCellEditorContent
                     // // 若给定的值不是公式，则直接刷新mv
                     // // 否则将由公式计算得到结果
                     // if (
