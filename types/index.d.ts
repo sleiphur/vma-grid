@@ -50,3 +50,5 @@ export {
     Criteria,
     Address,
 } from '../src/formula'
+
+export * from '../plugins/types'

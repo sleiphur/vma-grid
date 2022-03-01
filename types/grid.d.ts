@@ -35,6 +35,12 @@ export namespace VmaGridPropTypes {
   export type GridDefaultColumnWidth = number
   export type Loading = boolean
   export type CustomFunction = Record<string, unknown>
+
+  export interface ScrollY {
+    gt?: number;
+    oSize?: number;
+    enabled?: boolean;
+  }
 }
 
 export type VmaGridOptions = VmaGridProps
@@ -55,6 +61,7 @@ export interface VmaGridProps {
   gridColumnWidth?: VmaGridPropTypes.GridDefaultColumnWidth
   loading?: VmaGridPropTypes.Loading
   functions?: VmaGridPropTypes.CustomFunction
+  scrollY?: VmaGridPropTypes.ScrollY
 }
 
 export interface VmaGridMethods {
