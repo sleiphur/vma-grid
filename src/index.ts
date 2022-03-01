@@ -10,6 +10,8 @@ import GridCheckbox from './checkbox'
 import GridTextarea from './textarea'
 import Grid from './grid'
 
+import { pluginComponents } from '../plugins/src'
+
 const components = [
   GridFoobar,
   GridIcon,
@@ -23,6 +25,7 @@ const components = [
 
 function install(app: App, options?: any) {
   components.forEach((component) => component.install(app))
+  pluginComponents.forEach((pluginComponent) => pluginComponent.install(app))
 }
 
 declare module './vma-grid' {
@@ -33,4 +36,5 @@ declare module './vma-grid' {
 
 VmaGrid.install = install
 export * from './formula'
+export * from '../plugins/src'
 export default VmaGrid

@@ -53,6 +53,7 @@ export default {
   gridRowHeight: {
     type: Number as PropType<VmaGridPropTypes.GridDefaultRowHeight>,
   },
+
   gridColumnWidth: {
     type: Number as PropType<VmaGridPropTypes.GridDefaultColumnWidth>,
   },
@@ -65,5 +66,14 @@ export default {
   functions: {
     type: Object as PropType<VmaGridPropTypes.CustomFunction>,
     default: null,
+  },
+
+  scrollY: {
+    type: Object as PropType<VmaGridPropTypes.ScrollY>,
+    default: {
+      enable: true,
+      gt: 60,
+      oSize: 0,
+    },
   },
 }

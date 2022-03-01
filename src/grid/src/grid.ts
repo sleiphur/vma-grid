@@ -13,6 +13,7 @@ import {
   watch,
   ComponentPublicInstance,
   computed,
+  inject,
 } from 'vue'
 
 import { isNumeric } from '../../utils/validate/number'
@@ -50,9 +51,21 @@ export default defineComponent({
       'vma-grid-body',
     ) as ComponentOptions
 
-    const TextareaComponent = resolveComponent(
-      'vma-grid-textarea',
+    // const TextareaComponent = resolveComponent(
+    //   'vma-grid-textarea',
+    // ) as ComponentOptions
+
+    const FoobarPluginComponent = resolveComponent(
+      'vma-grid-foobar-plugin',
     ) as ComponentOptions
+
+    // 下面调用一个并不存在的plugin
+    const FoobarPluginComponent123 = resolveComponent(
+      'vma-grid-foobar-plugin123',
+    ) as ComponentOptions
+
+    console.log(FoobarPluginComponent)
+    console.log(FoobarPluginComponent123)
 
     const refColumnResizeBar = ref() as Ref<HTMLDivElement>
     const refRowResizeBar = ref() as Ref<HTMLDivElement>
@@ -91,6 +104,8 @@ export default defineComponent({
     const refGridLeftFixedHeaderColgroup = ref() as Ref<HTMLTableColElement>
 
     const refCurrentCellEditor = ref() as Ref<ComponentPublicInstance>
+
+    const refFoobarPlugin = ref() as Ref<ComponentPublicInstance>
 
     const gridRefs: VmaGridRefs = {
       refColumnResizeBar,
@@ -715,10 +730,8 @@ export default defineComponent({
         }
       },
     } as VmaGridMethods
-    Object.assign($vmaCalcGrid, gridMethods)
 
-    // 收集 错误的 cell key
-    // let errorKeyList: any = []
+    Object.assign($vmaCalcGrid, gridMethods)
 
     const initCurrentSheetData = (): Promise<void> =>
       new Promise((resolve): void => {
@@ -747,252 +760,6 @@ export default defineComponent({
         })
         resolve()
       })
-
-    /* const calc = () => {
-      const calcCells: Cell[] = []
-      gridReactiveData.cells.errorMap = {}
-      gridReactiveData.cells.cycleMap = {}
-      gridReactiveData.cells.noCycleMap = {}
-      const position = { row: 1, col: 1, sheet: gridReactiveData.sheet.name }
-      const depParser = new DepParser({})
-      errorKeyList = []
-      gridReactiveData.currentSheetData.forEach((row: any[]) => {
-        row.forEach((item: Cell) => {
-          let isFormulaCell = false
-          let isFormulaCellDepParseError = true
-          let se = null
-          let formulaCellDepParseResult = null
-          if (
-            item &&
-            item.v &&
-            typeof item.v === 'string' &&
-            item.v.trim().startsWith('=')
-          ) {
-            isFormulaCell = true
-            se = '#DEPPARSEERROR!'
-            try {
-              formulaCellDepParseResult = depParser.parse(
-                item.v.trim().substring(1),
-                position,
-              )
-              isFormulaCellDepParseError = false
-              se = null
-            } catch (e) {
-              // 此处为直接的parse错误
-              console.error(`parse error: ${item.c! - 1}_${item.r}`)
-            }
-            if (isFormulaCellDepParseError) {
-              // console.log('')
-              errorKeyList.push(`${item.c! - 1}_${item.r}`)
-            }
-            // 接下来还要再检查是否有引用错误（例如，超出范围的单元格引用）
-            if (formulaCellDepParseResult !== null) {
-              const errorRefCell = formulaCellDepParseResult.find(
-                (item: any) =>
-                  item.row > gridReactiveData.rowConfigs.length ||
-                  item.col > gridReactiveData.columnConfigs.length,
-              )
-              if (errorRefCell) {
-                se = '#REFERROR!'
-                errorKeyList.push(`${item.c! - 1}_${item.r}`)
-                isFormulaCellDepParseError = true
-                formulaCellDepParseResult = null
-              }
-            }
-            item.mv = isFormulaCell
-              ? isFormulaCellDepParseError
-                ? se
-                : null
-              : item && item.v
-              ? item.v
-              : null
-            item.fd = isFormulaCell
-              ? isFormulaCellDepParseError
-                ? null
-                : formulaCellDepParseResult
-              : null
-            item.se = se
-            calcCells.push(item)
-          } else {
-            item.mv = item.v
-          }
-        })
-      })
-      // 有向图计算 用来确定计算顺序，同时查找是否有不可计算的依赖循环
-      // 计算所有的顶点及有向邻接关系
-      const vertexes: Record<string, any> = {}
-      calcCells.forEach((item) => {
-        if (errorKeyList.indexOf(`${item.c}_${item.r}`) >= 0) {
-          gridReactiveData.cells.errorMap[`${item.c}_${item.r}`] = {
-            c: item.c,
-            r: item.r,
-            children: [],
-            ref: item,
-          }
-        } else {
-          vertexes[`${item.c}_${item.r}`] = {
-            c: item.c,
-            r: item.r,
-            children: [],
-            ref: item,
-          }
-          if (item.fd && item.fd.length > 0) {
-            item.fd.forEach((fdItem: any) => {
-              if (
-                fdItem.hasOwnProperty('from') ||
-                fdItem.hasOwnProperty('to')
-              ) {
-                // range dependency
-                for (let r = fdItem.from.row; r <= fdItem.to.row; r++) {
-                  for (let c = fdItem.from.col; c <= fdItem.to.col; c++) {
-                    if (!vertexes.hasOwnProperty(`${c - 1}_${r - 1}`)) {
-                      // 不重复时加入新顶点 且 不在errorList
-                      if (errorKeyList.indexOf(`${c - 1}_${r - 1}`) < 0) {
-                        vertexes[`${c - 1}_${r - 1}`] = {
-                          c: c - 1,
-                          r: r - 1,
-                          children: [],
-                          ref: gridReactiveData.currentSheetData[r - 1][
-                            `${c - 1}`
-                          ],
-                        }
-                      }
-                    }
-                    if (
-                      vertexes[`${item.c}_${item.r}`].children.indexOf(
-                        `${c - 1}_${r - 1}`,
-                      ) < 0
-                    ) {
-                      // 加入有向的邻接关系，总是从parent -> child
-                      vertexes[`${item.c}_${item.r}`].children.push(
-                        `${c - 1}_${r - 1}`,
-                      )
-                    }
-                  }
-                }
-              } else {
-                // cell dependency
-                if (
-                  !vertexes.hasOwnProperty(
-                    `${fdItem.col - 1}_${fdItem.row - 1}`,
-                  )
-                ) {
-                  // 不重复时加入新顶点 且 不在errorList
-                  if (
-                    errorKeyList.indexOf(
-                      `${fdItem.col - 1}_${fdItem.row - 1}`,
-                    ) < 0
-                  ) {
-                    vertexes[`${fdItem.col - 1}_${fdItem.row - 1}`] = {
-                      c: fdItem.col - 1,
-                      r: fdItem.row - 1,
-                      children: [],
-                      ref: gridReactiveData.currentSheetData[fdItem.row - 1][
-                        `${fdItem.col - 1}`
-                      ],
-                    }
-                  }
-                }
-                if (
-                  vertexes[`${item.c}_${item.r}`].children.indexOf(
-                    `${fdItem.col - 1}_${fdItem.row - 1}`,
-                  ) < 0
-                ) {
-                  // 加入有向的邻接关系，总是从parent -> child
-                  vertexes[`${item.c}_${item.r}`].children.push(
-                    `${fdItem.col - 1}_${fdItem.row - 1}`,
-                  )
-                }
-              }
-            })
-          }
-        }
-      })
-      // 从所有的vertexes从去除gridReactiveData.cells.errorList中的单元格，以及依赖它们的单元格，递归，直到没有
-      console.time('filterVertexes')
-      const { noErrorVertexes } = filterVertexes(
-        vertexes,
-        gridReactiveData.cells.errorMap,
-      )
-      console.timeEnd('filterVertexes')
-      const errorMapKeys = Object.keys(gridReactiveData.cells.errorMap)
-      if (errorMapKeys.length > 0) {
-        for (let i = 0; i < errorMapKeys.length; i++) {
-          if (
-            gridReactiveData.cells.errorMap[errorMapKeys[i]].ref.se !== null
-          ) {
-            gridReactiveData.cells.errorMap[errorMapKeys[i]].ref.mv =
-              gridReactiveData.cells.errorMap[errorMapKeys[i]].ref.se
-          } else {
-            gridReactiveData.cells.errorMap[errorMapKeys[i]].ref.mv =
-              '#REFERROR!'
-            gridReactiveData.cells.errorMap[errorMapKeys[i]].ref.se =
-              '#REFERROR!'
-          }
-        }
-      }
-      // 计算有向图拓扑并收集环信息
-      const { topological, noCycleVertexes, cycleVertexes } = calcVertexes(
-        noErrorVertexes,
-        {},
-      )
-      gridReactiveData.cells.cycleMap = cycleVertexes
-      gridReactiveData.cells.noCycleMap = noCycleVertexes
-
-      const cycleVertexKeys = Object.keys(cycleVertexes)
-      for (let i = 0; i < cycleVertexKeys.length; i++) {
-        cycleVertexes[cycleVertexKeys[i]].ref.mv = '#CYCLEERROR!'
-      }
-
-      // 对有向无环拓扑排序topological下，进行公式计算
-      const parser = new FormulaParser({
-        functions: props.functions,
-        onCell: (ref: any) =>
-          gridReactiveData.currentSheetData[ref.row - 1][ref.col - 1].mv,
-        onRange: (ref: any) => {
-          const arr = []
-          for (let row = ref.from.row - 1; row < ref.to.row; row++) {
-            const innerArr = []
-            // eslint-disable-next-line no-plusplus
-            for (let col = ref.from.col - 1; col < ref.to.col; col++) {
-              innerArr.push(gridReactiveData.currentSheetData[row][col].mv)
-            }
-            arr.push(innerArr)
-          }
-          return arr
-        },
-      })
-      for (let i = 0; i < topological.length; i++) {
-        if (
-          noCycleVertexes[topological[i]].ref.v &&
-          typeof noCycleVertexes[topological[i]].ref.v === 'string' &&
-          noCycleVertexes[topological[i]].ref.v.trim().startsWith('=')
-        ) {
-          let isParseError = true
-          try {
-            let result = parser.parse(
-              noCycleVertexes[topological[i]].ref.v.trim().substring(1),
-              { row: 1, col: 1 },
-            )
-            if (result && result.result) {
-              result = result.result
-            }
-            if (typeof result === 'number' || typeof result === 'string') {
-              noCycleVertexes[topological[i]].ref.mv = result
-            } else {
-              noCycleVertexes[topological[i]].ref.mv = `${result}`
-            }
-            isParseError = false
-          } catch (e) {
-            console.error(topological[i], e)
-          }
-          if (isParseError) {
-            noCycleVertexes[topological[i]].ref.mv = '#ERROR!'
-            noCycleVertexes[topological[i]].ref.se = '#ERROR!'
-          }
-        }
-      }
-    } */
 
     const loadData = (): Promise<void> =>
       new Promise((resolve): void => {
@@ -1121,40 +888,40 @@ export default defineComponent({
         resolve()
       })
 
-    const calcCurrentCellPosition = computed(
-      (): Partial<{
-        left: string | number
-        top: string | number
-        height: string | number
-        width: string | number
-      }> => {
-        if (gridReactiveData.currentCell) {
-          const result: Partial<{
-            left: string | number
-            top: string | number
-            height: string | number
-            width: string | number
-          }> = {}
-          const { r, c } = gridReactiveData.currentCell
-          refGridBodyTable.value
-            .querySelectorAll(`[row="${r}"][col="${c! + 1}"]`)
-            .forEach((cellElem: any) => {
-              result.left = `${
-                cellElem.offsetLeft - refGridBody.value.scrollLeft
-              }px`
-              result.top = `${
-                cellElem.offsetTop -
-                refGridBody.value.scrollTop +
-                gridReactiveData.gridHeaderHeight
-              }px`
-              result.height = `${cellElem.offsetHeight}px`
-              result.width = `${cellElem.offsetWidth}px`
-            })
-          return result
-        }
-        return {}
-      },
-    )
+    // const calcCurrentCellPosition = computed(
+    //   (): Partial<{
+    //     left: string | number
+    //     top: string | number
+    //     height: string | number
+    //     width: string | number
+    //   }> => {
+    //     if (gridReactiveData.currentCell) {
+    //       const result: Partial<{
+    //         left: string | number
+    //         top: string | number
+    //         height: string | number
+    //         width: string | number
+    //       }> = {}
+    //       const { r, c } = gridReactiveData.currentCell
+    //       refGridBodyTable.value
+    //         .querySelectorAll(`[row="${r}"][col="${c! + 1}"]`)
+    //         .forEach((cellElem: any) => {
+    //           result.left = `${
+    //             cellElem.offsetLeft - refGridBody.value.scrollLeft
+    //           }px`
+    //           result.top = `${
+    //             cellElem.offsetTop -
+    //             refGridBody.value.scrollTop +
+    //             gridReactiveData.gridHeaderHeight
+    //           }px`
+    //           result.height = `${cellElem.offsetHeight}px`
+    //           result.width = `${cellElem.offsetWidth}px`
+    //         })
+    //       return result
+    //     }
+    //     return {}
+    //   },
+    // )
 
     watch(
       () => props.size,
@@ -1262,6 +1029,16 @@ export default defineComponent({
             fixedType: 'center',
             type: props.type,
           }),
+          FoobarPluginComponent
+            ? h(FoobarPluginComponent, {
+                type: 'foo',
+                ref: refFoobarPlugin,
+                style: {
+                  height: `100px`,
+                  width: `100px`,
+                },
+              })
+            : createCommentVNode(),
           /* h(TextareaComponent, {
             ref: refCurrentCellEditor,
             class: ['cell-editor'],
