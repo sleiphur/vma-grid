@@ -159,6 +159,9 @@ export interface VmaGridReactiveData {
 
   startIndex: number
   endIndex: number
+
+  startColIndex: number
+  endColIndex: number
 }
 
 export interface VmaGridRefs {

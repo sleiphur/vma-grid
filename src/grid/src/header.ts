@@ -28,6 +28,14 @@ export default defineComponent({
       type: String as PropType<VmaGridHeaderPropTypes.Type>,
       default: 'default',
     },
+    startColIndex: {
+      type: Number,
+      default: 0,
+    },
+    endColIndex: {
+      type: Number,
+      default: 0,
+    },
   },
   setup(props, context) {
     // const { slots, emit } = context

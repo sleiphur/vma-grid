@@ -33,6 +33,7 @@ import { Row } from './helper/Row'
 import {
   calcVertexes,
   filterVertexes,
+  getRenderHeight,
   getRenderWidth,
   getRowIndicatorRenderWidth,
 } from './utils/utils'
@@ -257,6 +258,9 @@ export default defineComponent({
 
       startIndex: 0,
       endIndex: 0,
+
+      startColIndex: 0,
+      endColIndex: 0,
     } as unknown as VmaGridReactiveData)
 
     const $vmaCalcGrid = {
@@ -270,6 +274,8 @@ export default defineComponent({
     const rcw = computed(() =>
       getRenderWidth(props.gridColumnWidth, props.size),
     )
+
+    const rrh = computed(() => getRenderHeight(props.gridRowHeight, props.size))
 
     const rowIndicatorElemWidth = computed(
       () =>
@@ -420,23 +426,15 @@ export default defineComponent({
 
     const calcColumnWidth = () => {
       let tableWidth = 0
-      // const rcw = getRenderWidth(props.gridColumnWidth, props.size)
-      // const defaultColumnWidth = getRenderWidth(props.gridColumnWidth, props.size)
       const { endIndex } = gridReactiveData
       const { firstList, otherList } = gridReactiveData.columns
       // 第一列
-      // const rowIndicatorElemWidth = Math.max(
-      //   10 + endIndex.toString().length * 10,
-      //   40,
-      // )
       firstList.forEach((column: any) => {
         tableWidth += rowIndicatorElemWidth.value
         column.renderWidth = rowIndicatorElemWidth.value
       })
       // 其他列
       otherList.forEach((column: any) => {
-        // const width = defaultColumnWidth
-        // column.renderWidth = width
         tableWidth +=
           typeof column.renderWidth === 'string'
             ? rcw.value
@@ -475,14 +473,57 @@ export default defineComponent({
       })
     }
 
+    const computeVirtualY = () => {
+      const gridViewportHeight = refGrid.value ? refGrid.value.clientHeight : 0
+      console.log(gridViewportHeight)
+      const heightVisibleSize = Math.ceil(gridViewportHeight / rrh.value)
+      if (refGrid.value) {
+        return { heightVisibleSize: heightVisibleSize + 10 }
+      }
+      return { heightVisibleSize: 10 }
+    }
+
+    const computeVirtualX = () => {
+      const gridViewportWidth = refGrid.value ? refGrid.value.clientWidth : 0
+      console.log(gridViewportWidth)
+      const widthVisibleSize = Math.ceil(gridViewportWidth / rcw.value)
+      if (refGrid.value) {
+        return { widthVisibleSize: widthVisibleSize + 10 }
+      }
+      return { widthVisibleSize: 10 }
+    }
+
+    const computeScrollLoad = () =>
+      nextTick().then(() => {
+        const { heightVisibleSize: visibleYSize } = computeVirtualY()
+        const { widthVisibleSize: visibleXSize } = computeVirtualX()
+        // reactiveGridData.endIndex = Math.max(
+        //     reactiveGridData.startIndex + visibleYSize + 6,
+        //     reactiveGridData.endIndex
+        // )
+        console.log(
+          gridReactiveData.startIndex,
+          gridReactiveData.endIndex,
+          visibleYSize,
+        )
+        console.log(
+          gridReactiveData.startColIndex,
+          gridReactiveData.endColIndex,
+          visibleXSize,
+        )
+        nextTick(updateStyle)
+      })
+
     const gridMethods = {
       recalculate: (refresh: boolean) => {
         arrangeColumnWidth()
         if (refresh) {
-          nextTick(() => {
+          return computeScrollLoad().then(() => {
             arrangeColumnWidth()
+            return computeScrollLoad()
           })
         }
+        return computeScrollLoad()
       },
       calc: () => {
         const calcCells: Cell[] = []
@@ -518,7 +559,6 @@ export default defineComponent({
                 console.error(`parse error: ${item.c! - 1}_${item.r}`)
               }
               if (isFormulaCellDepParseError) {
-                // console.log('')
                 errorKeyList.push(`${item.c! - 1}_${item.r}`)
               }
               // 接下来还要再检查是否有引用错误（例如，超出范围的单元格引用）
@@ -840,6 +880,10 @@ export default defineComponent({
             ),
           )
         })
+
+        gridReactiveData.startColIndex = 0
+        gridReactiveData.endColIndex = columns.length ? columns.length - 1 : 0
+
         const rows = [
           ...Array<Record<string, unknown>>(props.minDimensions[0].valueOf()),
         ]
@@ -1004,6 +1048,8 @@ export default defineComponent({
             },
             fixedType: 'center',
             type: props.type,
+            startColIndex: computeVirtualX().widthVisibleSize,
+            endColIndex: computeVirtualX().widthVisibleSize,
           }),
           // Body
           h(GridBodyComponent, {
