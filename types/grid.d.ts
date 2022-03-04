@@ -67,6 +67,8 @@ export interface VmaGridProps {
 export interface VmaGridMethods {
   recalculate(refresh: boolean): Promise<any>
   calc(): void
+  triggerScrollXEvent(evnt: Event): void
+  triggerScrollYEvent(evnt: Event): void
 }
 
 export interface VmaGridReactiveData {
@@ -162,6 +164,10 @@ export interface VmaGridReactiveData {
 
   startColIndex: number
   endColIndex: number
+
+  lastScrollLeft: number
+  lastScrollTop: number
+  lastScrollTime: number
 }
 
 export interface VmaGridRefs {

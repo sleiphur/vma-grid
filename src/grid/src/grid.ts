@@ -37,6 +37,12 @@ import {
   getRenderWidth,
   getRowIndicatorRenderWidth,
 } from './utils/utils'
+import { debounce } from '../../utils/debounce/debounce'
+import {
+  getIndexFromColumnWidths,
+  getIndexFromRowHeights,
+} from '../../utils/utils'
+import GlobalEvent from '../../utils/events'
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -65,8 +71,8 @@ export default defineComponent({
       'vma-grid-foobar-plugin123',
     ) as ComponentOptions
 
-    console.log(FoobarPluginComponent)
-    console.log(FoobarPluginComponent123)
+    // console.log(FoobarPluginComponent)
+    // console.log(FoobarPluginComponent123)
 
     const refColumnResizeBar = ref() as Ref<HTMLDivElement>
     const refRowResizeBar = ref() as Ref<HTMLDivElement>
@@ -261,6 +267,10 @@ export default defineComponent({
 
       startColIndex: 0,
       endColIndex: 0,
+
+      lastScrollLeft: 0,
+      lastScrollTop: 0,
+      lastScrollTime: 0,
     } as unknown as VmaGridReactiveData)
 
     const $vmaCalcGrid = {
@@ -475,22 +485,22 @@ export default defineComponent({
 
     const computeVirtualY = () => {
       const gridViewportHeight = refGrid.value ? refGrid.value.clientHeight : 0
-      console.log(gridViewportHeight)
+      // console.log(gridViewportHeight)
       const heightVisibleSize = Math.ceil(gridViewportHeight / rrh.value)
       if (refGrid.value) {
-        return { heightVisibleSize: heightVisibleSize + 10 }
+        return { heightVisibleSize: heightVisibleSize - 1 + 5 }
       }
-      return { heightVisibleSize: 10 }
+      return { heightVisibleSize: -1 + 5 }
     }
 
     const computeVirtualX = () => {
       const gridViewportWidth = refGrid.value ? refGrid.value.clientWidth : 0
-      console.log(gridViewportWidth)
+      // console.log(gridViewportWidth)
       const widthVisibleSize = Math.ceil(gridViewportWidth / rcw.value)
       if (refGrid.value) {
-        return { widthVisibleSize: widthVisibleSize + 10 }
+        return { widthVisibleSize: widthVisibleSize - 1 + 5 }
       }
-      return { widthVisibleSize: 10 }
+      return { widthVisibleSize: -1 + 5 }
     }
 
     const computeScrollLoad = () =>
@@ -501,20 +511,105 @@ export default defineComponent({
         //     reactiveGridData.startIndex + visibleYSize + 6,
         //     reactiveGridData.endIndex
         // )
-        console.log(
-          gridReactiveData.startIndex,
-          gridReactiveData.endIndex,
-          visibleYSize,
-        )
-        console.log(
-          gridReactiveData.startColIndex,
-          gridReactiveData.endColIndex,
-          visibleXSize,
-        )
+        // console.log(
+        //   gridReactiveData.startIndex,
+        //   gridReactiveData.endIndex,
+        //   visibleYSize,
+        // )
+        // console.log(
+        //   gridReactiveData.startColIndex,
+        //   gridReactiveData.endColIndex,
+        //   visibleXSize,
+        // )
         nextTick(updateStyle)
       })
 
+    const debounceScrollX = debounce((event: Event) => {
+      // console.log(event)
+      const scrollBodyElem = (event.currentTarget ||
+        event.target) as HTMLDivElement
+      // console.log(scrollBodyElem)
+      const scrollLeft = scrollBodyElem.scrollLeft
+      // console.log('scrollBodyElem.scrollLeft', scrollBodyElem.scrollLeft)
+      const visibleIndex = getIndexFromColumnWidths(
+        scrollLeft,
+        rcw.value,
+        {}, // TODO
+      )
+      const viewportWidth = refGridBody.value.clientWidth
+      const visibleSize = Math.ceil(viewportWidth / rcw.value)
+
+      const offsetItem = {
+        startColIndex: Math.max(0, visibleIndex - 1 - 5),
+        endColIndex: visibleIndex + visibleSize + 5,
+      }
+
+      const {
+        startColIndex: offsetStartColIndex,
+        endColIndex: offsetEndColIndex,
+      } = offsetItem
+      const { startColIndex, endColIndex } = gridReactiveData
+
+      if (
+        visibleIndex <= 0 ||
+        visibleIndex >= offsetEndColIndex - visibleSize - 1 - 5
+      ) {
+        if (
+          startColIndex !== offsetStartColIndex ||
+          endColIndex !== offsetEndColIndex
+        ) {
+          gridReactiveData.startColIndex = offsetStartColIndex
+          gridReactiveData.endColIndex = offsetEndColIndex
+        }
+      }
+      console.log('---column index range---')
+      console.log(gridReactiveData.startColIndex, gridReactiveData.endColIndex)
+    }, 20)
+
+    const debounceScrollY = debounce((event: Event) => {
+      // console.log(event)
+      const scrollBodyElem = (event.currentTarget ||
+        event.target) as HTMLDivElement
+      // console.log(scrollBodyElem)
+      const scrollTop = scrollBodyElem.scrollTop
+      // console.log('scrollBodyElem.scrollTop', scrollBodyElem.scrollTop)
+      const visibleIndex = getIndexFromRowHeights(
+        scrollTop,
+        rrh.value,
+        {}, // TODO
+      )
+      const viewportHeight = refGridBody.value.clientHeight
+      const visibleSize = Math.ceil(viewportHeight / rrh.value)
+
+      const offsetItem = {
+        startIndex: Math.max(0, visibleIndex - 1 - 5),
+        endIndex: visibleIndex + visibleSize + 5,
+      }
+
+      const { startIndex: offsetStartIndex, endIndex: offsetEndIndex } =
+        offsetItem
+      const { startIndex, endIndex } = gridReactiveData
+
+      if (
+        visibleIndex <= 0 ||
+        visibleIndex >= offsetEndIndex - visibleSize - 1 - 5
+      ) {
+        if (startIndex !== offsetStartIndex || endIndex !== offsetEndIndex) {
+          gridReactiveData.startIndex = offsetStartIndex
+          gridReactiveData.endIndex = offsetEndIndex
+        }
+      }
+      console.log('---row index range---')
+      console.log(gridReactiveData.startIndex, gridReactiveData.endIndex)
+    }, 20)
+
     const gridMethods = {
+      triggerScrollXEvent: (event: Event) => {
+        debounceScrollX(event)
+      },
+      triggerScrollYEvent: (event: Event) => {
+        debounceScrollY(event)
+      },
       recalculate: (refresh: boolean) => {
         arrangeColumnWidth()
         if (refresh) {
@@ -967,11 +1062,21 @@ export default defineComponent({
     //   },
     // )
 
+    const handleGlobalMousewheelEvent = (event: MouseEvent) => {
+      console.log('handleGlobalMousewheelEvent', event)
+    }
+
     watch(
       () => props.size,
       () => {
-        console.log(props.size)
-        $vmaCalcGrid.recalculate(true)
+        // console.log(props.size)
+        $vmaCalcGrid.recalculate(true).finally(() => {
+          GlobalEvent.on(
+            $vmaCalcGrid,
+            'mousewheel',
+            handleGlobalMousewheelEvent,
+          )
+        })
       },
     )
 
@@ -985,6 +1090,12 @@ export default defineComponent({
               $vmaCalcGrid.recalculate(true)
               nextTick(() => {
                 $vmaCalcGrid.calc()
+              }).finally(() => {
+                GlobalEvent.on(
+                  $vmaCalcGrid,
+                  'mousewheel',
+                  handleGlobalMousewheelEvent,
+                )
               })
             })
           })

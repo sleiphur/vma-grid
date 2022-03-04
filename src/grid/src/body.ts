@@ -14,7 +14,7 @@ import {
   resolveComponent,
 } from 'vue'
 import { Guid } from '../../utils/guid'
-import { getRenderHeight } from './utils/utils'
+import { getRenderHeight, getRenderWidth } from './utils/utils'
 import {
   VmaGridBodyConstructor,
   VmaGridBodyPropTypes,
@@ -63,6 +63,13 @@ export default defineComponent({
     const rrh = computed(() =>
       getRenderHeight(
         $vmaCalcGrid.props.gridRowHeight,
+        $vmaCalcGrid.props.size!,
+      ),
+    )
+
+    const rcw = computed(() =>
+      getRenderWidth(
+        $vmaCalcGrid.props.gridColumnWidth,
         $vmaCalcGrid.props.size!,
       ),
     )
@@ -136,7 +143,7 @@ export default defineComponent({
       return trs
     }
 
-    const scrollEvent = () => {
+    const scrollEvent = (event: Event) => {
       if (props.fixedType === 'center') {
         refGridHeader.value.scrollLeft = refGridBody.value.scrollLeft
         refGridLeftFixedBodyScrollWrapper.value.scrollTop =
@@ -145,6 +152,92 @@ export default defineComponent({
         refGridBody.value.scrollTop =
           refGridLeftFixedBodyScrollWrapper.value.scrollTop
       }
+      $vmaCalcGrid.triggerScrollXEvent(event)
+      $vmaCalcGrid.triggerScrollYEvent(event)
+    }
+
+    let wheelTime: any
+    let wheelXSize = 0
+    let wheelXInterval = 0
+    let wheelXTotal = 0
+    let isPrevWheelX = false
+    let wheelYSize = 0
+    let wheelYInterval = 0
+    let wheelYTotal = 0
+    let isPrevWheelY = false
+
+    const handleWheelY = (
+      wheelEvent: WheelEvent,
+      deltaY: number,
+      isWheelUp: boolean,
+    ) => {
+      const remainSize =
+        isPrevWheelY === isWheelUp ? Math.max(0, wheelYSize - wheelYTotal) : 0
+      isPrevWheelY = isWheelUp
+      wheelYSize = Math.abs(
+        isWheelUp ? deltaY - remainSize : deltaY + remainSize,
+      )
+      wheelYInterval = 0
+      wheelYTotal = 0
+      clearTimeout(wheelTime)
+      const handleSmooth = () => {
+        if (wheelYTotal < wheelYSize) {
+          wheelYInterval = Math.max(5, Math.floor(wheelYInterval * 1.5))
+          wheelYTotal += wheelYInterval
+          if (wheelYTotal > wheelYSize) {
+            wheelYInterval -= wheelYTotal - wheelYSize
+          }
+          const { scrollTop, clientHeight, scrollHeight } = refGridBody.value
+          const targetTop = scrollTop + wheelYInterval * (isWheelUp ? -1 : 1)
+          refGridBody.value.scrollTop = targetTop
+          refGridLeftFixedBody.value.scrollTop = targetTop
+          if (
+            isWheelUp ? targetTop < scrollHeight - clientHeight : targetTop >= 0
+          ) {
+            wheelTime = setTimeout(handleSmooth, 10)
+          }
+          // emit
+        }
+      }
+      handleSmooth()
+    }
+
+    const handleWheelX = (
+      wheelEvent: WheelEvent,
+      deltaX: number,
+      isWheelLeft: boolean,
+    ) => {
+      const remainSize =
+        isPrevWheelX === isWheelLeft ? Math.max(0, wheelXSize - wheelXTotal) : 0
+      isPrevWheelX = isWheelLeft
+      wheelXSize = Math.abs(
+        isWheelLeft ? deltaX - remainSize : deltaX + remainSize,
+      )
+      wheelXInterval = 0
+      wheelXTotal = 0
+      clearTimeout(wheelTime)
+      const handleSmooth = () => {
+        if (wheelXTotal < wheelXSize) {
+          wheelXInterval = Math.max(5, Math.floor(wheelXInterval * 1.5))
+          wheelXTotal += wheelXInterval
+          if (wheelXTotal > wheelXSize) {
+            wheelXInterval -= wheelXTotal - wheelXSize
+          }
+          const { scrollLeft, clientWidth, scrollWidth } = refGridBody.value
+          const targetLeft =
+            scrollLeft + wheelXInterval * (isWheelLeft ? -1 : 1)
+          refGridBody.value.scrollLeft = targetLeft
+          if (
+            isWheelLeft
+              ? targetLeft < scrollWidth - clientWidth
+              : targetLeft >= 0
+          ) {
+            wheelTime = setTimeout(handleSmooth, 10)
+          }
+          // emit
+        }
+      }
+      handleSmooth()
     }
 
     const wheelEvent = (wheelEvent: WheelEvent) => {
@@ -155,6 +248,73 @@ export default defineComponent({
       } else if (props.fixedType === 'left') {
         refGridBody.value.onscroll = null
         refGridLeftFixedBodyScrollWrapper.value.onscroll = scrollEvent
+      }
+      const { deltaX, deltaY } = wheelEvent
+
+      // console.log(deltaX === 0, deltaY === 0)
+      // 若已到达顶部或底部或最左或最右，则不用触发
+      const isWheelUp = deltaY < 0
+      const isWheelLeft = deltaX < 0
+      const scrollBodyElement =
+        props.fixedType === 'left'
+          ? refGridLeftFixedBody.value
+          : refGridBody.value
+      // console.log(scrollBodyElement)
+      // console.log(scrollBodyElement.scrollTop, scrollBodyElement.scrollHeight - scrollBodyElement.clientHeight - 10 * rrh.value)
+      let returnY = false
+      if (
+        deltaX === 0 && isWheelUp
+          ? scrollBodyElement.scrollTop <= 0
+          : scrollBodyElement.scrollTop >=
+            scrollBodyElement.scrollHeight -
+              scrollBodyElement.clientHeight -
+              10 * rrh.value
+      ) {
+        // console.log('return Y')
+        returnY = true
+      }
+      // console.log(scrollBodyElement.scrollLeft, scrollBodyElement.scrollWidth - scrollBodyElement.clientWidth - 10 * rcw.value)
+      let returnX = false
+      if (
+        deltaY === 0 && isWheelLeft
+          ? scrollBodyElement.scrollLeft <= 0
+          : scrollBodyElement.scrollLeft >=
+            scrollBodyElement.scrollWidth -
+              scrollBodyElement.clientWidth -
+              10 * rcw.value
+      ) {
+        // console.log('return X')
+        returnX = true
+      }
+
+      if (returnX && returnY) {
+        return
+      }
+
+      if (!returnX) {
+        const { lastScrollLeft } = $vmaCalcGrid.reactiveData
+        const scrollLeft = scrollBodyElement.scrollLeft + deltaX
+        const isRollX = scrollLeft !== lastScrollLeft
+        if (isRollX) {
+          wheelEvent.preventDefault()
+          $vmaCalcGrid.reactiveData.lastScrollLeft = scrollLeft
+          $vmaCalcGrid.reactiveData.lastScrollTime = Date.now()
+          handleWheelX(wheelEvent, deltaX, isWheelLeft)
+          $vmaCalcGrid.triggerScrollXEvent(wheelEvent)
+        }
+      }
+
+      if (!returnY) {
+        const { lastScrollTop } = $vmaCalcGrid.reactiveData
+        const scrollTop = scrollBodyElement.scrollTop + deltaY
+        const isRollY = scrollTop !== lastScrollTop
+        if (isRollY) {
+          wheelEvent.preventDefault()
+          $vmaCalcGrid.reactiveData.lastScrollTop = scrollTop
+          $vmaCalcGrid.reactiveData.lastScrollTime = Date.now()
+          handleWheelY(wheelEvent, deltaY, isWheelUp)
+          $vmaCalcGrid.triggerScrollYEvent(wheelEvent)
+        }
       }
     }
 
