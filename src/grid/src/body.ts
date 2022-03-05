@@ -42,7 +42,10 @@ export default defineComponent({
     const {
       refGridBody,
       refGridLeftFixedBody,
+      refGridLeftFixedBodyX,
       refGridLeftFixedBodyY,
+      refGridBodyX,
+      refGridBodyY,
       refGridTopFixedBody,
       refGridLeftFixedBodyScrollWrapper,
       refGridLeftTopFixedBody,
@@ -93,19 +96,90 @@ export default defineComponent({
 
     const renderBodyColgroup = () => {
       const cols: any = []
-      cfs.value.forEach((_, index) => {
+      if ($vmaCalcGrid.reactiveData.startColIndex !== 0) {
+        cols.push(
+          h('col', {
+            idx: 0,
+          }),
+        )
+      }
+      for (
+        let index = $vmaCalcGrid.reactiveData.startColIndex;
+        index <= $vmaCalcGrid.reactiveData.endColIndex;
+        index++
+      ) {
+        if (index > cfs.value.length - 1) {
+          break
+        }
         cols.push(
           h('col', {
             idx: index,
           }),
         )
-      })
+      }
       return cols
     }
 
     const renderBodyRows = () => {
       const trs: any = []
-      rfs.value.forEach((rf, index) => {
+      for (
+        let index = $vmaCalcGrid.reactiveData.startIndex;
+        index <= $vmaCalcGrid.reactiveData.endIndex;
+        index++
+      ) {
+        // console.log(index)
+        if (index > rfs.value.length - 1) {
+          break
+        }
+        const rf: any = rfs.value[index]
+
+        const cols: any = []
+        if ($vmaCalcGrid.reactiveData.startColIndex !== 0) {
+          cols.push(
+            h(GridCellComponent, {
+              cat: 'row-indicator',
+              type: `${props.type}`,
+              r: rf.index,
+              c: 0,
+              row: rf.index,
+              col: 0,
+            }),
+          )
+        }
+        for (
+          let indexCol = $vmaCalcGrid.reactiveData.startColIndex;
+          indexCol <= $vmaCalcGrid.reactiveData.endColIndex;
+          indexCol++
+        ) {
+          if (indexCol > cfs.value.length - 1) {
+            break
+          }
+          if (indexCol === 0) {
+            cols.push(
+              h(GridCellComponent, {
+                cat: 'row-indicator',
+                type: `${props.type}`,
+                r: rf.index,
+                c: 0,
+                row: rf.index,
+                col: 0,
+              }),
+            )
+          } else {
+            const cf: any = cfs.value[indexCol]
+            cols.push(
+              h(GridCellComponent, {
+                cat: 'normal',
+                type: `${props.type}`,
+                r: rf.index,
+                c: cf.index,
+                row: rf.index,
+                col: cf.index,
+              }),
+            )
+          }
+        }
+
         trs.push(
           h(
             'tr',
@@ -118,28 +192,10 @@ export default defineComponent({
                     : `${rf.renderHeight}px`,
               },
             },
-            cfs.value.map((cf, index) =>
-              index === 0
-                ? h(GridCellComponent, {
-                    cat: 'row-indicator',
-                    type: `${props.type}`,
-                    r: rf.index,
-                    c: 0,
-                    row: rf.index,
-                    col: 0,
-                  })
-                : h(GridCellComponent, {
-                    cat: 'normal',
-                    type: `${props.type}`,
-                    r: rf.index,
-                    c: cf.index,
-                    row: rf.index,
-                    col: cf.index,
-                  }),
-            ),
+            cols,
           ),
         )
-      })
+      }
       return trs
     }
 
@@ -270,7 +326,7 @@ export default defineComponent({
               scrollBodyElement.clientHeight -
               10 * rrh.value
       ) {
-        // console.log('return Y')
+        console.log('return Y')
         returnY = true
       }
       // console.log(scrollBodyElement.scrollLeft, scrollBodyElement.scrollWidth - scrollBodyElement.clientWidth - 10 * rcw.value)
@@ -283,7 +339,7 @@ export default defineComponent({
               scrollBodyElement.clientWidth -
               10 * rcw.value
       ) {
-        // console.log('return X')
+        console.log('return X')
         returnX = true
       }
 
@@ -417,6 +473,13 @@ export default defineComponent({
                     width: 0,
                   },
                 }),
+                h('div', {
+                  ref: refGridLeftFixedBodyX,
+                  style: {
+                    float: 'left',
+                    height: 0,
+                  },
+                }),
                 h(
                   'table',
                   {
@@ -437,78 +500,79 @@ export default defineComponent({
               ],
             )
           : props.fixedType === 'center'
-          ? h(
-              'table',
-              {
-                ref: refGridBodyTable,
-                class: ['body'],
-              },
-              [
-                h(
-                  'colgroup',
-                  {
-                    ref: refGridBodyColgroup,
-                  },
-                  renderBodyColgroup(),
-                ),
-                h('tbody', {}, renderBodyRows()),
-                h(TextareaComponent, {
-                  ref: refCurrentCellEditor,
-                  class: ['cell-editor'],
-                  size: $vmaCalcGrid.props.size,
-                  type: $vmaCalcGrid.props.type,
-                  modelValue:
-                    $vmaCalcGrid.reactiveData.currentCellEditorContent,
-                  'onUpdate:modelValue': (value: any) => {
-                    $vmaCalcGrid.reactiveData.currentCellEditorContent = value
-                  },
-                  style: {
-                    display: $vmaCalcGrid.reactiveData.currentCellEditorActive
-                      ? 'block'
-                      : 'none',
-                    left: calcCurrentCellPosition.value.left,
-                    top: calcCurrentCellPosition.value.top,
-                    height: calcCurrentCellPosition.value.height,
-                    width: calcCurrentCellPosition.value.width,
-                  },
-                  onBlur: () => {
-                    // let v = gridReactiveData.currentCellEditorContent
-                    // try {
-                    //   // TODO 总是先尝试能否将内容变为number
-                    //   v = parseFloat(v)
-                    // } catch (e) {
-                    //   console.error(e)
-                    // }
-                    $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
+          ? [
+              h('div', {
+                ref: refGridBodyY,
+                style: {
+                  float: 'left',
+                  width: 0,
+                },
+              }),
+              h('div', {
+                ref: refGridBodyX,
+                style: {
+                  float: 'left',
+                  height: 0,
+                },
+              }),
+              h(
+                'table',
+                {
+                  ref: refGridBodyTable,
+                  class: ['body'],
+                },
+                [
+                  h(
+                    'colgroup',
+                    {
+                      ref: refGridBodyColgroup,
+                    },
+                    renderBodyColgroup(),
+                  ),
+                  h('tbody', {}, renderBodyRows()),
+                  h(TextareaComponent, {
+                    ref: refCurrentCellEditor,
+                    class: ['cell-editor'],
+                    size: $vmaCalcGrid.props.size,
+                    type: $vmaCalcGrid.props.type,
+                    modelValue:
                       $vmaCalcGrid.reactiveData.currentCellEditorContent,
-                    )
-                      ? Number(
-                          $vmaCalcGrid.reactiveData.currentCellEditorContent,
-                        )
-                      : $vmaCalcGrid.reactiveData.currentCellEditorContent
-                    // // 若给定的值不是公式，则直接刷新mv
-                    // // 否则将由公式计算得到结果
-                    // if (
-                    //   !(
-                    //     gridReactiveData.currentCellEditorContent !== null &&
-                    //     typeof gridReactiveData.currentCellEditorContent ===
-                    //       'string' &&
-                    //     gridReactiveData.currentCellEditorContent
-                    //       .trim()
-                    //       .startsWith('=')
-                    //   )
-                    // ) {
-                    //   gridReactiveData.currentCell.mv =
-                    //     gridReactiveData.currentCellEditorContent
-                    // }
-                    // 重新计算
-                    nextTick(() => {
-                      $vmaCalcGrid.calc()
-                    })
-                  },
-                }),
-              ],
-            )
+                    'onUpdate:modelValue': (value: any) => {
+                      $vmaCalcGrid.reactiveData.currentCellEditorContent = value
+                    },
+                    style: {
+                      display: $vmaCalcGrid.reactiveData.currentCellEditorActive
+                        ? 'block'
+                        : 'none',
+                      left: calcCurrentCellPosition.value.left,
+                      top: calcCurrentCellPosition.value.top,
+                      height: calcCurrentCellPosition.value.height,
+                      width: calcCurrentCellPosition.value.width,
+                    },
+                    onBlur: () => {
+                      // let v = gridReactiveData.currentCellEditorContent
+                      // try {
+                      //   // TODO 总是先尝试能否将内容变为number
+                      //   v = parseFloat(v)
+                      // } catch (e) {
+                      //   console.error(e)
+                      // }
+                      $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
+                        $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                      )
+                        ? Number(
+                            $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                          )
+                        : $vmaCalcGrid.reactiveData.currentCellEditorContent
+                      // 重新计算
+                      nextTick(() => {
+                        $vmaCalcGrid.calc()
+                      })
+                    },
+                  }),
+                ],
+              ),
+            ]
           : createCommentVNode(),
       )
 

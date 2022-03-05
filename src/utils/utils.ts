@@ -35,3 +35,41 @@ export const getIndexFromColumnWidths = (
   }
   return Math.floor(scrollLeft / columnWidth)
 }
+
+export const getYSpaceFromRowHeights = (
+  startIndex: number,
+  rowHeight: number,
+  changedRowHeights: Record<string, number>,
+): number => {
+  if (Object.keys(changedRowHeights).length) {
+    let sidx = 0
+    let ySpace = 0
+    while (startIndex > sidx) {
+      ySpace += changedRowHeights[`${sidx}`]
+        ? changedRowHeights[`${sidx}`]
+        : rowHeight
+      sidx++
+    }
+    return ySpace
+  }
+  return Math.max(0, startIndex * rowHeight)
+}
+
+export const getXSpaceFromColumnWidths = (
+  startColIndex: number,
+  colWidth: number,
+  changedColumnWidths: Record<string, number>,
+): number => {
+  if (Object.keys(changedColumnWidths).length) {
+    let sidx = 0
+    let xSpace = 0
+    while (startColIndex > sidx) {
+      xSpace += changedColumnWidths[`${sidx}`]
+        ? changedColumnWidths[`${sidx}`]
+        : colWidth
+      sidx++
+    }
+    return xSpace
+  }
+  return Math.max(0, startColIndex * colWidth)
+}

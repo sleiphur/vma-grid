@@ -41,6 +41,8 @@ import { debounce } from '../../utils/debounce/debounce'
 import {
   getIndexFromColumnWidths,
   getIndexFromRowHeights,
+  getXSpaceFromColumnWidths,
+  getYSpaceFromRowHeights,
 } from '../../utils/utils'
 import GlobalEvent from '../../utils/events'
 
@@ -84,6 +86,9 @@ export default defineComponent({
     const refGridLeftFixedBody = ref() as Ref<HTMLDivElement>
     const refGridLeftFixedBodyScrollWrapper = ref() as Ref<HTMLDivElement>
     const refGridLeftFixedBodyY = ref() as Ref<HTMLDivElement>
+    const refGridLeftFixedBodyX = ref() as Ref<HTMLDivElement>
+    const refGridBodyY = ref() as Ref<HTMLDivElement>
+    const refGridBodyX = ref() as Ref<HTMLDivElement>
     const refGridTopFixedBody = ref() as Ref<HTMLDivElement>
     const refGridBottomFixedBody = ref() as Ref<HTMLDivElement>
     const refGridLeftTopFixedBody = ref() as Ref<HTMLDivElement>
@@ -134,7 +139,10 @@ export default defineComponent({
       refGridBody, // wrapper div
       refGridLeftFixedBody, // wrapper div
       refGridLeftFixedBodyScrollWrapper, // scroll wrapper div
+      refGridLeftFixedBodyX, // X div for hidden overflow
       refGridLeftFixedBodyY, // Y div for hidden overflow
+      refGridBodyX, // X div for hidden overflow
+      refGridBodyY, // Y div for hidden overflow
       refGridTopFixedBody, // wrapper div
       refGridBottomFixedBody, // wrapper div
       refGridLeftTopFixedBody, // wrapper div
@@ -340,12 +348,7 @@ export default defineComponent({
         bodyOffsetHeight - bodyClientHeight,
         0,
       )
-      const { endIndex, columnConfigs, scrollbarWidth, tableWidth } =
-        gridReactiveData
-      // const rowIndicatorElemWidth = Math.max(
-      //   10 + endIndex.toString().length * 10,
-      //   40,
-      // ) // 行号列最小宽度40px
+      const { columnConfigs, scrollbarWidth, tableWidth } = gridReactiveData
       if (
         refGridHeaderColgroup.value.children &&
         refGridHeaderColgroup.value.children.length
@@ -369,14 +372,16 @@ export default defineComponent({
         )
         Array.from(refGridBodyColgroup.value.children).forEach(
           (colgroupElem: any, index: number) => {
-            if (index === 0) {
+            // console.log(colgroupElem.attributes['idx'].value)
+            const idx = colgroupElem.attributes.idx.value
+            if (idx === 0) {
               colgroupElem.style.width = `${rowIndicatorElemWidth.value}px`
-            } else if (index < columnConfigs.length) {
+            } else if (idx < columnConfigs.length) {
               colgroupElem.style.width = `${
-                columnConfigs[index].visible
-                  ? typeof columnConfigs[index].renderWidth === 'string'
+                columnConfigs[idx].visible
+                  ? typeof columnConfigs[idx].renderWidth === 'string'
                     ? rcw.value
-                    : columnConfigs[index].renderWidth
+                    : columnConfigs[idx].renderWidth
                   : 0
               }px`
             }
@@ -425,18 +430,29 @@ export default defineComponent({
         tableWidth + scrollbarWidth
       }px`
       refGridBodyTable.value.style.width = `${tableWidth}px`
+      // refGridBodyTable.value.style.height = `${gridReactiveData.rowConfigs.length * rrh.value}px`
       refGridLeftFixedBody.value.style.width = `${gridReactiveData.gridLeftFixedHeaderWidth}px`
       refGridLeftFixedBody.value.style.height = `${
         gridReactiveData.gridBodyHeight - gridReactiveData.scrollbarHeight
       }px`
-      refGridLeftFixedBodyY.value.style.height = `${refGridBodyTable.value.clientHeight}px`
+      refGridLeftFixedBodyX.value.style.width = `${
+        gridReactiveData.columnConfigs.length * rcw.value
+      }px`
+      refGridLeftFixedBodyY.value.style.height = `${
+        gridReactiveData.rowConfigs.length * rrh.value
+      }px`
+      refGridBodyX.value.style.width = `${
+        gridReactiveData.columnConfigs.length * rcw.value
+      }px`
+      refGridBodyY.value.style.height = `${
+        gridReactiveData.rowConfigs.length * rrh.value
+      }px`
       refGridLeftFixedBody.value.style.top = `${gridReactiveData.gridHeaderHeight}px`
       refGridLeftFixedBodyTable.value.style.width = `${tableWidth}px`
     }
 
     const calcColumnWidth = () => {
       let tableWidth = 0
-      const { endIndex } = gridReactiveData
       const { firstList, otherList } = gridReactiveData.columns
       // 第一列
       firstList.forEach((column: any) => {
@@ -450,6 +466,8 @@ export default defineComponent({
             ? rcw.value
             : column.renderWidth
       })
+
+      console.log(tableWidth)
       gridReactiveData.tableWidth = tableWidth
 
       nextTick(() => {
@@ -461,7 +479,18 @@ export default defineComponent({
       const firstList: any = []
       const leftList: any = []
       const otherList: any = []
-      gridReactiveData.columnConfigs.forEach((cf, index) => {
+
+      if (gridReactiveData.startColIndex !== 0) {
+        firstList.push(gridReactiveData.columnConfigs[0])
+      }
+      console.log('arrangeColumnWidth')
+      console.log(gridReactiveData.startColIndex, gridReactiveData.endColIndex)
+      for (
+        let index = gridReactiveData.startColIndex;
+        index <= gridReactiveData.endColIndex;
+        index++
+      ) {
+        const cf = gridReactiveData.columnConfigs[index]
         if (index === 0) {
           firstList.push(cf)
         } else if (cf.visible) {
@@ -470,7 +499,7 @@ export default defineComponent({
             leftList.push(cf)
           }
         }
-      })
+      }
 
       Object.assign(gridReactiveData.columns, {
         firstList,
@@ -483,132 +512,137 @@ export default defineComponent({
       })
     }
 
-    const computeVirtualY = () => {
-      const gridViewportHeight = refGrid.value ? refGrid.value.clientHeight : 0
-      // console.log(gridViewportHeight)
-      const heightVisibleSize = Math.ceil(gridViewportHeight / rrh.value)
-      if (refGrid.value) {
-        return { heightVisibleSize: heightVisibleSize - 1 + 5 }
-      }
-      return { heightVisibleSize: -1 + 5 }
-    }
-
-    const computeVirtualX = () => {
-      const gridViewportWidth = refGrid.value ? refGrid.value.clientWidth : 0
-      // console.log(gridViewportWidth)
-      const widthVisibleSize = Math.ceil(gridViewportWidth / rcw.value)
-      if (refGrid.value) {
-        return { widthVisibleSize: widthVisibleSize - 1 + 5 }
-      }
-      return { widthVisibleSize: -1 + 5 }
-    }
-
-    const computeScrollLoad = () =>
-      nextTick().then(() => {
-        const { heightVisibleSize: visibleYSize } = computeVirtualY()
-        const { widthVisibleSize: visibleXSize } = computeVirtualX()
-        // reactiveGridData.endIndex = Math.max(
-        //     reactiveGridData.startIndex + visibleYSize + 6,
-        //     reactiveGridData.endIndex
-        // )
-        // console.log(
-        //   gridReactiveData.startIndex,
-        //   gridReactiveData.endIndex,
-        //   visibleYSize,
-        // )
-        // console.log(
-        //   gridReactiveData.startColIndex,
-        //   gridReactiveData.endColIndex,
-        //   visibleXSize,
-        // )
-        nextTick(updateStyle)
-      })
-
-    const debounceScrollX = debounce((event: Event) => {
-      // console.log(event)
-      const scrollBodyElem = (event.currentTarget ||
-        event.target) as HTMLDivElement
-      // console.log(scrollBodyElem)
-      const scrollLeft = scrollBodyElem.scrollLeft
-      // console.log('scrollBodyElem.scrollLeft', scrollBodyElem.scrollLeft)
-      const visibleIndex = getIndexFromColumnWidths(
-        scrollLeft,
+    const updateScrollXYSpace = () => {
+      const leftSpaceWidth = getXSpaceFromColumnWidths(
+        gridReactiveData.startColIndex,
         rcw.value,
         {}, // TODO
       )
-      const viewportWidth = refGridBody.value.clientWidth
-      const visibleSize = Math.ceil(viewportWidth / rcw.value)
-
-      const offsetItem = {
-        startColIndex: Math.max(0, visibleIndex - 1 - 5),
-        endColIndex: visibleIndex + visibleSize + 5,
-      }
-
-      const {
-        startColIndex: offsetStartColIndex,
-        endColIndex: offsetEndColIndex,
-      } = offsetItem
-      const { startColIndex, endColIndex } = gridReactiveData
-
-      if (
-        visibleIndex <= 0 ||
-        visibleIndex >= offsetEndColIndex - visibleSize - 1 - 5
-      ) {
-        if (
-          startColIndex !== offsetStartColIndex ||
-          endColIndex !== offsetEndColIndex
-        ) {
-          gridReactiveData.startColIndex = offsetStartColIndex
-          gridReactiveData.endColIndex = offsetEndColIndex
-        }
-      }
-      console.log('---column index range---')
-      console.log(gridReactiveData.startColIndex, gridReactiveData.endColIndex)
-    }, 20)
-
-    const debounceScrollY = debounce((event: Event) => {
-      // console.log(event)
-      const scrollBodyElem = (event.currentTarget ||
-        event.target) as HTMLDivElement
-      // console.log(scrollBodyElem)
-      const scrollTop = scrollBodyElem.scrollTop
-      // console.log('scrollBodyElem.scrollTop', scrollBodyElem.scrollTop)
-      const visibleIndex = getIndexFromRowHeights(
-        scrollTop,
+      const marginLeft = `${leftSpaceWidth}px`
+      const topSpaceHeight = getYSpaceFromRowHeights(
+        gridReactiveData.startIndex,
         rrh.value,
         {}, // TODO
       )
-      const viewportHeight = refGridBody.value.clientHeight
-      const visibleSize = Math.ceil(viewportHeight / rrh.value)
-
-      const offsetItem = {
-        startIndex: Math.max(0, visibleIndex - 1 - 5),
-        endIndex: visibleIndex + visibleSize + 5,
+      const marginTop = `${topSpaceHeight}px`
+      if (refGridBodyTable.value) {
+        refGridBodyTable.value.style.transform = `translateX(${marginLeft}) translateY(${marginTop})`
+        refGridLeftFixedBodyTable.value.style.transform = `translateY(${marginTop})`
       }
+    }
 
-      const { startIndex: offsetStartIndex, endIndex: offsetEndIndex } =
-        offsetItem
-      const { startIndex, endIndex } = gridReactiveData
+    const calcScrollSizeX = (scrollBodyElem: HTMLDivElement): Promise<void> =>
+      new Promise((resolve): void => {
+        const scrollLeft = scrollBodyElem.scrollLeft
+        const visibleIndex = getIndexFromColumnWidths(
+          scrollLeft,
+          rcw.value,
+          {}, // TODO
+        )
+        const viewportWidth = refGridBody.value.clientWidth
+        const visibleSize = Math.ceil(viewportWidth / rcw.value)
 
-      if (
-        visibleIndex <= 0 ||
-        visibleIndex >= offsetEndIndex - visibleSize - 1 - 5
-      ) {
-        if (startIndex !== offsetStartIndex || endIndex !== offsetEndIndex) {
-          gridReactiveData.startIndex = offsetStartIndex
-          gridReactiveData.endIndex = offsetEndIndex
+        const offsetItem = {
+          startColIndex: Math.max(0, visibleIndex - 1 - 5),
+          endColIndex: visibleIndex + visibleSize + 5,
         }
-      }
-      console.log('---row index range---')
-      console.log(gridReactiveData.startIndex, gridReactiveData.endIndex)
+
+        const {
+          startColIndex: offsetStartColIndex,
+          endColIndex: offsetEndColIndex,
+        } = offsetItem
+        const { startColIndex, endColIndex } = gridReactiveData
+
+        if (
+          visibleIndex <= 0 ||
+          visibleIndex >= offsetEndColIndex - visibleSize - 1 - 5
+        ) {
+          if (
+            startColIndex !== offsetStartColIndex ||
+            endColIndex !== offsetEndColIndex
+          ) {
+            gridReactiveData.startColIndex = offsetStartColIndex
+            gridReactiveData.endColIndex = offsetEndColIndex
+            updateScrollXYSpace()
+          }
+        }
+        console.log('---column index range---')
+        console.log(
+          gridReactiveData.startColIndex,
+          gridReactiveData.endColIndex,
+        )
+        resolve()
+      })
+
+    const calcScrollSizeY = (scrollBodyElem: HTMLDivElement): Promise<void> =>
+      new Promise((resolve): void => {
+        const scrollTop = scrollBodyElem.scrollTop
+        const visibleIndex = getIndexFromRowHeights(
+          scrollTop,
+          rrh.value,
+          {}, // TODO
+        )
+        const viewportHeight =
+          refGridBody.value.clientHeight || refGrid.value.clientHeight
+        const visibleSize = Math.ceil(viewportHeight / rrh.value)
+
+        const offsetItem = {
+          startIndex: Math.max(0, visibleIndex - 1 - 5),
+          endIndex: visibleIndex + visibleSize + 5,
+        }
+
+        const { startIndex: offsetStartIndex, endIndex: offsetEndIndex } =
+          offsetItem
+        const { startIndex, endIndex } = gridReactiveData
+
+        if (
+          visibleIndex <= 0 ||
+          visibleIndex >= offsetEndIndex - visibleSize - 1 - 5
+        ) {
+          if (startIndex !== offsetStartIndex || endIndex !== offsetEndIndex) {
+            gridReactiveData.startIndex = offsetStartIndex
+            gridReactiveData.endIndex = offsetEndIndex
+            updateScrollXYSpace()
+          }
+        }
+        console.log('---row index range---')
+        console.log(gridReactiveData.startIndex, gridReactiveData.endIndex)
+        resolve()
+      })
+
+    const debounceScrollX = debounce((scrollBodyElem: HTMLDivElement) => {
+      calcScrollSizeX(scrollBodyElem).then(() => {
+        nextTick(() => {
+          updateStyle()
+        })
+      })
     }, 20)
+
+    const debounceScrollY = debounce((scrollBodyElem: HTMLDivElement) => {
+      calcScrollSizeY(scrollBodyElem).then(() => {
+        nextTick(() => {
+          updateStyle()
+        })
+      })
+    }, 20)
+
+    const computeScrollLoad = () =>
+      nextTick().then(() => {
+        calcScrollSizeX(refGridBody.value)
+        calcScrollSizeY(refGridBody.value)
+        nextTick(updateStyle)
+      })
 
     const gridMethods = {
       triggerScrollXEvent: (event: Event) => {
-        debounceScrollX(event)
+        const scrollBodyElem = (event.currentTarget ||
+          event.target) as HTMLDivElement
+        debounceScrollX(scrollBodyElem)
       },
       triggerScrollYEvent: (event: Event) => {
-        debounceScrollY(event)
+        const scrollBodyElem = (event.currentTarget ||
+          event.target) as HTMLDivElement
+        debounceScrollY(scrollBodyElem)
       },
       recalculate: (refresh: boolean) => {
         arrangeColumnWidth()
@@ -977,7 +1011,7 @@ export default defineComponent({
         })
 
         gridReactiveData.startColIndex = 0
-        gridReactiveData.endColIndex = columns.length ? columns.length - 1 : 0
+        gridReactiveData.endColIndex = 0
 
         const rows = [
           ...Array<Record<string, unknown>>(props.minDimensions[0].valueOf()),
@@ -1017,7 +1051,7 @@ export default defineComponent({
           )
         })
         gridReactiveData.startIndex = 0
-        gridReactiveData.endIndex = rows.length ? rows.length - 1 : 0
+        gridReactiveData.endIndex = 0
 
         // 总是初始化一个updateCurrentSheetData，与当前的row， column尺寸大小一致
         gridReactiveData.currentSheetData = new Array(rows.length)
@@ -1159,8 +1193,8 @@ export default defineComponent({
             },
             fixedType: 'center',
             type: props.type,
-            startColIndex: computeVirtualX().widthVisibleSize,
-            endColIndex: computeVirtualX().widthVisibleSize,
+            startColIndex: gridReactiveData.startColIndex,
+            endColIndex: gridReactiveData.endColIndex,
           }),
           // Body
           h(GridBodyComponent, {

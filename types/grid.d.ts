@@ -180,7 +180,10 @@ export interface VmaGridRefs {
   refGridBody: Ref<HTMLDivElement>
   refGridLeftFixedBody: Ref<HTMLDivElement>
   refGridLeftFixedBodyScrollWrapper: Ref<HTMLDivElement>
+  refGridLeftFixedBodyX: Ref<HTMLDivElement>
   refGridLeftFixedBodyY: Ref<HTMLDivElement>
+  refGridBodyX: Ref<HTMLDivElement>
+  refGridBodyY: Ref<HTMLDivElement>
   refGridTopFixedBody: Ref<HTMLDivElement>
   refGridBottomFixedBody: Ref<HTMLDivElement>
   refGridLeftTopFixedBody: Ref<HTMLDivElement>
