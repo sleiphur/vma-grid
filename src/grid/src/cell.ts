@@ -140,6 +140,11 @@ export default defineComponent({
               dragBtnElem.parentElement!.clientWidth + dragLeft - dragPosLeft,
               6,
             )
+            $vmaCalcGrid.reactiveData.gridColumnsWidthChanged[
+              `${columnConfig.index}`
+            ] = columnConfig.renderWidth
+            console.log($vmaCalcGrid.reactiveData.gridColumnsWidthChanged)
+            console.log($vmaCalcGrid.reactiveData.gridRowsHeightChanged)
             $vmaCalcGrid.reactiveData.gridWidth +=
               columnConfig.renderWidth - columnWidth
           }
@@ -213,12 +218,17 @@ export default defineComponent({
               dragBtnElem.parentElement!.clientHeight + dragTop - dragPosTop,
               6,
             )
+            $vmaCalcGrid.reactiveData.gridRowsHeightChanged[
+              `${rowConfig.index}`
+            ] = rowConfig.renderHeight
+            console.log($vmaCalcGrid.reactiveData.gridColumnsWidthChanged)
+            console.log($vmaCalcGrid.reactiveData.gridRowsHeightChanged)
             $vmaCalcGrid.reactiveData.gridHeight +=
               rowConfig.renderHeight - rowHeight
           }
         }
 
-        dragBtnElem.parentElement!.style.height = `${Math.max(
+        dragBtnElem.parentElement!.parentElement!.style.height = `${Math.max(
           dragBtnElem.parentElement!.clientHeight + dragTop - dragPosTop,
           6,
         )}px`

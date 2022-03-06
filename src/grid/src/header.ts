@@ -1,5 +1,6 @@
 import {
   ComponentOptions,
+  computed,
   createCommentVNode,
   defineComponent,
   h,
@@ -28,23 +29,18 @@ export default defineComponent({
       type: String as PropType<VmaGridHeaderPropTypes.Type>,
       default: 'default',
     },
-    startColIndex: {
-      type: Number,
-      default: 0,
-    },
-    endColIndex: {
-      type: Number,
-      default: 0,
-    },
   },
   setup(props, context) {
     // const { slots, emit } = context
 
     const $vmaCalcGrid = inject('$vmaCalcGrid', {} as VmaGridConstructor)
 
+    const { columnConfigs } = $vmaCalcGrid.reactiveData
+
     const {
       refGridHeader,
       refGridLeftFixedHeader,
+      refGridLeftFixedHeaderX,
       refGridHeaderTable,
       refGridLeftFixedHeaderTable,
       refGridHeaderColgroup,
@@ -64,23 +60,137 @@ export default defineComponent({
       reactiveData: gridHeaderReactiveData,
     } as unknown as VmaGridHeaderConstructor
 
+    const cfs = computed(() => columnConfigs)
+
     const renderHeaderColgroup = () => {
       const cols: any = []
-      $vmaCalcGrid.reactiveData.columnConfigs.forEach((cf, index) => {
+      if ($vmaCalcGrid.reactiveData.startColIndex !== 0) {
+        cols.push(
+          h('col', {
+            idx: 0,
+            style: {
+              width: `${cfs.value[0].renderWidth}px`,
+            },
+          }),
+        )
+      }
+      for (
+        let index = $vmaCalcGrid.reactiveData.startColIndex;
+        index <= $vmaCalcGrid.reactiveData.endColIndex;
+        index++
+      ) {
+        if (index > cfs.value.length - 1) {
+          break
+        }
         cols.push(
           h('col', {
             idx: index,
             style: {
-              width: `${cf.renderWidth}px`,
+              width: `${cfs.value[index].renderWidth}px`,
             },
           }),
         )
-      })
+      }
+      // $vmaCalcGrid.reactiveData.columnConfigs.forEach((cf, index) => {
+      //   cols.push(
+      //     h('col', {
+      //       idx: index,
+      //       style: {
+      //         width: `${cf.renderWidth}px`,
+      //       },
+      //     }),
+      //   )
+      // })
       return cols
     }
 
     const renderHeaderRows = () => {
       const tr = []
+
+      const cols: any = []
+      if ($vmaCalcGrid.reactiveData.startColIndex !== 0) {
+        cols.push(
+          h(GridCellComponent, {
+            cat: 'grid-corner',
+            type: `${props.type}`,
+            r: 0,
+            c: 0,
+            row: 0,
+            col: 0,
+          }),
+        )
+      }
+      for (
+        let index = $vmaCalcGrid.reactiveData.startColIndex;
+        index <= $vmaCalcGrid.reactiveData.endColIndex;
+        index++
+      ) {
+        // for (
+        //     let indexCol = $vmaCalcGrid.reactiveData.startColIndex;
+        //     indexCol <= $vmaCalcGrid.reactiveData.endColIndex;
+        //     indexCol++
+        // ) {
+        if (index > cfs.value.length - 1) {
+          break
+        }
+        if (index === 0) {
+          cols.push(
+            h(GridCellComponent, {
+              cat: 'grid-corner',
+              type: `${props.type}`,
+              r: 0,
+              c: 0,
+              row: 0,
+              col: 0,
+            }),
+          )
+        } else {
+          const cf: any = cfs.value[index]
+          cols.push(
+            h(GridCellComponent, {
+              cat: 'column-indicator',
+              type: `${props.type}`,
+              r: 0,
+              c: cf.index,
+              row: 0,
+              col: cf.index,
+            }),
+          )
+        }
+        // }
+
+        // trs.push(
+        //     h(
+        //         'tr',
+        //         {
+        //             row: index,
+        //             style: {
+        //                 height:
+        //                     typeof rf.renderHeight === 'string'
+        //                         ? `${rrh.value}px`
+        //                         : `${rf.renderHeight}px`,
+        //             },
+        //         },
+        //         cols,
+        //     ),
+        // )
+      }
+
+      cols.concat(
+        $vmaCalcGrid.reactiveData.scrollbarWidth
+          ? [
+              h(GridCellComponent, {
+                cat: 'gutter-corner',
+                type: `${props.type}`,
+                r: 0,
+                c: $vmaCalcGrid.reactiveData.columnConfigs.length,
+                row: 0,
+                col: $vmaCalcGrid.reactiveData.columnConfigs.length,
+              }),
+            ]
+          : [createCommentVNode()],
+      )
+
       tr.push(
         h(
           'tr',
@@ -92,40 +202,7 @@ export default defineComponent({
               )}px`,
             },
           },
-          $vmaCalcGrid.reactiveData.columnConfigs
-            .map((cf, index) =>
-              index === 0
-                ? h(GridCellComponent, {
-                    cat: 'grid-corner',
-                    type: `${props.type}`,
-                    r: 0,
-                    c: 0,
-                    row: 0,
-                    col: 0,
-                  })
-                : h(GridCellComponent, {
-                    cat: 'column-indicator',
-                    type: `${props.type}`,
-                    r: 0,
-                    c: cf.index,
-                    row: 0,
-                    col: cf.index,
-                  }),
-            )
-            .concat(
-              $vmaCalcGrid.reactiveData.scrollbarWidth
-                ? [
-                    h(GridCellComponent, {
-                      cat: 'gutter-corner',
-                      type: `${props.type}`,
-                      r: 0,
-                      c: $vmaCalcGrid.reactiveData.columnConfigs.length,
-                      row: 0,
-                      col: $vmaCalcGrid.reactiveData.columnConfigs.length,
-                    }),
-                  ]
-                : [createCommentVNode()],
-            ),
+          cols,
         ),
       )
       return tr
@@ -142,6 +219,13 @@ export default defineComponent({
           class: ['header-wrapper', `${props.type}`],
         },
         [
+          h('div', {
+            ref: refGridLeftFixedHeaderX,
+            style: {
+              float: 'left',
+              height: 0,
+            },
+          }),
           h(
             'table',
             {

@@ -5,6 +5,8 @@ import {
 } from './common'
 import { ComponentPublicInstance, Ref, RenderFunction, SetupContext } from 'vue'
 import { Cell } from '../src/grid/src/helper/Cell'
+import {Row} from "../src/grid/src/helper/Row";
+import {Column} from "../src/grid/src/helper/Column";
 
 export type AlignHorizontalType = 'left' | 'center' | 'right'
 
@@ -168,6 +170,9 @@ export interface VmaGridReactiveData {
   lastScrollLeft: number
   lastScrollTop: number
   lastScrollTime: number
+
+  gridRowsHeightChanged: Record<string, number>
+  gridColumnsWidthChanged: Record<string, number>
 }
 
 export interface VmaGridRefs {
@@ -203,6 +208,7 @@ export interface VmaGridRefs {
   // Header
   refGridHeader: Ref<HTMLDivElement>
   refGridLeftFixedHeader: Ref<HTMLDivElement>
+  refGridLeftFixedHeaderX: Ref<HTMLDivElement>
 
   refGridHeaderTable: Ref<HTMLTableElement>
   refGridLeftFixedHeaderTable: Ref<HTMLTableElement>
