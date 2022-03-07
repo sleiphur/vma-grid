@@ -36,17 +36,15 @@ import {
   getRenderHeight,
   getRenderWidth,
   getRowIndicatorRenderWidth,
-} from './utils/utils'
-import { debounce } from '../../utils/debounce/debounce'
-import {
   getHeight,
   getIndexFromColumnWidths,
   getIndexFromRowHeights,
   getWidth,
   getXSpaceFromColumnWidths,
   getYSpaceFromRowHeights,
-} from '../../utils/utils'
-import GlobalEvent from '../../utils/events'
+} from './utils/utils'
+import { debounce } from './utils/debounce/debounce'
+import GlobalEvent from './events'
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -498,6 +496,9 @@ export default defineComponent({
         index <= gridReactiveData.endColIndex;
         index++
       ) {
+        if (index > gridReactiveData.columnConfigs.length - 1) {
+          break
+        }
         const cf = gridReactiveData.columnConfigs[index]
         if (index === 0) {
           firstList.push(cf)

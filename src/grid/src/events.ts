@@ -1,5 +1,5 @@
-import { documentElem, DomTools, windowElem } from './doms'
-import { VmaGridComponentInstance } from '../../types/common'
+import { documentElem, DomTools, windowElem } from '../../utils/doms'
+import { VmaGridComponentInstance } from '../../../types/common'
 
 const wheelName = DomTools.isFirefox ? 'DOMMouseScroll' : 'mousewheel'
 const eventStore: {
