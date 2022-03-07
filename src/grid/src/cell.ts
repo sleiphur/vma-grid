@@ -1,4 +1,5 @@
 import {
+  computed,
   createCommentVNode,
   defineComponent,
   h,
@@ -16,7 +17,12 @@ import {
   VmaGridCellPropTypes,
   VmaGridConstructor,
 } from '../../../types/grid'
-import { getRenderHeight, getRenderWidth } from './utils/utils'
+import {
+  getRenderHeight,
+  getRenderWidth,
+  getXSpaceFromColumnWidths,
+  getYSpaceFromRowHeights,
+} from './utils/utils'
 
 export default defineComponent({
   name: 'VmaGridCell',
@@ -56,6 +62,20 @@ export default defineComponent({
       context,
       reactiveData: gridCellReactiveData,
     } as unknown as VmaGridCellConstructor
+
+    const rrh = computed(() =>
+      getRenderHeight(
+        $vmaCalcGrid.props.gridRowHeight,
+        $vmaCalcGrid.props.size!,
+      ),
+    )
+
+    const rcw = computed(() =>
+      getRenderWidth(
+        $vmaCalcGrid.props.gridColumnWidth,
+        $vmaCalcGrid.props.size!,
+      ),
+    )
 
     const getCellContent = () => {
       const c = currentSheetData[props.r!][props.c! - 1]
@@ -97,9 +117,14 @@ export default defineComponent({
         $vmaCalcGrid.props.gridColumnWidth,
         $vmaCalcGrid.props.size!,
       )
-      const leftSpaceWidth = refGridBody.value.scrollLeft
+      const leftSpaceWidth = getXSpaceFromColumnWidths(
+        $vmaCalcGrid.reactiveData.startColIndex,
+        rcw.value,
+        $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+      )
       const dragBtnOffsetWidth = dragBtnWidth
-      const dragPosLeft = pos.left + Math.floor(dragBtnOffsetWidth)
+      const dragPosLeft =
+        pos.left + Math.floor(dragBtnOffsetWidth) + leftSpaceWidth
       const cell = dragBtnElem.parentNode as HTMLTableCellElement
       const dragMinLeft = Math.max(
         pos.left - cell.clientWidth + dragBtnOffsetWidth,
@@ -108,7 +133,7 @@ export default defineComponent({
       let dragLeft = 0
       const resizeBarElem = refColumnResizeBar.value
       resizeBarElem.style.left = `${
-        pos.left + dragBtnOffsetWidth - leftSpaceWidth
+        pos.left + dragBtnOffsetWidth + leftSpaceWidth
       }px`
       resizeBarElem.style.display = 'block'
 
@@ -119,7 +144,7 @@ export default defineComponent({
         const offsetX = event.clientX - dragClientX
         const left = dragPosLeft + offsetX
         dragLeft = Math.max(left, dragMinLeft)
-        resizeBarElem.style.left = `${dragLeft - leftSpaceWidth}px`
+        resizeBarElem.style.left = `${dragLeft}px`
         resizeBarElem.style.display = 'block'
       }
 
@@ -168,9 +193,14 @@ export default defineComponent({
         $vmaCalcGrid.props.gridRowHeight,
         $vmaCalcGrid.props.size!,
       )
-      const topSpaceHeight = refGridBody.value.scrollTop
+      const topSpaceHeight = getYSpaceFromRowHeights(
+        $vmaCalcGrid.reactiveData.startIndex,
+        rrh.value,
+        $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+      )
       const dragBtnOffsetHeight = dragBtnHeight
-      const dragPosTop = pos.top + Math.floor(dragBtnOffsetHeight)
+      const dragPosTop =
+        pos.top + Math.floor(dragBtnOffsetHeight) + topSpaceHeight
       const cell = dragBtnElem.parentNode as HTMLTableCellElement
       const dragMinTop = Math.max(
         pos.top - cell.clientHeight + dragBtnOffsetHeight,
@@ -181,7 +211,7 @@ export default defineComponent({
       resizeBarElem.style.top = `${
         pos.top +
         refGridHeader.value.clientHeight +
-        dragBtnOffsetHeight -
+        dragBtnOffsetHeight +
         topSpaceHeight
       }px`
       resizeBarElem.style.display = 'block'
@@ -194,7 +224,7 @@ export default defineComponent({
         const top = dragPosTop + offsetY
         dragTop = Math.max(top, dragMinTop)
         resizeBarElem.style.top = `${
-          dragTop + refGridHeader.value.clientHeight - topSpaceHeight
+          dragTop + refGridHeader.value.clientHeight
         }px`
         resizeBarElem.style.display = 'block'
       }
