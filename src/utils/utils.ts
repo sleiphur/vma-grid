@@ -73,3 +73,36 @@ export const getXSpaceFromColumnWidths = (
   }
   return Math.max(0, startColIndex * colWidth)
 }
+
+export const getWidth = (
+  rowIndicatorElemWidth: number,
+  total: number,
+  colWidth: number,
+  changedColumnWidths: Record<string, number>,
+): number => {
+  let changeSum = 0
+  for (const k in Object.keys(changedColumnWidths)) {
+    if (
+      changedColumnWidths.hasOwnProperty(Object.keys(changedColumnWidths)[k])
+    ) {
+      changeSum +=
+        changedColumnWidths[Object.keys(changedColumnWidths)[k]] - colWidth
+    }
+  }
+  return rowIndicatorElemWidth + (total - 1) * colWidth + changeSum
+}
+
+export const getHeight = (
+  total: number,
+  rowHeight: number,
+  changedRowHeights: Record<string, number>,
+): number => {
+  let changeSum = 0
+  for (const k in Object.keys(changedRowHeights)) {
+    if (changedRowHeights.hasOwnProperty(Object.keys(changedRowHeights)[k])) {
+      changeSum +=
+        changedRowHeights[Object.keys(changedRowHeights)[k]] - rowHeight
+    }
+  }
+  return total * rowHeight + changeSum
+}

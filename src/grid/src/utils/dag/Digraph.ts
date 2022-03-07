@@ -47,7 +47,6 @@ export default class Digraph {
   constructor(g: Record<string, any>) {
     this._g = g
     const gKeys = Object.keys(this._g)
-    // console.log(gKeys)
     this._v = gKeys.length
     this._e = 0
     this._adj = LinkedList.from([
@@ -55,7 +54,6 @@ export default class Digraph {
     ])
     this._adj.forEach((_, index) => {
       this._g[gKeys[index]].children.forEach((item: any) => {
-        // console.log(item, gKeys.indexOf(item))
         this.addEdge(index, gKeys.indexOf(item))
       })
     })

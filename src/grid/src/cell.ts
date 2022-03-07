@@ -143,8 +143,6 @@ export default defineComponent({
             $vmaCalcGrid.reactiveData.gridColumnsWidthChanged[
               `${columnConfig.index}`
             ] = columnConfig.renderWidth
-            console.log($vmaCalcGrid.reactiveData.gridColumnsWidthChanged)
-            console.log($vmaCalcGrid.reactiveData.gridRowsHeightChanged)
             $vmaCalcGrid.reactiveData.gridWidth +=
               columnConfig.renderWidth - columnWidth
           }
@@ -221,8 +219,6 @@ export default defineComponent({
             $vmaCalcGrid.reactiveData.gridRowsHeightChanged[
               `${rowConfig.index}`
             ] = rowConfig.renderHeight
-            console.log($vmaCalcGrid.reactiveData.gridColumnsWidthChanged)
-            console.log($vmaCalcGrid.reactiveData.gridRowsHeightChanged)
             $vmaCalcGrid.reactiveData.gridHeight +=
               rowConfig.renderHeight - rowHeight
           }

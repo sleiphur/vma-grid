@@ -197,7 +197,7 @@ const gridData = reactive([{
   </p>
 
   <vma-grid :data="gridData" :size="selectedSizeValue" :type="selectedThemeValue"
-            :minDimensions="[3000, 100]"
+            :minDimensions="[500, 500]"
             :functions="customFunctions"
             resizeColumn resizeRow style="width: 100%; height: 800px;"></vma-grid>
 

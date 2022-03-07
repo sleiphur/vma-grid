@@ -127,7 +127,6 @@ export default defineComponent({
         index <= $vmaCalcGrid.reactiveData.endIndex;
         index++
       ) {
-        // console.log(index)
         if (index > rfs.value.length - 1) {
           break
         }
@@ -307,7 +306,6 @@ export default defineComponent({
       }
       const { deltaX, deltaY } = wheelEvent
 
-      // console.log(deltaX === 0, deltaY === 0)
       // 若已到达顶部或底部或最左或最右，则不用触发
       const isWheelUp = deltaY < 0
       const isWheelLeft = deltaX < 0
@@ -315,8 +313,6 @@ export default defineComponent({
         props.fixedType === 'left'
           ? refGridLeftFixedBody.value
           : refGridBody.value
-      // console.log(scrollBodyElement)
-      // console.log(scrollBodyElement.scrollTop, scrollBodyElement.scrollHeight - scrollBodyElement.clientHeight - 10 * rrh.value)
       let returnY = false
       if (
         deltaX === 0 && isWheelUp
@@ -326,10 +322,8 @@ export default defineComponent({
               scrollBodyElement.clientHeight -
               10 * rrh.value
       ) {
-        console.log('return Y')
         returnY = true
       }
-      // console.log(scrollBodyElement.scrollLeft, scrollBodyElement.scrollWidth - scrollBodyElement.clientWidth - 10 * rcw.value)
       let returnX = false
       if (
         deltaY === 0 && isWheelLeft
@@ -339,7 +333,6 @@ export default defineComponent({
               scrollBodyElement.clientWidth -
               10 * rcw.value
       ) {
-        console.log('return X')
         returnX = true
       }
 
