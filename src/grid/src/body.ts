@@ -14,7 +14,10 @@ import {
   resolveComponent,
 } from 'vue'
 import { Guid } from '../../utils/guid'
-import { getRenderHeight, getRenderWidth } from './utils/utils'
+import {
+  getRenderHeight,
+  getRenderWidth,
+} from './utils/utils'
 import {
   VmaGridBodyConstructor,
   VmaGridBodyPropTypes,
@@ -162,6 +165,7 @@ export default defineComponent({
                 c: 0,
                 row: rf.index,
                 col: 0,
+                id: `${rf.index}_0`,
               }),
             )
           } else {
@@ -174,6 +178,7 @@ export default defineComponent({
                 c: cf.index,
                 row: rf.index,
                 col: cf.index,
+                id: `${rf.index}_${cf.index}`,
               }),
             )
           }
@@ -391,41 +396,6 @@ export default defineComponent({
       }
     })
 
-    const calcCurrentCellPosition = computed(
-      (): Partial<{
-        left: string | number
-        top: string | number
-        height: string | number
-        width: string | number
-      }> => {
-        if ($vmaCalcGrid.reactiveData.currentCell) {
-          const result: Partial<{
-            left: string | number
-            top: string | number
-            height: string | number
-            width: string | number
-          }> = {}
-          const { r, c } = $vmaCalcGrid.reactiveData.currentCell
-          refGridBodyTable.value
-            .querySelectorAll(`[row="${r}"][col="${c! + 1}"]`)
-            .forEach((cellElem: any) => {
-              result.left = `${
-                cellElem.offsetLeft /* - refGridBody.value.scrollLeft */
-              }px`
-              result.top = `${
-                cellElem.offsetTop /* -
-                      refGridBody.value.scrollTop */ /*+
-                      $vmaCalcGrid.reactiveData.gridHeaderHeight */
-              }px`
-              result.height = `${cellElem.offsetHeight}px`
-              result.width = `${cellElem.offsetWidth}px`
-            })
-          return result
-        }
-        return {}
-      },
-    )
-
     const renderVN = () =>
       h(
         'div',
@@ -444,30 +414,66 @@ export default defineComponent({
             onWheel: wheelEvent,
           },
         },
-        props.fixedType === 'left'
-          ? h(
-              'div',
-              {
-                ref: refGridLeftFixedBodyScrollWrapper,
-                class: ['fixed-wrapper'],
-                style: {
-                  // width: `${$vmaCalcGrid.reactiveData.gridLeftFixedBodyWidth}px`,
-                  height: `${
-                    $vmaCalcGrid.reactiveData.gridBodyHeight -
-                    $vmaCalcGrid.reactiveData.scrollbarHeight
-                  }px`,
+        [
+          props.fixedType === 'left'
+            ? h(
+                'div',
+                {
+                  ref: refGridLeftFixedBodyScrollWrapper,
+                  class: ['fixed-wrapper'],
+                  style: {
+                    // width: `${$vmaCalcGrid.reactiveData.gridLeftFixedBodyWidth}px`,
+                    height: `${
+                      $vmaCalcGrid.reactiveData.gridBodyHeight -
+                      $vmaCalcGrid.reactiveData.scrollbarHeight
+                    }px`,
+                  },
                 },
-              },
-              [
+                [
+                  h('div', {
+                    ref: refGridLeftFixedBodyY,
+                    style: {
+                      float: 'left',
+                      width: 0,
+                    },
+                  }),
+                  h('div', {
+                    ref: refGridLeftFixedBodyX,
+                    style: {
+                      float: 'left',
+                      height: 0,
+                    },
+                  }),
+                  h(
+                    'table',
+                    {
+                      ref: refGridLeftFixedBodyTable,
+                      class: ['body'],
+                    },
+                    [
+                      h(
+                        'colgroup',
+                        {
+                          ref: refGridLeftFixedBodyColgroup,
+                        },
+                        renderBodyColgroup(),
+                      ),
+                      h('tbody', {}, renderBodyRows()),
+                    ],
+                  ),
+                ],
+              )
+            : props.fixedType === 'center'
+            ? [
                 h('div', {
-                  ref: refGridLeftFixedBodyY,
+                  ref: refGridBodyY,
                   style: {
                     float: 'left',
                     width: 0,
                   },
                 }),
                 h('div', {
-                  ref: refGridLeftFixedBodyX,
+                  ref: refGridBodyX,
                   style: {
                     float: 'left',
                     height: 0,
@@ -476,97 +482,55 @@ export default defineComponent({
                 h(
                   'table',
                   {
-                    ref: refGridLeftFixedBodyTable,
+                    ref: refGridBodyTable,
                     class: ['body'],
                   },
                   [
                     h(
                       'colgroup',
                       {
-                        ref: refGridLeftFixedBodyColgroup,
+                        ref: refGridBodyColgroup,
                       },
                       renderBodyColgroup(),
                     ),
                     h('tbody', {}, renderBodyRows()),
                   ],
                 ),
-              ],
-            )
-          : props.fixedType === 'center'
-          ? [
-              h('div', {
-                ref: refGridBodyY,
+              ]
+            : createCommentVNode(),
+          props.fixedType === 'center'
+            ? h(TextareaComponent, {
+                ref: refCurrentCellEditor,
+                class: ['cell-editor'],
+                size: $vmaCalcGrid.props.size,
+                type: $vmaCalcGrid.props.type,
+                modelValue: $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                'onUpdate:modelValue': (value: any) => {
+                  $vmaCalcGrid.reactiveData.currentCellEditorContent = value
+                },
                 style: {
-                  float: 'left',
-                  width: 0,
+                  display: $vmaCalcGrid.reactiveData.currentCellStyle.display,
+                  transform:
+                    $vmaCalcGrid.reactiveData.currentCellStyle.transform,
+                  height: $vmaCalcGrid.reactiveData.currentCellStyle.height,
+                  width: $vmaCalcGrid.reactiveData.currentCellStyle.width,
+                  left: $vmaCalcGrid.reactiveData.currentCellStyle.left,
+                  top: $vmaCalcGrid.reactiveData.currentCellStyle.top,
                 },
-              }),
-              h('div', {
-                ref: refGridBodyX,
-                style: {
-                  float: 'left',
-                  height: 0,
+                onBlur: () => {
+                  $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
+                    $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                  )
+                    ? Number($vmaCalcGrid.reactiveData.currentCellEditorContent)
+                    : $vmaCalcGrid.reactiveData.currentCellEditorContent
+                  // 重新计算
+                  nextTick(() => {
+                    $vmaCalcGrid.calc()
+                  })
                 },
-              }),
-              h(
-                'table',
-                {
-                  ref: refGridBodyTable,
-                  class: ['body'],
-                },
-                [
-                  h(
-                    'colgroup',
-                    {
-                      ref: refGridBodyColgroup,
-                    },
-                    renderBodyColgroup(),
-                  ),
-                  h('tbody', {}, renderBodyRows()),
-                  h(TextareaComponent, {
-                    ref: refCurrentCellEditor,
-                    class: ['cell-editor'],
-                    size: $vmaCalcGrid.props.size,
-                    type: $vmaCalcGrid.props.type,
-                    modelValue:
-                      $vmaCalcGrid.reactiveData.currentCellEditorContent,
-                    'onUpdate:modelValue': (value: any) => {
-                      $vmaCalcGrid.reactiveData.currentCellEditorContent = value
-                    },
-                    style: {
-                      display: $vmaCalcGrid.reactiveData.currentCellEditorActive
-                        ? 'block'
-                        : 'none',
-                      left: calcCurrentCellPosition.value.left,
-                      top: calcCurrentCellPosition.value.top,
-                      height: calcCurrentCellPosition.value.height,
-                      width: calcCurrentCellPosition.value.width,
-                    },
-                    onBlur: () => {
-                      // let v = gridReactiveData.currentCellEditorContent
-                      // try {
-                      //   // TODO 总是先尝试能否将内容变为number
-                      //   v = parseFloat(v)
-                      // } catch (e) {
-                      //   console.error(e)
-                      // }
-                      $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
-                        $vmaCalcGrid.reactiveData.currentCellEditorContent,
-                      )
-                        ? Number(
-                            $vmaCalcGrid.reactiveData.currentCellEditorContent,
-                          )
-                        : $vmaCalcGrid.reactiveData.currentCellEditorContent
-                      // 重新计算
-                      nextTick(() => {
-                        $vmaCalcGrid.calc()
-                      })
-                    },
-                  }),
-                ],
-              ),
-            ]
-          : createCommentVNode(),
+              })
+            : createCommentVNode(),
+        ],
       )
 
     $vmaCalcGridBody.renderVN = renderVN

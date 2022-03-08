@@ -158,6 +158,7 @@ export interface VmaGridReactiveData {
   }
 
   currentCell: Cell
+  currentCellStyle: Record<string, any>
   currentCellEditorActive: boolean
   currentCellEditorContent: any
 

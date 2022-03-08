@@ -13,7 +13,6 @@ import {
   watch,
   ComponentPublicInstance,
   computed,
-  inject,
 } from 'vue'
 
 import { isNumeric } from '../../utils/validate/number'
@@ -59,10 +58,6 @@ export default defineComponent({
     const GridBodyComponent = resolveComponent(
       'vma-grid-body',
     ) as ComponentOptions
-
-    // const TextareaComponent = resolveComponent(
-    //   'vma-grid-textarea',
-    // ) as ComponentOptions
 
     const FoobarPluginComponent = resolveComponent(
       'vma-grid-foobar-plugin',
@@ -266,6 +261,14 @@ export default defineComponent({
       },
 
       currentCell: null,
+      currentCellStyle: {
+        transform: 'translateX(0) translateY(0)',
+        display: 'none',
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+      },
       currentCellEditorActive: false,
       currentCellEditorContent: null,
 
@@ -296,6 +299,53 @@ export default defineComponent({
     )
 
     const rrh = computed(() => getRenderHeight(props.gridRowHeight, props.size))
+
+    const calcCurrentCellDisplay = () => {
+      if (gridReactiveData.currentCell) {
+        const { r, c } = gridReactiveData.currentCell
+        if (
+          r! <= gridReactiveData.endIndex &&
+          r! >= gridReactiveData.startIndex &&
+          c! <= gridReactiveData.endColIndex &&
+          c! >= gridReactiveData.startColIndex &&
+          gridReactiveData.currentCellEditorActive
+        ) {
+          gridReactiveData.currentCellStyle.display = 'block'
+        } else {
+          gridReactiveData.currentCellStyle.display = 'none'
+        }
+      } else {
+        gridReactiveData.currentCellStyle.display = 'none'
+      }
+    }
+
+    const calcCurrentCellPosition = () => {
+      if (gridReactiveData.currentCell) {
+        const leftSpaceWidth = getXSpaceFromColumnWidths(
+          gridReactiveData.startColIndex,
+          rcw.value,
+          gridReactiveData.gridColumnsWidthChanged,
+        )
+
+        const topSpaceHeight = getYSpaceFromRowHeights(
+          gridReactiveData.startIndex,
+          rrh.value,
+          gridReactiveData.gridRowsHeightChanged,
+        )
+        const { r, c } = gridReactiveData.currentCell
+        nextTick(() => {
+          refGridBodyTable.value
+            .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
+            .forEach((cellElem: any) => {
+              const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
+              const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
+              gridReactiveData.currentCellStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
+              gridReactiveData.currentCellStyle.height = `${cellElem.offsetHeight}px`
+              gridReactiveData.currentCellStyle.width = `${cellElem.offsetWidth}px`
+            })
+        })
+      }
+    }
 
     const rowIndicatorElemWidth = computed(
       () =>
@@ -425,12 +475,9 @@ export default defineComponent({
           },
         )
       }
-      // refGridHeaderTable.value.style.width = `${tableWidth + scrollbarWidth}px`
       refGridLeftFixedHeaderTable.value.style.width = `${
         tableWidth + scrollbarWidth
       }px`
-      // refGridBodyTable.value.style.width = `${tableWidth}px`
-      // refGridBodyTable.value.style.height = `${gridReactiveData.rowConfigs.length * rrh.value}px`
       refGridLeftFixedBody.value.style.width = `${gridReactiveData.gridLeftFixedHeaderWidth}px`
       refGridLeftFixedBody.value.style.height = `${
         gridReactiveData.gridBodyHeight - gridReactiveData.scrollbarHeight
@@ -1086,6 +1133,20 @@ export default defineComponent({
       },
     )
 
+    watch(
+      () => gridReactiveData.currentCell,
+      () => {
+        calcCurrentCellPosition()
+      },
+    )
+
+    watch(
+      () => gridReactiveData.currentCellEditorActive,
+      () => {
+        calcCurrentCellDisplay()
+      },
+    )
+
     onMounted(() => {
       // 入口
       nextTick(() => {
@@ -1200,58 +1261,6 @@ export default defineComponent({
                 },
               })
             : createCommentVNode(),
-          /* h(TextareaComponent, {
-            ref: refCurrentCellEditor,
-            class: ['cell-editor'],
-            size: props.size,
-            type: props.type,
-            modelValue: gridReactiveData.currentCellEditorContent,
-            'onUpdate:modelValue': (value: any) => {
-              gridReactiveData.currentCellEditorContent = value
-            },
-            style: {
-              display: gridReactiveData.currentCellEditorActive
-                ? 'block'
-                : 'none',
-              left: calcCurrentCellPosition.value.left,
-              top: calcCurrentCellPosition.value.top,
-              height: calcCurrentCellPosition.value.height,
-              width: calcCurrentCellPosition.value.width,
-            },
-            onBlur: () => {
-              // let v = gridReactiveData.currentCellEditorContent
-              // try {
-              //   // TODO 总是先尝试能否将内容变为number
-              //   v = parseFloat(v)
-              // } catch (e) {
-              //   console.error(e)
-              // }
-              gridReactiveData.currentCell.v = isNumeric(
-                gridReactiveData.currentCellEditorContent,
-              )
-                ? Number(gridReactiveData.currentCellEditorContent)
-                : gridReactiveData.currentCellEditorContent
-              // // 若给定的值不是公式，则直接刷新mv
-              // // 否则将由公式计算得到结果
-              // if (
-              //   !(
-              //     gridReactiveData.currentCellEditorContent !== null &&
-              //     typeof gridReactiveData.currentCellEditorContent ===
-              //       'string' &&
-              //     gridReactiveData.currentCellEditorContent
-              //       .trim()
-              //       .startsWith('=')
-              //   )
-              // ) {
-              //   gridReactiveData.currentCell.mv =
-              //     gridReactiveData.currentCellEditorContent
-              // }
-              // 重新计算
-              nextTick(() => {
-                $vmaCalcGrid.calc()
-              })
-            },
-          }), */
         ],
       )
     $vmaCalcGrid.renderVN = renderVN
