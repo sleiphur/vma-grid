@@ -300,53 +300,6 @@ export default defineComponent({
 
     const rrh = computed(() => getRenderHeight(props.gridRowHeight, props.size))
 
-    const calcCurrentCellDisplay = () => {
-      if (gridReactiveData.currentCell) {
-        const { r, c } = gridReactiveData.currentCell
-        if (
-          r! <= gridReactiveData.endIndex &&
-          r! >= gridReactiveData.startIndex &&
-          c! <= gridReactiveData.endColIndex &&
-          c! >= gridReactiveData.startColIndex &&
-          gridReactiveData.currentCellEditorActive
-        ) {
-          gridReactiveData.currentCellStyle.display = 'block'
-        } else {
-          gridReactiveData.currentCellStyle.display = 'none'
-        }
-      } else {
-        gridReactiveData.currentCellStyle.display = 'none'
-      }
-    }
-
-    const calcCurrentCellPosition = () => {
-      if (gridReactiveData.currentCell) {
-        const leftSpaceWidth = getXSpaceFromColumnWidths(
-          gridReactiveData.startColIndex,
-          rcw.value,
-          gridReactiveData.gridColumnsWidthChanged,
-        )
-
-        const topSpaceHeight = getYSpaceFromRowHeights(
-          gridReactiveData.startIndex,
-          rrh.value,
-          gridReactiveData.gridRowsHeightChanged,
-        )
-        const { r, c } = gridReactiveData.currentCell
-        nextTick(() => {
-          refGridBodyTable.value
-            .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
-            .forEach((cellElem: any) => {
-              const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
-              const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
-              gridReactiveData.currentCellStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
-              gridReactiveData.currentCellStyle.height = `${cellElem.offsetHeight}px`
-              gridReactiveData.currentCellStyle.width = `${cellElem.offsetWidth}px`
-            })
-        })
-      }
-    }
-
     const rowIndicatorElemWidth = computed(
       () =>
         Math.max(
@@ -686,6 +639,51 @@ export default defineComponent({
       })
 
     const gridMethods = {
+      calcCurrentCellDisplay: () => {
+        if (gridReactiveData.currentCell) {
+          const { r, c } = gridReactiveData.currentCell
+          if (
+            r! <= gridReactiveData.endIndex &&
+            r! >= gridReactiveData.startIndex &&
+            c! <= gridReactiveData.endColIndex &&
+            c! >= gridReactiveData.startColIndex &&
+            gridReactiveData.currentCellEditorActive
+          ) {
+            gridReactiveData.currentCellStyle.display = 'block'
+          } else {
+            gridReactiveData.currentCellStyle.display = 'none'
+          }
+        } else {
+          gridReactiveData.currentCellStyle.display = 'none'
+        }
+      },
+      calcCurrentCellPosition: () => {
+        if (gridReactiveData.currentCell) {
+          const leftSpaceWidth = getXSpaceFromColumnWidths(
+            gridReactiveData.startColIndex,
+            rcw.value,
+            gridReactiveData.gridColumnsWidthChanged,
+          )
+
+          const topSpaceHeight = getYSpaceFromRowHeights(
+            gridReactiveData.startIndex,
+            rrh.value,
+            gridReactiveData.gridRowsHeightChanged,
+          )
+          const { r, c } = gridReactiveData.currentCell
+          nextTick(() => {
+            refGridBodyTable.value
+              .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
+              .forEach((cellElem: any) => {
+                const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
+                const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
+                gridReactiveData.currentCellStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
+                gridReactiveData.currentCellStyle.height = `${cellElem.offsetHeight}px`
+                gridReactiveData.currentCellStyle.width = `${cellElem.offsetWidth}px`
+              })
+          })
+        }
+      },
       triggerScrollXEvent: (event: Event) => {
         const scrollBodyElem = (event.currentTarget ||
           event.target) as HTMLDivElement
@@ -1136,14 +1134,14 @@ export default defineComponent({
     watch(
       () => gridReactiveData.currentCell,
       () => {
-        calcCurrentCellPosition()
+        $vmaCalcGrid.calcCurrentCellPosition()
       },
     )
 
     watch(
       () => gridReactiveData.currentCellEditorActive,
       () => {
-        calcCurrentCellDisplay()
+        $vmaCalcGrid.calcCurrentCellDisplay()
       },
     )
 

@@ -71,6 +71,8 @@ export interface VmaGridMethods {
   calc(): void
   triggerScrollXEvent(evnt: Event): void
   triggerScrollYEvent(evnt: Event): void
+  calcCurrentCellPosition(): void
+  calcCurrentCellDisplay(): void
 }
 
 export interface VmaGridReactiveData {

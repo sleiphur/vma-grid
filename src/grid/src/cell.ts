@@ -177,7 +177,10 @@ export default defineComponent({
           dragBtnElem.parentElement!.clientWidth + dragLeft - dragPosLeft,
           6,
         )}px`
-        $vmaCalcGrid.recalculate(true)
+        $vmaCalcGrid.recalculate(true).then(() => {
+          $vmaCalcGrid.calcCurrentCellPosition()
+          $vmaCalcGrid.calcCurrentCellDisplay()
+        })
       }
     }
 
@@ -258,7 +261,10 @@ export default defineComponent({
           dragBtnElem.parentElement!.clientHeight + dragTop - dragPosTop,
           6,
         )}px`
-        $vmaCalcGrid.recalculate(true)
+        $vmaCalcGrid.recalculate(true).then(() => {
+          $vmaCalcGrid.calcCurrentCellPosition()
+          $vmaCalcGrid.calcCurrentCellDisplay()
+        })
       }
     }
 

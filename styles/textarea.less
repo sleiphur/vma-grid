@@ -28,8 +28,8 @@
   box-sizing: border-box;
   cursor: pointer;
   user-select: none;
-  //min-width: 180px;
-  display: flex;
+  display: block;
+  text-align: left;
   line-height: 100%;
 
   .count-helper{
@@ -39,44 +39,6 @@
     width: auto;
     min-width: 1px;
   }
-  //
-  //.count-target-helper{
-  //  //white-space: nowrap;
-  //  left: 36px;
-  //  top: 360px;
-  //  opacity: 0.5;
-  //  position: absolute;
-  //  //visibility: hidden;
-  //  height: auto;
-  //  width: auto;
-  //  margin:0;
-  //  padding:0;
-  //  border: 1px;
-  //  white-space: pre-wrap;
-  //}
-
-  //&--lines {
-  //  background-color: #F0F0F0;
-  //  border: 1px solid #D7E2ED;
-  //  border-radius: 2px 0 0 2px;
-  //  border-right-width: 0;
-  //  padding: 0px 10px 12px 15px;
-  //  overflow: hidden;
-  //  position: relative;
-  //
-  //  &--inner {
-  //    position: absolute;
-  //  }
-  //  &-line {
-  //    margin: 0;
-  //    border: 0;
-  //    padding: 0;
-  //    text-align: right;
-  //  }
-  //}
-
-
-
 
   &.is--disabled {
     .prefix,
@@ -84,12 +46,6 @@
       cursor: no-drop;
     }
   }
-
-  //&:not(.is--show-lines) {
-  //  .inner-textarea {
-  //    border-radius: 2px;
-  //  }
-  //}
 
   &:not(.is--disabled) {
     .clear-icon {
@@ -140,28 +96,10 @@
           border-left: 1px solid @textarea-danger-color;
         }
       }
-      //.inner-textarea {
-      //  border-top: 1px solid @blue;
-      //  border-bottom: 1px solid @blue;
-      //  border-right: 1px solid @blue;
-      //  border-left: 1px solid @blue;
-      //}
-      //.lines {
-      //  border-left: 1px solid @blue;
-      //  border-top: 1px solid @blue;
-      //  border-bottom: 1px solid @blue;
-      //  border-right: none;
-      //}
-      //&:not(.is--show-lines) {
-      //  .inner-textarea {
-      //    border-left: 1px solid @blue;
-      //  }
-      //}
     }
 
   }
   &.xxx-large {
-    //line-height: calc(@textarea-large-size - 2px);
     font-size: @textarea-xxx-large-font-size;
     .inner-textarea {
       min-height: @textarea-xxx-large-size;
@@ -169,7 +107,6 @@
   }
 
   &.xx-large {
-    //line-height: calc(@textarea-large-size - 2px);
     font-size: @textarea-xx-large-font-size;
     .inner-textarea {
       min-height: @textarea-xx-large-size;
@@ -177,7 +114,6 @@
   }
 
   &.x-large {
-    //line-height: calc(@textarea-large-size - 2px);
     font-size: @textarea-x-large-font-size;
     .inner-textarea {
       min-height: @textarea-x-large-size;
@@ -185,7 +121,6 @@
   }
 
   &.large {
-    //line-height: calc(@textarea-large-size - 2px);
     font-size: @textarea-large-font-size;
     .inner-textarea {
       min-height: @textarea-large-size;
@@ -193,8 +128,6 @@
   }
 
   &.normal {
-    //height: @textarea-normal-size;
-    //line-height: calc(@textarea-normal-size - 2px);
     font-size: @textarea-normal-font-size;
     .inner-textarea {
       min-height: @textarea-normal-size;
@@ -202,8 +135,6 @@
   }
 
   &.small {
-    //height: @textarea-small-size;
-    //line-height: calc(@textarea-small-size - 2px);
     font-size: @textarea-small-font-size;
     .inner-textarea {
       min-height: @textarea-small-size;
@@ -211,8 +142,6 @@
   }
 
   &.mini {
-    //height: @textarea-mini-size;
-    //line-height: calc(@textarea-mini-size - 2px);
     font-size: @textarea-mini-font-size;
     .inner-textarea {
       min-height: @textarea-mini-size;
@@ -220,15 +149,11 @@
   }
 
   .inner-textarea {
-
-    //border: 1px solid #D7E2ED;
     margin: 0;
     line-height: inherit;
     width: 100%;
     overflow: auto;
-    //height: 100%;
     border-radius: 2px;
-    //border-radius: 0 2px 2px 0;
     outline: 0;
     padding: 1px;
     color: @gray-8;

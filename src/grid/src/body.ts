@@ -14,10 +14,7 @@ import {
   resolveComponent,
 } from 'vue'
 import { Guid } from '../../utils/guid'
-import {
-  getRenderHeight,
-  getRenderWidth,
-} from './utils/utils'
+import { getRenderHeight, getRenderWidth } from './utils/utils'
 import {
   VmaGridBodyConstructor,
   VmaGridBodyPropTypes,
