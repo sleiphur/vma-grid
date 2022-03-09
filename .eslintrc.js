@@ -26,6 +26,7 @@ const common = {
     'jest/no-if': 'off',
     'jest/no-conditional-expect': 'off',
     'jest/no-export': 'off',
+    'jest/unbound-method': 'warn',
     'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'no-console': 'off',
@@ -135,6 +136,7 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-loss-of-precision': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
+        "@typescript-eslint/unbound-method": "warn"
       },
       settings: {
         'import/resolver': {

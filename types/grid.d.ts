@@ -7,6 +7,7 @@ import { ComponentPublicInstance, Ref, RenderFunction, SetupContext } from 'vue'
 import { Cell } from '../src/grid/src/helper/Cell'
 import {Row} from "../src/grid/src/helper/Row";
 import {Column} from "../src/grid/src/helper/Column";
+import {VmaCtxMenuInstance} from "./context-menu";
 
 export type AlignHorizontalType = 'left' | 'center' | 'right'
 
@@ -74,6 +75,9 @@ export interface VmaGridMethods {
   calcCurrentCellPosition(): void
   calcCurrentCellDisplay(): void
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface VmaGridPrivateMethods {}
 
 export interface VmaGridReactiveData {
   // 表格加载状态
@@ -176,6 +180,17 @@ export interface VmaGridReactiveData {
 
   gridRowsHeightChanged: Record<string, number>
   gridColumnsWidthChanged: Record<string, number>
+
+  // 存放上下文菜单的信息
+  ctxMenuStore: {
+    selected: any
+    visible: boolean
+    showChild: boolean
+    selectChild: any
+    list: any[][]
+    style: any
+    [key: string]: any
+  }
 }
 
 export interface VmaGridRefs {
@@ -220,13 +235,15 @@ export interface VmaGridRefs {
   refGridLeftFixedHeaderColgroup: Ref<HTMLTableColElement>
 
   refCurrentCellEditor: Ref<ComponentPublicInstance>
+
+  refGridCtxMenu: Ref<VmaCtxMenuInstance>
 }
 
 export type VmaGridEmits = ['update:data', 'change']
 
 export interface VmaGridConstructor
   extends VmaGridComponentInstance,
-    VmaGridMethods {
+    VmaGridMethods, VmaGridPrivateMethods {
   props: VmaGridOptions
   context: SetupContext<VmaGridEmits>
   reactiveData: VmaGridReactiveData
@@ -235,6 +252,8 @@ export interface VmaGridConstructor
 }
 
 export type HeaderFixedType = 'center' | 'left' | 'right'
+
+export * from './hooks'
 
 export namespace VmaGridHeaderPropTypes {
   export type Fixed = HeaderFixedType

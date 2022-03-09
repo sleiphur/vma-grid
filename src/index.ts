@@ -8,6 +8,7 @@ import GridButton from './button'
 import GridRadio from './radio'
 import GridCheckbox from './checkbox'
 import GridTextarea from './textarea'
+import GridCtxMenu from './context-menu'
 import Grid from './grid'
 
 import { pluginComponents } from '../plugins/src'
@@ -20,6 +21,7 @@ const components = [
   GridRadio,
   GridCheckbox,
   GridTextarea,
+  GridCtxMenu,
   Grid,
 ]
 

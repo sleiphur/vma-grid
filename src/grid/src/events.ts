@@ -28,7 +28,7 @@ export const GlobalEvent = {
   },
   trigger: triggerEvent,
 }
-
+console.log(documentElem, windowElem)
 if (documentElem) {
   document.addEventListener('contextmenu', triggerEvent, false)
 }

@@ -24,6 +24,7 @@ import {
   VmaGridConstructor,
   VmaGridEmits,
   VmaGridMethods,
+  VmaGridPrivateMethods,
   VmaGridReactiveData,
   VmaGridRefs,
 } from '../../../types/grid'
@@ -44,6 +45,8 @@ import {
 } from './utils/utils'
 import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
+import { VmaCtxMenuInstance } from '../../../types'
+import VmaGrid from '../../vma-grid'
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -110,6 +113,8 @@ export default defineComponent({
 
     const refCurrentCellEditor = ref() as Ref<ComponentPublicInstance>
 
+    const refGridCtxMenu = ref() as Ref<VmaCtxMenuInstance>
+
     const refFoobarPlugin = ref() as Ref<ComponentPublicInstance>
 
     const gridRefs: VmaGridRefs = {
@@ -163,6 +168,8 @@ export default defineComponent({
       refGridLeftFixedHeaderColgroup, // table colgroup
 
       refCurrentCellEditor,
+
+      refGridCtxMenu,
     }
 
     const gridReactiveData = reactive({
@@ -284,6 +291,15 @@ export default defineComponent({
 
       gridRowsHeightChanged: {},
       gridColumnsWidthChanged: {},
+
+      ctxMenuStore: {
+        selected: null,
+        visible: false,
+        showChild: false,
+        selectChild: null,
+        list: [],
+        style: null,
+      },
     } as unknown as VmaGridReactiveData)
 
     const $vmaCalcGrid = {
@@ -292,7 +308,7 @@ export default defineComponent({
       context,
       reactiveData: gridReactiveData,
       getRefs: () => gridRefs,
-    } as unknown as VmaGridConstructor
+    } as unknown as VmaGridConstructor & VmaGridMethods & VmaGridPrivateMethods
 
     const rcw = computed(() =>
       getRenderWidth(props.gridColumnWidth, props.size),
@@ -952,6 +968,16 @@ export default defineComponent({
 
     Object.assign($vmaCalcGrid, gridMethods)
 
+    VmaGrid.hooks.forEach((options) => {
+      // const { setupGrid } = options
+      if (options.setupGrid) {
+        const hookRest = options.setupGrid($vmaCalcGrid)
+        if (hookRest && typeof hookRest === 'object') {
+          Object.assign($vmaCalcGrid, hookRest)
+        }
+      }
+    })
+
     const initCurrentSheetData = (): Promise<void> =>
       new Promise((resolve): void => {
         gridReactiveData.rowConfigs.forEach((row: Row) => {
@@ -1127,6 +1153,13 @@ export default defineComponent({
             'mousewheel',
             handleGlobalMousewheelEvent,
           )
+          if ($vmaCalcGrid.handleContextmenuEvent) {
+            GlobalEvent.on(
+              $vmaCalcGrid,
+              'contextmenu',
+              $vmaCalcGrid.handleContextmenuEvent,
+            )
+          }
         })
       },
     )
@@ -1146,24 +1179,27 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      // 入口
-      nextTick(() => {
-        loadData().then(() => {
-          nextTick(() => {
-            // currentSheetData 初始化
-            initCurrentSheetData().then(() => {
-              $vmaCalcGrid.recalculate(true)
-              nextTick(() => {
-                $vmaCalcGrid.calc()
-              }).finally(() => {
+      loadData().then(() => {
+        initCurrentSheetData().then(() => {
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              GlobalEvent.on(
+                $vmaCalcGrid,
+                'mousewheel',
+                handleGlobalMousewheelEvent,
+              )
+              if ($vmaCalcGrid.handleContextmenuEvent) {
                 GlobalEvent.on(
                   $vmaCalcGrid,
-                  'mousewheel',
-                  handleGlobalMousewheelEvent,
+                  'contextmenu',
+                  $vmaCalcGrid.handleContextmenuEvent,
                 )
-              })
+              }
             })
-          })
+            .finally(() => {
+              $vmaCalcGrid.calc()
+            })
         })
       })
     })
@@ -1206,6 +1242,9 @@ export default defineComponent({
                   : {},
               })
             : createCommentVNode(),
+          h(resolveComponent('vma-grid-ctx-menu') as ComponentOptions, {
+            ref: refGridCtxMenu,
+          }),
           // Header
           h(GridHeaderComponent, {
             class: ['left'],
