@@ -298,7 +298,6 @@ export default defineComponent({
     }
 
     const wheelEvent = (wheelEvent: WheelEvent) => {
-      wheelEvent.stopPropagation()
       if (props.fixedType === 'center') {
         refGridBody.value.onscroll = scrollEvent
         refGridLeftFixedBodyScrollWrapper.value.onscroll = null

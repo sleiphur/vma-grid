@@ -1,7 +1,7 @@
 @import './common';
 
 .vma-grid-context-menu {
-  .menu-wrapper {
+  //.menu-wrapper {
     display: none;
     &.is--visible {
       position: absolute;
@@ -11,13 +11,13 @@
       box-shadow: 3px 3px 4px -2px rgba(0,0,0,.6);
       z-index: 6;
     }
-  }
+  //}
 
   .group-wrapper {
     margin: 0;
     padding: 0;
     list-style-type: none;
-    border-bottom: 1px solid #E8EAED;
+    border-bottom: 1px solid @gray-3;
     li {
       cursor: pointer;
       position: relative;
@@ -28,21 +28,21 @@
       //&:last-child {
       //  border: 0;
       //}
-      .link--active {
+      &.link--active {
         background-color: @gray-4;
         border-color:@gray-4;
         & > .vma-context-menu--link {
           color: @gray-7;
         }
       }
-      .link--disabled {
+      &.link--disabled {
         & > .link {
           color: @gray-5;
           cursor: no-drop;
         }
         &.link--active {
           //border-color:#C0C1C2;
-          background-color: #EEEEEE;
+          background-color: @gray-2;
           &:hover {
             background-color: inherit;
           }

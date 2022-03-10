@@ -81,13 +81,13 @@ export default defineComponent({
                           {
                             class: 'link',
                             onClick(evnt: Event) {
-                              // $vmaCalcGrid.ctxMenuLinkEvent(evnt, option)
+                              $vmaCalcGrid.ctxMenuLinkEvent(evnt, option)
                             },
                             onMouseover(evnt: Event) {
-                              // $vmaCalcGrid.ctxMenuMouseoverEvent(evnt, option)
+                              $vmaCalcGrid.ctxMenuMouseoverEvent(evnt, option)
                             },
                             onMouseout(evnt: Event) {
-                              // $vmaCalcGrid.ctxMenuMouseoutEvent(evnt, option)
+                              $vmaCalcGrid.ctxMenuMouseoutEvent(evnt, option)
                             },
                           },
                           [

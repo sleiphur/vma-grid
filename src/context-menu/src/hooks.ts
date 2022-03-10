@@ -46,21 +46,21 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
     }
     const openCtxMenu = (
       evnt: any,
-      type: 'column-indicator' | 'row-indicator' | 'corner' | 'cell',
+      type: 'column-indicator' | 'row-indicator' | 'grid-corner' | 'cell',
       param: any,
     ) => {
       const list = []
-      if (type === 'corner') {
+      if (type === 'grid-corner') {
         const options = []
         options.push({
-          name: '插入首列',
-          code: 'insertFirstColumn',
+          name: '插入首行',
+          code: 'insertFirstRow',
           disabled: false,
           visible: true,
         })
         options.push({
-          name: '插入首行',
-          code: 'insertFirstRow',
+          name: '插入首列',
+          code: 'insertFirstColumn',
           disabled: false,
           visible: true,
         })
@@ -73,6 +73,12 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         options.push({
           name: '显示所有行',
           code: 'showAllRows',
+          disabled: false,
+          visible: true,
+        })
+        options.push({
+          name: '清除固定',
+          code: 'clearFix',
           disabled: false,
           visible: true,
         })
@@ -97,6 +103,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         list.push(options)
         options = []
         options.push({
+          name: '固定列',
+          code: 'fixColumn',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        list.push(options)
+        options = []
+        options.push({
           name: '删除列',
           code: 'deleteColumn',
           disabled: false,
@@ -104,22 +119,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         list.push(options)
-        // options = []
-        // options.push({
-        //   name: '固定列',
-        //   code: 'fixColumn',
-        //   disabled: false,
-        //   visible: true,
-        //   param: param,
-        // })
-        // options.push({
-        //   name: '取消固定列',
-        //   code: 'unfixColumn',
-        //   disabled: false,
-        //   visible: true,
-        //   param: param,
-        // })
-        // list.push(options)
         options = []
         options.push({
           name: '隐藏列',
@@ -156,6 +155,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         list.push(options)
         options = []
         options.push({
+          name: '固定行',
+          code: 'fixRow',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        list.push(options)
+        options = []
+        options.push({
           name: '删除行',
           code: 'deleteRow',
           disabled: false,
@@ -163,21 +171,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         list.push(options)
-        // TODO 固定行/取消固定行
-        // options = []
-        // options.push({
-        //   name: '固定行',
-        //   code: 'fixRow',
-        //   disabled: false,
-        //   visible: true,
-        // })
-        // options.push({
-        //   name: '取消固定行',
-        //   code: 'unfixRow',
-        //   disabled: false,
-        //   visible: true,
-        // })
-        // list.push(options)
         options = []
         options.push({
           name: '隐藏行',
@@ -196,6 +189,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         list.push(options)
       }
       if (type === 'cell') {
+        const options = []
+        options.push({
+          name: '固定单元格',
+          code: 'fixCell',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        list.push(options)
       }
       evnt.preventDefault()
       const { scrollTop, scrollLeft, visibleHeight, visibleWidth } =
@@ -333,31 +335,58 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           refElem,
           `column-indicator`,
           (target: any) =>
-            target.parentNode.parentNode.parentNode.getAttribute('uid') === uId,
+            target.parentNode.parentNode.parentNode.parentNode.getAttribute(
+              'uid',
+            ) === uId,
         )
         const rowTargetNode = DomTools.getEventTargetNode(
           evnt,
           refElem,
           `row-indicator`,
           (target: any) =>
-            target.parentNode.parentNode.parentNode.getAttribute('uid') === uId,
+            target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute(
+              'uid',
+            ) === uId,
         )
         const cornerTargetNode = DomTools.getEventTargetNode(
           evnt,
           refElem,
-          `corner-indicator`,
+          `grid-corner`,
           (target: any) =>
-            target.parentNode.parentNode.parentNode.getAttribute('uid') === uId,
+            target.parentNode.parentNode.parentNode.parentNode.getAttribute(
+              'uid',
+            ) === uId,
         )
-        console.log(columnTargetNode, rowTargetNode, cornerTargetNode)
+        const cellTargetNode = DomTools.getEventTargetNode(
+          evnt,
+          refElem,
+          `normal`,
+          (target: any) =>
+            target.parentNode.parentNode.parentNode.parentNode.getAttribute(
+              'uid',
+            ) === uId,
+        )
+        console.log(uId)
+        console.log(
+          columnTargetNode,
+          rowTargetNode,
+          cornerTargetNode,
+          cellTargetNode,
+        )
         if (
           cornerTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
-          openCtxMenu(evnt, 'corner', {})
+          openCtxMenu(evnt, 'grid-corner', {})
+        }
+        if (
+          cellTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
+        ) {
+          openCtxMenu(evnt, 'cell', {})
         }
         if (
           columnTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
+          openCtxMenu(evnt, 'column-indicator', {})
           /* if (
             reactiveData.gridComputedColumnConfig &&
             reactiveData.gridComputedColumnConfig.length
@@ -434,6 +463,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } */
         }
         if (rowTargetNode.flag /* && vmaCalcGrid.props.gridContextRowMenu */) {
+          openCtxMenu(evnt, 'row-indicator', {})
           // const targetElemRowIndex = rowTargetNode.targetElem.getAttribute('ridx')
           // const item = reactiveData.gridDisplayRowData.find(
           //   (item) => item._index === parseInt(rowTargetNode.targetElem.getAttribute('ridx'))

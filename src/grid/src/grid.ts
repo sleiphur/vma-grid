@@ -47,6 +47,7 @@ import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
 import { VmaCtxMenuInstance } from '../../../types'
 import VmaGrid from '../../vma-grid'
+import { DomTools } from '../../utils/doms'
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -1141,7 +1142,50 @@ export default defineComponent({
       })
 
     const handleGlobalMousewheelEvent = (event: MouseEvent) => {
-      console.log('handleGlobalMousewheelEvent', event)
+      if ($vmaCalcGrid.closeMenu) {
+        const { ctxMenuStore } = gridReactiveData
+        const ctxMenu = refGridCtxMenu.value
+        if (
+          ctxMenuStore.visible &&
+          ctxMenu &&
+          !DomTools.getEventTargetNode(event, ctxMenu.getRefs().refElem.value)
+            .flag
+        ) {
+          $vmaCalcGrid.closeMenu()
+        }
+      }
+    }
+
+    const handleGlobalMousedownEvent = (event: MouseEvent) => {
+      console.log(event)
+      if ($vmaCalcGrid.closeMenu) {
+        const { ctxMenuStore } = gridReactiveData
+        const ctxMenu = refGridCtxMenu.value
+        if (
+          ctxMenuStore.visible &&
+          ctxMenu &&
+          !DomTools.getEventTargetNode(event, ctxMenu.getRefs().refElem.value)
+            .flag
+        ) {
+          $vmaCalcGrid.closeMenu()
+        }
+      }
+    }
+
+    const handleGlobalKeydownEvent = (event: KeyboardEvent) => {
+      console.log(event)
+      if ($vmaCalcGrid.closeMenu) {
+        const { ctxMenuStore } = gridReactiveData
+        const ctxMenu = refGridCtxMenu.value
+        if (
+          ctxMenuStore.visible &&
+          ctxMenu &&
+          !DomTools.getEventTargetNode(event, ctxMenu.getRefs().refElem.value)
+            .flag
+        ) {
+          $vmaCalcGrid.closeMenu()
+        }
+      }
     }
 
     watch(
@@ -1153,6 +1197,8 @@ export default defineComponent({
             'mousewheel',
             handleGlobalMousewheelEvent,
           )
+          GlobalEvent.on($vmaCalcGrid, 'mousedown', handleGlobalMousedownEvent)
+          GlobalEvent.on($vmaCalcGrid, 'keydown', handleGlobalKeydownEvent)
           if ($vmaCalcGrid.handleContextmenuEvent) {
             GlobalEvent.on(
               $vmaCalcGrid,
@@ -1189,6 +1235,12 @@ export default defineComponent({
                 'mousewheel',
                 handleGlobalMousewheelEvent,
               )
+              GlobalEvent.on(
+                $vmaCalcGrid,
+                'mousedown',
+                handleGlobalMousedownEvent,
+              )
+              GlobalEvent.on($vmaCalcGrid, 'keydown', handleGlobalKeydownEvent)
               if ($vmaCalcGrid.handleContextmenuEvent) {
                 GlobalEvent.on(
                   $vmaCalcGrid,
@@ -1247,6 +1299,7 @@ export default defineComponent({
           }),
           // Header
           h(GridHeaderComponent, {
+            uid: $vmaCalcGrid.uId,
             class: ['left'],
             style: {
               height: `${gridReactiveData.gridHeaderHeight}px`,
@@ -1256,6 +1309,7 @@ export default defineComponent({
             type: props.type,
           }),
           h(GridHeaderComponent, {
+            uid: $vmaCalcGrid.uId,
             class: ['center'],
             style: {
               height: `${gridReactiveData.gridHeaderHeight}px`,
@@ -1266,21 +1320,25 @@ export default defineComponent({
           }),
           // Body
           h(GridBodyComponent, {
+            uid: $vmaCalcGrid.uId,
             class: ['left-top'],
             fixedType: 'left-top',
             type: props.type,
           }),
           h(GridBodyComponent, {
+            uid: $vmaCalcGrid.uId,
             class: ['left'],
             fixedType: 'left',
             type: props.type,
           }),
           h(GridBodyComponent, {
+            uid: $vmaCalcGrid.uId,
             class: ['top'],
             fixedType: 'top',
             type: props.type,
           }),
           h(GridBodyComponent, {
+            uid: $vmaCalcGrid.uId,
             class: ['center'],
             style: {
               height: `${gridReactiveData.gridBodyHeight}px`,
