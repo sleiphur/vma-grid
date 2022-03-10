@@ -7,6 +7,7 @@ job_build:
     - main
   script:
     - echo "$LOCAL_REGISTRY"
+    - echo "$LOCAL_PUBLISH_REGISTRY"
     - echo "$LOCAL_REGISTRY_AUTH_TOKEN"
     - echo "$LOCAL_REGISTRY_EMAIL"
     - npm set registry "$LOCAL_REGISTRY"
@@ -16,6 +17,6 @@ job_build:
     - yarn install
     - yarn run test
     - yarn run lib
-    - yarn publish --registry "$LOCAL_REGISTRY"
+    - yarn publish --registry "$LOCAL_PUBLISH_REGISTRY"
   tags:
     - publish
