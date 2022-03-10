@@ -9,8 +9,13 @@ job_build:
     - echo "$LOCAL_REGISTRY"
     - echo "$LOCAL_REGISTRY_AUTH_TOKEN"
     - echo "$LOCAL_REGISTRY_EMAIL"
+    - npm set registry $LOCAL_REGISTRY
+    - echo "always-auth = true" > ~/.npmrc
+    - echo "email = $LOCAL_REGISTRY_EMAIL" > ~/.npmrc
+    - echo "_auth = $LOCAL_REGISTRY_AUTH_TOKEN" > ~/.npmrc
     - yarn install
     - yarn run test
     - yarn run lib
+    - yarn publish --registry $LOCAL_REGISTRY
   tags:
     - publish
