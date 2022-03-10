@@ -3,10 +3,12 @@ import { defineComponent, h, inject, ref, Ref, Teleport } from 'vue'
 import {
   VmaGridConstructor,
   VmaGridMethods,
-  VmaCtxMenuPrivateRef,
-  VmaGridCtxMenuConstructor,
   VmaGridPrivateMethods,
 } from '../../../types'
+import {
+  VmaCtxMenuPrivateRef,
+  VmaGridCtxMenuConstructor,
+} from '../../../types/context-menu'
 import { Guid } from '../../utils/guid'
 
 export default defineComponent({

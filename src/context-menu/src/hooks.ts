@@ -1,14 +1,14 @@
 import { computed, nextTick } from 'vue'
+import { VmaGridGlobalHooksHandlers, VmaGridConstructor } from '../../../types'
 import {
-  VmaGridGlobalHooksHandlers,
   VmaGridCtxMenuMethods,
   VmaGridCtxMenuPrivateMethods,
-} from '../../../types'
+} from '../../../types/context-menu'
 import { DomTools } from '../../utils/doms'
 import { Column } from '../../grid/src/helper/Column'
 
 const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
-  setupGrid(vmaCalcGrid) {
+  setupGrid(vmaCalcGrid: VmaGridConstructor) {
     const { uId, reactiveData } = vmaCalcGrid
 
     const { refGrid } = vmaCalcGrid.getRefs()
