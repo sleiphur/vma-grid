@@ -6,6 +6,9 @@ job_build:
   only:
     - main
   script:
+    - echo "$LOCAL_REGISTRY"
+    - echo "$LOCAL_REGISTRY_AUTH_TOKEN"
+    - echo "$LOCAL_REGISTRY_EMAIL"
     - yarn install
     - yarn run test
     - yarn run lib
