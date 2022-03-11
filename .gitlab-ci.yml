@@ -5,6 +5,10 @@ job_build:
   stage: build
   only:
     - main
+  # 缓存 node_modules
+  cache:
+    paths:
+      - node_modules/
   script:
     - echo "$LOCAL_REGISTRY"
     - echo "$LOCAL_PUBLISH_REGISTRY"
@@ -18,26 +22,9 @@ job_build:
     - yarn run test
     - yarn run lib
     - yarn publish --registry "$LOCAL_PUBLISH_REGISTRY"
-  tags:
-    - publish
-
-pages:
-  # 每当 push 到 main 分支时触发部署
-  only:
-    - main
-
-  # 缓存 node_modules
-  cache:
-    paths:
-      - node_modules/
-
-  # 安装依赖并运行构建脚本
-  script:
-    - yarn install --frozen-lockfile
-    - yarn run test
-    - yarn run lib
     - yarn run docs:build --dest public
-
   artifacts:
     paths:
       - public
+  tags:
+    - publish
