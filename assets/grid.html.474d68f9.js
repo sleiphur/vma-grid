@@ -1,0 +1,1 @@
+const e={key:"v-5107b6ce",path:"/basic/grid.html",title:"",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:3,title:"3.1",slug:"_3-1",children:[]}],git:{updatedTime:164586473e4,contributors:[{name:"MaHongming",email:"99596783@qq.com",commits:2}]},filePathRelative:"basic/grid.md"};export{e as data};
