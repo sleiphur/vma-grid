@@ -5,6 +5,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     lang: 'zh-CN',
     title: 'vma-grid',
     description: 'vue3 calc grid',
+    base: '/vma-grid/',
 
     port: 18081,
     head: [
