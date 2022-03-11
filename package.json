@@ -15,7 +15,7 @@
     "coverage:unit": "yarn test:unit --coverage",
     "coverage:integration": "yarn test:integration --coverage",
     "coverage:show": "live-server coverage",
-    "docs:build": "vuepress build docs",
+    "docs:build": "vuepress build docs --dest public",
     "docs:dev": "vuepress dev docs",
     "lint": "eslint --ext .js,.ts,.md",
     "lint:ci": "yarn lint . --format junit",
