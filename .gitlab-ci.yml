@@ -22,7 +22,7 @@ job_build:
     - yarn run test
     - yarn run lib
     - yarn publish --registry "$LOCAL_PUBLISH_REGISTRY"
-    - yarn run docs:build --dest public
+    - yarn run docs:build
   artifacts:
     paths:
       - public
