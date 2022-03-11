@@ -11,13 +11,11 @@ jobs:
       - run: yarn install
       - run: yarn run test
       - run: yarn run lib
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-        env:
-          INPUT_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: yarn run docs:build
       - uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
           branch: gh-pages
           folder: public
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
