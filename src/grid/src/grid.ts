@@ -1429,16 +1429,6 @@ export default defineComponent({
             fixedType: 'center',
             type: props.type,
           }),
-          FoobarPluginComponent
-            ? h(FoobarPluginComponent, {
-                type: 'foo',
-                ref: refFoobarPlugin,
-                style: {
-                  height: `100px`,
-                  width: `100px`,
-                },
-              })
-            : createCommentVNode(),
         ],
       )
     $vmaCalcGrid.renderVN = renderVN
