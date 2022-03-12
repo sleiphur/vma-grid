@@ -6,8 +6,8 @@ import {
   h,
   inject,
   nextTick,
-  onMounted,
   onBeforeUnmount,
+  onMounted,
   PropType,
   provide,
   reactive,
@@ -187,10 +187,11 @@ export default defineComponent({
             {
               row: index,
               style: {
-                height:
-                  typeof rf.renderHeight === 'string'
+                height: rf.visible
+                  ? typeof rf.renderHeight === 'string'
                     ? `${rrh.value}px`
-                    : `${rf.renderHeight}px`,
+                    : `${rf.renderHeight}px`
+                  : 0,
               },
             },
             cols,

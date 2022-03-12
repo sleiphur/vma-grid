@@ -42,6 +42,8 @@ import {
   getWidth,
   getXSpaceFromColumnWidths,
   getYSpaceFromRowHeights,
+  getRealVisibleWidthSize,
+  getRealVisibleHeightSize,
 } from './utils/utils'
 import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
@@ -293,6 +295,9 @@ export default defineComponent({
       gridRowsHeightChanged: {},
       gridColumnsWidthChanged: {},
 
+      gridRowsVisibleChanged: {},
+      gridColumnsVisibleChanged: {},
+
       ctxMenuStore: {
         selected: null,
         visible: false,
@@ -380,7 +385,7 @@ export default defineComponent({
               colgroupElem.style.width = `${rowIndicatorElemWidth.value}px`
             } else if (idx < columnConfigs.length) {
               colgroupElem.style.width = `${
-                columnConfigs[index].visible
+                columnConfigs[idx].visible
                   ? typeof columnConfigs[idx].renderWidth === 'string'
                     ? rcw.value
                     : columnConfigs[idx].renderWidth
@@ -457,6 +462,7 @@ export default defineComponent({
         gridReactiveData.columnConfigs.length,
         rcw.value,
         gridReactiveData.gridColumnsWidthChanged,
+        gridReactiveData.gridColumnsVisibleChanged,
       )}px`
       refGridLeftFixedHeaderX.value.style.width = `${
         getWidth(
@@ -464,12 +470,14 @@ export default defineComponent({
           gridReactiveData.columnConfigs.length,
           rcw.value,
           gridReactiveData.gridColumnsWidthChanged,
+          gridReactiveData.gridColumnsVisibleChanged,
         ) + scrollbarWidth
       }px`
       refGridLeftFixedBodyY.value.style.height = `${getHeight(
         gridReactiveData.rowConfigs.length,
         rrh.value,
         gridReactiveData.gridRowsHeightChanged,
+        gridReactiveData.gridRowsVisibleChanged,
       )}px`
       refGridBodyX.value.style.width = refGridLeftFixedBodyX.value.style.width
       refGridBodyY.value.style.height = refGridLeftFixedBodyY.value.style.height
@@ -487,10 +495,11 @@ export default defineComponent({
       })
       // 其他列
       otherList.forEach((column: any) => {
-        tableWidth +=
-          typeof column.renderWidth === 'string'
+        tableWidth += column.visible
+          ? typeof column.renderWidth === 'string'
             ? rcw.value
             : column.renderWidth
+          : 0
       })
 
       gridReactiveData.tableWidth = tableWidth
@@ -543,12 +552,14 @@ export default defineComponent({
         gridReactiveData.startColIndex,
         rcw.value,
         gridReactiveData.gridColumnsWidthChanged,
+        gridReactiveData.gridColumnsVisibleChanged,
       )
       const marginLeft = `${leftSpaceWidth}px`
       const topSpaceHeight = getYSpaceFromRowHeights(
         gridReactiveData.startIndex,
         rrh.value,
         gridReactiveData.gridRowsHeightChanged,
+        gridReactiveData.gridRowsVisibleChanged,
       )
       const marginTop = `${topSpaceHeight}px`
       if (refGridBodyTable.value) {
@@ -567,9 +578,19 @@ export default defineComponent({
           scrollLeft,
           rcw.value,
           gridReactiveData.gridColumnsWidthChanged,
+          gridReactiveData.gridColumnsVisibleChanged,
         )
         const viewportWidth = refGridBody.value.clientWidth
-        const visibleSize = Math.ceil(viewportWidth / rcw.value)
+        const visibleSize = Math.max(
+          Math.ceil(viewportWidth / rcw.value),
+          getRealVisibleWidthSize(
+            viewportWidth,
+            visibleIndex,
+            rcw.value,
+            gridReactiveData.gridColumnsWidthChanged,
+            gridReactiveData.gridColumnsVisibleChanged,
+          ),
+        )
 
         const offsetItem = {
           startColIndex: Math.max(0, visibleIndex - 1 - 5),
@@ -581,7 +602,6 @@ export default defineComponent({
           endColIndex: offsetEndColIndex,
         } = offsetItem
         const { startColIndex, endColIndex } = gridReactiveData
-
         if (
           visibleIndex <= 0 ||
           visibleIndex >= offsetEndColIndex - visibleSize - 1 - 5
@@ -605,10 +625,20 @@ export default defineComponent({
           scrollTop,
           rrh.value,
           gridReactiveData.gridRowsHeightChanged,
+          gridReactiveData.gridRowsVisibleChanged,
         )
         const viewportHeight =
           refGridBody.value.clientHeight || refGrid.value.clientHeight
-        const visibleSize = Math.ceil(viewportHeight / rrh.value)
+        const visibleSize = Math.max(
+          Math.ceil(viewportHeight / rrh.value),
+          getRealVisibleHeightSize(
+            viewportHeight,
+            visibleIndex,
+            rrh.value,
+            gridReactiveData.gridRowsHeightChanged,
+            gridReactiveData.gridRowsVisibleChanged,
+          ),
+        )
 
         const offsetItem = {
           startIndex: Math.max(0, visibleIndex - 1 - 5),
@@ -634,28 +664,37 @@ export default defineComponent({
 
     const debounceScrollX = debounce((scrollBodyElem: HTMLDivElement) => {
       calcScrollSizeX(scrollBodyElem).then(() => {
-        nextTick(() => {
-          updateStyle()
-        })
+        arrangeColumnWidth()
       })
     }, 20)
 
     const debounceScrollY = debounce((scrollBodyElem: HTMLDivElement) => {
       calcScrollSizeY(scrollBodyElem).then(() => {
-        nextTick(() => {
-          updateStyle()
-        })
+        updateStyle()
       })
     }, 20)
 
     const computeScrollLoad = () =>
       nextTick().then(() => {
-        calcScrollSizeX(refGridBody.value)
-        calcScrollSizeY(refGridBody.value)
-        nextTick(updateStyle)
+        calcScrollSizeX(refGridBody.value).then(() => {
+          calcScrollSizeY(refGridBody.value).then(() => {
+            arrangeColumnWidth()
+          })
+        })
       })
 
     const gridMethods = {
+      updateColumn: (type: string, row: number, col: number) => {
+        if (type === 'hideColumn') {
+          gridReactiveData.columnConfigs[col].visible = false
+          gridReactiveData.gridColumnsVisibleChanged[`${col}`] = 0
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'showColumn') {
+          gridReactiveData.columnConfigs[col].visible = false
+          $vmaCalcGrid.recalculate(false)
+        }
+      },
       calcCurrentCellDisplay: () => {
         if (gridReactiveData.currentCell) {
           const { r, c } = gridReactiveData.currentCell
@@ -680,12 +719,14 @@ export default defineComponent({
             gridReactiveData.startColIndex,
             rcw.value,
             gridReactiveData.gridColumnsWidthChanged,
+            gridReactiveData.gridColumnsVisibleChanged,
           )
 
           const topSpaceHeight = getYSpaceFromRowHeights(
             gridReactiveData.startIndex,
             rrh.value,
             gridReactiveData.gridRowsHeightChanged,
+            gridReactiveData.gridRowsVisibleChanged,
           )
           const { r, c } = gridReactiveData.currentCell
           nextTick(() => {
@@ -1052,6 +1093,7 @@ export default defineComponent({
         )
         columns.forEach((_, index) => {
           let cwConf = null
+          let cvConf = false
           if (
             gridReactiveData.sheetConfig.cw &&
             gridReactiveData.sheetConfig.cw.length
@@ -1075,6 +1117,27 @@ export default defineComponent({
               }
             }
           }
+          if (
+            gridReactiveData.sheetConfig.cv &&
+            gridReactiveData.sheetConfig.cv.length
+          ) {
+            for (let i = 0; i < gridReactiveData.sheetConfig.cv.length; i++) {
+              if (
+                gridReactiveData.sheetConfig.cv[i].hasOwnProperty('c') &&
+                isNumeric(gridReactiveData.sheetConfig.cv[i].c) &&
+                gridReactiveData.sheetConfig.cv[i].hasOwnProperty('v') &&
+                isNumeric(gridReactiveData.sheetConfig.cv[i].v) &&
+                gridReactiveData.sheetConfig.cv[i].v === 0
+              ) {
+                if (Number(gridReactiveData.sheetConfig.cv[i].c) === index) {
+                  cvConf = true
+                  gridReactiveData.gridColumnsVisibleChanged[`${index}`] =
+                    gridReactiveData.sheetConfig.cv[i].v
+                  break
+                }
+              }
+            }
+          }
           gridReactiveData.columnConfigs.push(
             new Column(
               index + 1,
@@ -1082,7 +1145,7 @@ export default defineComponent({
               null,
               cwConf || 'default',
               null,
-              true,
+              !cvConf,
               false,
               'center',
             ),
@@ -1098,6 +1161,7 @@ export default defineComponent({
 
         rows.forEach((_, index) => {
           let rhConf = null
+          let rvConf = false
           if (
             gridReactiveData.sheetConfig.rh &&
             gridReactiveData.sheetConfig.rh.length
@@ -1118,6 +1182,27 @@ export default defineComponent({
               }
             }
           }
+          if (
+            gridReactiveData.sheetConfig.rv &&
+            gridReactiveData.sheetConfig.rv.length
+          ) {
+            for (let i = 0; i < gridReactiveData.sheetConfig.rv.length; i++) {
+              if (
+                gridReactiveData.sheetConfig.rv[i].hasOwnProperty('r') &&
+                isNumeric(gridReactiveData.sheetConfig.rv[i].r) &&
+                gridReactiveData.sheetConfig.rv[i].hasOwnProperty('v') &&
+                isNumeric(gridReactiveData.sheetConfig.rv[i].v) &&
+                gridReactiveData.sheetConfig.rv[i].v === 0
+              ) {
+                if (Number(gridReactiveData.sheetConfig.rv[i].r) === index) {
+                  rvConf = true
+                  gridReactiveData.gridRowsVisibleChanged[`${index}`] =
+                    gridReactiveData.sheetConfig.rv[i].v
+                  break
+                }
+              }
+            }
+          }
           gridReactiveData.rowConfigs.push(
             new Row(
               index,
@@ -1125,7 +1210,7 @@ export default defineComponent({
               null,
               rhConf || 'default',
               null,
-              true,
+              !rvConf,
               false,
               'center',
             ),
@@ -1157,7 +1242,6 @@ export default defineComponent({
     }
 
     const handleGlobalMousedownEvent = (event: MouseEvent) => {
-      console.log(event)
       if ($vmaCalcGrid.closeMenu) {
         const { ctxMenuStore } = gridReactiveData
         const ctxMenu = refGridCtxMenu.value
@@ -1173,7 +1257,6 @@ export default defineComponent({
     }
 
     const handleGlobalKeydownEvent = (event: KeyboardEvent) => {
-      console.log(event)
       if ($vmaCalcGrid.closeMenu) {
         const { ctxMenuStore } = gridReactiveData
         const ctxMenu = refGridCtxMenu.value

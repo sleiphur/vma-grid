@@ -3,11 +3,13 @@
  * @param length 长度数字
  */
 export const getNextColumnIndex = (length: number): string => {
-  let n: number = length
+  let nLength: number = length
   let p = ''
-  while (n > 0) {
-    p += String.fromCharCode(((n - 1) % 26) + 65)
-    n = Math.trunc(n / (26 + 1))
-  }
+  do {
+    nLength--
+    const n = nLength % 26
+    p += String.fromCharCode(n + 65)
+    nLength = Math.trunc((nLength - n) / 26)
+  } while (nLength > 0)
   return p.split('').reverse().join('')
 }
