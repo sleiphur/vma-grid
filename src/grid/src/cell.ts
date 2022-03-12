@@ -121,6 +121,7 @@ export default defineComponent({
         $vmaCalcGrid.reactiveData.startColIndex,
         rcw.value,
         $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+        $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
       )
       const dragBtnOffsetWidth = dragBtnWidth
       const dragPosLeft =
@@ -200,6 +201,7 @@ export default defineComponent({
         $vmaCalcGrid.reactiveData.startIndex,
         rrh.value,
         $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+        $vmaCalcGrid.reactiveData.gridRowsVisibleChanged,
       )
       const dragBtnOffsetHeight = dragBtnHeight
       const dragPosTop =

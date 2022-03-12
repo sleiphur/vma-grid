@@ -1,14 +1,14 @@
 import { computed, nextTick } from 'vue'
+import { VmaGridGlobalHooksHandlers, VmaGridConstructor } from '../../../types'
 import {
-  VmaGridGlobalHooksHandlers,
   VmaGridCtxMenuMethods,
   VmaGridCtxMenuPrivateMethods,
-} from '../../../types'
+} from '../../../types/context-menu'
 import { DomTools } from '../../utils/doms'
 import { Column } from '../../grid/src/helper/Column'
 
 const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
-  setupGrid(vmaCalcGrid) {
+  setupGrid(vmaCalcGrid: VmaGridConstructor) {
     const { uId, reactiveData } = vmaCalcGrid
 
     const { refGrid } = vmaCalcGrid.getRefs()
@@ -244,15 +244,17 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             //   menu.param.columnInfoAfter
             // )
           } else if (menu.code === 'hideColumn') {
-            // vmaCalcGrid.updateColumn(
-            //   'hideColumn',
-            //   menu.param.cidx,
-            //   menu.param.ridx,
-            //   menu.param.columnInfoBefore,
-            //   menu.param.columnInfoAfter
-            // )
+            vmaCalcGrid.updateColumn(
+              'hideColumn',
+              menu.param.row,
+              menu.param.col,
+            )
           } else if (menu.code === 'showColumn') {
-            // vmaCalcGrid.updateColumn('showColumn', null, null, null, null)
+            vmaCalcGrid.updateColumn(
+              'showColumn',
+              menu.param.row,
+              menu.param.col,
+            )
           } else if (menu.code === 'fixColumn') {
             // vmaCalcGrid.updateColumn(
             //   'fixColumn',
@@ -366,13 +368,13 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               'uid',
             ) === uId,
         )
-        console.log(uId)
-        console.log(
-          columnTargetNode,
-          rowTargetNode,
-          cornerTargetNode,
-          cellTargetNode,
-        )
+        // console.log(uId)
+        // console.log(
+        //   columnTargetNode,
+        //   rowTargetNode,
+        //   cornerTargetNode,
+        //   cellTargetNode,
+        // )
         if (
           cornerTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
@@ -386,7 +388,10 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         if (
           columnTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
-          openCtxMenu(evnt, 'column-indicator', {})
+          openCtxMenu(evnt, 'column-indicator', {
+            row: columnTargetNode.targetElem.getAttribute('row'),
+            col: columnTargetNode.targetElem.getAttribute('col'),
+          })
           /* if (
             reactiveData.gridComputedColumnConfig &&
             reactiveData.gridComputedColumnConfig.length

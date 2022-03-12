@@ -202,18 +202,58 @@ export const getIndexFromRowHeights = (
   scrollTop: number,
   rowHeight: number,
   changedRowHeights: Record<string, number>,
+  changedRowVisibles: Record<string, number>,
 ): number => {
-  if (Object.keys(changedRowHeights).length) {
-    let sidx = 0
+  if (
+    Object.keys(changedRowHeights).length &&
+    Object.keys(changedRowVisibles).length
+  ) {
+    // 配置中既有行高定义，又有行隐藏定义
+    let sidy = 0
     let y = 0
     do {
-      y += changedRowHeights[`${sidx}`]
-        ? changedRowHeights[`${sidx}`]
-        : rowHeight
-      sidx++
+      // y += changedRowHeights[`${sidy}`] && changedRowVisibles[`${sidy}`]
+      //   ? changedRowHeights[`${sidy}`]
+      //   : changedRowVisibles[`${sidy}`] ? rowHeight : 0
+      if (changedRowVisibles[`${sidy}`] === 0) {
+        // 该行隐藏
+        y += 0
+      } else {
+        // 该行显示
+        if (changedRowHeights[`${sidy}`]) {
+          // 该行高度有自定义
+          y += changedRowHeights[`${sidy}`]
+        } else {
+          y += rowHeight
+        }
+      }
+      sidy++
     } while (scrollTop >= y)
-    return sidx - 1
+    return sidy - 1
   }
+  if (Object.keys(changedRowHeights).length) {
+    // 配置中只有行高定义
+    let sidy = 0
+    let y = 0
+    do {
+      y += changedRowHeights[`${sidy}`]
+        ? changedRowHeights[`${sidy}`]
+        : rowHeight
+      sidy++
+    } while (scrollTop >= y)
+    return sidy - 1
+  }
+  if (Object.keys(changedRowVisibles).length) {
+    // 配置中只有行隐藏定义
+    let sidy = 0
+    let y = 0
+    do {
+      y += changedRowVisibles[`${sidy}`] === 0 ? 0 : rowHeight
+      sidy++
+    } while (scrollTop >= y)
+    return sidy - 1
+  }
+
   return Math.floor(scrollTop / rowHeight)
 }
 
@@ -221,8 +261,34 @@ export const getIndexFromColumnWidths = (
   scrollLeft: number,
   columnWidth: number,
   changedColumnWidths: Record<string, number>,
+  changedColumnVisibles: Record<string, number>,
 ): number => {
+  if (
+    Object.keys(changedColumnWidths).length &&
+    Object.keys(changedColumnVisibles).length
+  ) {
+    // 配置中既有列宽定义，又有列隐藏定义
+    let sidx = 0
+    let x = 0
+    do {
+      if (changedColumnVisibles[`${sidx}`] === 0) {
+        // 该列隐藏
+        x += 0
+      } else {
+        // 该列显示
+        if (changedColumnWidths[`${sidx}`]) {
+          // 该列宽度有自定义
+          x += changedColumnWidths[`${sidx}`]
+        } else {
+          x += columnWidth
+        }
+      }
+      sidx++
+    } while (scrollLeft >= x)
+    return sidx - 1
+  }
   if (Object.keys(changedColumnWidths).length) {
+    // 配置中只有列宽定义
     let sidx = 0
     let x = 0
     do {
@@ -233,6 +299,17 @@ export const getIndexFromColumnWidths = (
     } while (scrollLeft >= x)
     return sidx - 1
   }
+  if (Object.keys(changedColumnVisibles).length) {
+    // 配置中只有列隐藏定义
+    let sidx = 0
+    let x = 0
+    do {
+      x += changedColumnVisibles[`${sidx}`] === 0 ? 0 : columnWidth
+      sidx++
+    } while (scrollLeft >= x)
+    return sidx - 1
+  }
+
   return Math.floor(scrollLeft / columnWidth)
 }
 
@@ -240,14 +317,50 @@ export const getYSpaceFromRowHeights = (
   startIndex: number,
   rowHeight: number,
   changedRowHeights: Record<string, number>,
+  changedRowVisibles: Record<string, number>,
 ): number => {
+  if (
+    Object.keys(changedRowHeights).length &&
+    Object.keys(changedRowVisibles).length
+  ) {
+    // 配置中既有行高定义，又有行隐藏定义
+    let sidy = 0
+    let ySpace = 0
+    while (startIndex > sidy) {
+      if (changedRowVisibles[`${sidy}`] === 0) {
+        // 该行隐藏
+        ySpace += 0
+      } else {
+        // 该行显示
+        if (changedRowHeights[`${sidy}`]) {
+          // 该行高度有自定义
+          ySpace += changedRowHeights[`${sidy}`]
+        } else {
+          ySpace += rowHeight
+        }
+      }
+      sidy++
+    }
+    return ySpace
+  }
   if (Object.keys(changedRowHeights).length) {
+    // 配置中只有行高定义
     let sidx = 0
     let ySpace = 0
     while (startIndex > sidx) {
       ySpace += changedRowHeights[`${sidx}`]
         ? changedRowHeights[`${sidx}`]
         : rowHeight
+      sidx++
+    }
+    return ySpace
+  }
+  if (Object.keys(changedRowVisibles).length) {
+    // 配置中只有行隐藏定义
+    let sidx = 0
+    let ySpace = 0
+    while (startIndex > sidx) {
+      ySpace += changedRowVisibles[`${sidx}`] === 0 ? 0 : rowHeight
       sidx++
     }
     return ySpace
@@ -259,8 +372,34 @@ export const getXSpaceFromColumnWidths = (
   startColIndex: number,
   colWidth: number,
   changedColumnWidths: Record<string, number>,
+  changedColumnVisibles: Record<string, number>,
 ): number => {
+  if (
+    Object.keys(changedColumnWidths).length &&
+    Object.keys(changedColumnVisibles).length
+  ) {
+    // 配置中既有列宽定义，又有列隐藏定义
+    let sidx = 0
+    let xSpace = 0
+    while (startColIndex > sidx) {
+      if (changedColumnVisibles[`${sidx}`] === 0) {
+        // 该列隐藏
+        xSpace += 0
+      } else {
+        // 该列显示
+        if (changedColumnWidths[`${sidx}`]) {
+          // 该列宽度有自定义
+          xSpace += changedColumnWidths[`${sidx}`]
+        } else {
+          xSpace += colWidth
+        }
+      }
+      sidx++
+    }
+    return xSpace - 1
+  }
   if (Object.keys(changedColumnWidths).length) {
+    // 配置中只有列宽定义
     let sidx = 0
     let xSpace = 0
     while (startColIndex > sidx) {
@@ -271,7 +410,59 @@ export const getXSpaceFromColumnWidths = (
     }
     return xSpace
   }
+  if (Object.keys(changedColumnVisibles).length) {
+    // 配置中只有列隐藏定义
+    let sidx = 0
+    let xSpace = 0
+    while (startColIndex > sidx) {
+      xSpace += changedColumnVisibles[`${sidx}`] === 0 ? 0 : colWidth
+      sidx++
+    }
+    return xSpace
+  }
   return Math.max(0, startColIndex * colWidth)
+}
+
+export const getRealVisibleWidthSize = (
+  viewportWidth: number,
+  visibleIndex: number,
+  colWidth: number,
+  changedColumnWidths: Record<string, number>,
+  changedColumnVisibles: Record<string, number>,
+): number => {
+  let x = 0
+  let xSize = 0
+  while (xSize < viewportWidth * 1.2) {
+    xSize +=
+      changedColumnVisibles[`${visibleIndex + x}`] === 0
+        ? 0
+        : changedColumnWidths[`${visibleIndex + x}`]
+        ? changedColumnWidths[`${visibleIndex + x}`]
+        : colWidth
+    x++
+  }
+  return x
+}
+
+export const getRealVisibleHeightSize = (
+  viewportHeight: number,
+  visibleIndex: number,
+  rowHeight: number,
+  changedRowWidths: Record<string, number>,
+  changedRowVisibles: Record<string, number>,
+): number => {
+  let y = 0
+  let ySize = 0
+  while (ySize < viewportHeight * 1.2) {
+    ySize +=
+      changedRowVisibles[`${visibleIndex + y}`] === 0
+        ? 0
+        : changedRowWidths[`${visibleIndex + y}`]
+        ? changedRowWidths[`${visibleIndex + y}`]
+        : rowHeight
+    y++
+  }
+  return y
 }
 
 export const getWidth = (
@@ -279,14 +470,56 @@ export const getWidth = (
   total: number,
   colWidth: number,
   changedColumnWidths: Record<string, number>,
+  changedColumnVisibles: Record<string, number>,
 ): number => {
   let changeSum = 0
-  for (const k in Object.keys(changedColumnWidths)) {
-    if (
-      changedColumnWidths.hasOwnProperty(Object.keys(changedColumnWidths)[k])
-    ) {
-      changeSum +=
-        changedColumnWidths[Object.keys(changedColumnWidths)[k]] - colWidth
+  if (
+    Object.keys(changedColumnWidths).length &&
+    Object.keys(changedColumnVisibles).length
+  ) {
+    // 配置中既有列宽定义，又有列隐藏定义
+    for (const k in Object.keys(changedColumnWidths)) {
+      if (
+        changedColumnWidths.hasOwnProperty(Object.keys(changedColumnWidths)[k])
+      ) {
+        changeSum +=
+          changedColumnWidths[Object.keys(changedColumnWidths)[k]] - colWidth
+      }
+    }
+    for (const k in Object.keys(changedColumnVisibles)) {
+      if (
+        changedColumnVisibles.hasOwnProperty(
+          Object.keys(changedColumnVisibles)[k],
+        )
+      ) {
+        if (changedColumnWidths[Object.keys(changedColumnVisibles)[k]]) {
+          changeSum -=
+            changedColumnWidths[Object.keys(changedColumnVisibles)[k]]
+        } else {
+          changeSum -= colWidth
+        }
+      }
+    }
+  } else if (Object.keys(changedColumnWidths).length) {
+    // 配置中只有列宽定义
+    for (const k in Object.keys(changedColumnWidths)) {
+      if (
+        changedColumnWidths.hasOwnProperty(Object.keys(changedColumnWidths)[k])
+      ) {
+        changeSum +=
+          changedColumnWidths[Object.keys(changedColumnWidths)[k]] - colWidth
+      }
+    }
+  } else if (Object.keys(changedColumnVisibles).length) {
+    // 配置中只有列隐藏定义
+    for (const k in Object.keys(changedColumnVisibles)) {
+      if (
+        changedColumnVisibles.hasOwnProperty(
+          Object.keys(changedColumnVisibles)[k],
+        )
+      ) {
+        changeSum -= colWidth
+      }
     }
   }
   return rowIndicatorElemWidth + (total - 1) * colWidth + changeSum
@@ -296,13 +529,51 @@ export const getHeight = (
   total: number,
   rowHeight: number,
   changedRowHeights: Record<string, number>,
+  changedRowVisibles: Record<string, number>,
 ): number => {
   let changeSum = 0
-  for (const k in Object.keys(changedRowHeights)) {
-    if (changedRowHeights.hasOwnProperty(Object.keys(changedRowHeights)[k])) {
-      changeSum +=
-        changedRowHeights[Object.keys(changedRowHeights)[k]] - rowHeight
+  if (
+    Object.keys(changedRowHeights).length &&
+    Object.keys(changedRowVisibles).length
+  ) {
+    // 配置中既有行高定义，又有行隐藏定义
+    for (const k in Object.keys(changedRowHeights)) {
+      if (changedRowHeights.hasOwnProperty(Object.keys(changedRowHeights)[k])) {
+        changeSum +=
+          changedRowHeights[Object.keys(changedRowHeights)[k]] - rowHeight
+      }
+    }
+    for (const k in Object.keys(changedRowVisibles)) {
+      if (
+        changedRowVisibles.hasOwnProperty(Object.keys(changedRowVisibles)[k])
+      ) {
+        if (changedRowHeights[Object.keys(changedRowVisibles)[k]]) {
+          changeSum -= changedRowHeights[Object.keys(changedRowVisibles)[k]]
+        } else {
+          changeSum -= rowHeight
+        }
+      }
     }
   }
+  if (Object.keys(changedRowHeights).length) {
+    // 配置中只有行高定义
+    for (const k in Object.keys(changedRowHeights)) {
+      if (changedRowHeights.hasOwnProperty(Object.keys(changedRowHeights)[k])) {
+        changeSum +=
+          changedRowHeights[Object.keys(changedRowHeights)[k]] - rowHeight
+      }
+    }
+  }
+  if (Object.keys(changedRowVisibles).length) {
+    // 配置中只有行隐藏定义
+    for (const k in Object.keys(changedRowVisibles)) {
+      if (
+        changedRowVisibles.hasOwnProperty(Object.keys(changedRowVisibles)[k])
+      ) {
+        changeSum -= rowHeight
+      }
+    }
+  }
+
   return total * rowHeight + changeSum
 }
