@@ -76,6 +76,7 @@ export interface VmaGridMethods {
   calcCurrentCellDisplay(): void
 
   updateColumn(type: string, row: number, col: number): void
+  updateRow(type: string, row: number, col: number): void
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface

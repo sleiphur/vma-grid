@@ -376,6 +376,9 @@ export default defineComponent({
         props.cat === 'normal' || props.cat === 'row-indicator' ? 'td' : 'th',
         {
           class: [props.cat, `${props.type}`],
+          style: {
+            overflow: 'hidden',
+          },
         },
         renderCell(),
       )

@@ -691,6 +691,17 @@ export default defineComponent({
           $vmaCalcGrid.recalculate(true)
         }
         if (type === 'showColumn') {
+          gridReactiveData.columnConfigs[col].visible = false // TODO
+          $vmaCalcGrid.recalculate(false)
+        }
+      },
+      updateRow: (type: string, row: number, col: number) => {
+        if (type === 'hideRow') {
+          gridReactiveData.rowConfigs[row].visible = false
+          gridReactiveData.gridRowsVisibleChanged[`${row}`] = 0
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'showColumn') {
           gridReactiveData.columnConfigs[col].visible = false
           $vmaCalcGrid.recalculate(false)
         }

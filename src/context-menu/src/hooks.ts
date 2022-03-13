@@ -275,6 +275,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             // const riStartIndex = menu.param.rowInfoBefore.index
             // const riEndIndex = menu.param.rowInfoAfter.index
             // vmaCalcGrid.hideRow(menu.param.cidx, menu.param.ridx, riStartIndex, riEndIndex)
+            vmaCalcGrid.updateRow('hideRow', menu.param.row, menu.param.col)
           } else if (menu.code === 'showAllRows') {
             // vmaCalcGrid.showAllRows().then(() => {
             //   vmaCalcGrid.filterDataByFilterStore().then(() => {
@@ -468,7 +469,10 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } */
         }
         if (rowTargetNode.flag /* && vmaCalcGrid.props.gridContextRowMenu */) {
-          openCtxMenu(evnt, 'row-indicator', {})
+          openCtxMenu(evnt, 'row-indicator', {
+            row: rowTargetNode.targetElem.getAttribute('row'),
+            col: rowTargetNode.targetElem.getAttribute('col'),
+          })
           // const targetElemRowIndex = rowTargetNode.targetElem.getAttribute('ridx')
           // const item = reactiveData.gridDisplayRowData.find(
           //   (item) => item._index === parseInt(rowTargetNode.targetElem.getAttribute('ridx'))
