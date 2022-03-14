@@ -51,7 +51,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
     ) => {
       const list = []
       if (type === 'grid-corner') {
-        const options = []
+        let options = []
         options.push({
           name: '插入首行',
           code: 'insertFirstRow',
@@ -64,18 +64,24 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           disabled: false,
           visible: true,
         })
-        options.push({
-          name: '显示所有列',
-          code: 'showAllColumns',
-          disabled: false,
-          visible: true,
-        })
+        list.push(options)
+        options = []
         options.push({
           name: '显示所有行',
           code: 'showAllRows',
           disabled: false,
           visible: true,
+          param,
         })
+        options.push({
+          name: '显示所有列',
+          code: 'showAllColumns',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        list.push(options)
+        options = []
         options.push({
           name: '清除固定',
           code: 'clearFix',
@@ -128,8 +134,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         options.push({
-          name: '显示列',
-          code: 'showColumn',
+          name: '显示所有列',
+          code: 'showAllColumns',
           disabled: false,
           visible: true,
           param,
@@ -180,7 +186,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         options.push({
-          name: '显示行',
+          name: '显示所有行',
           code: 'showAllRows',
           disabled: false,
           visible: true,
@@ -249,9 +255,9 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               menu.param.row,
               menu.param.col,
             )
-          } else if (menu.code === 'showColumn') {
+          } else if (menu.code === 'showAllColumns') {
             vmaCalcGrid.updateColumn(
-              'showColumn',
+              'showAllColumns',
               menu.param.row,
               menu.param.col,
             )
@@ -272,16 +278,9 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             //   menu.param.columnInfoAfter
             // )
           } else if (menu.code === 'hideRow') {
-            // const riStartIndex = menu.param.rowInfoBefore.index
-            // const riEndIndex = menu.param.rowInfoAfter.index
-            // vmaCalcGrid.hideRow(menu.param.cidx, menu.param.ridx, riStartIndex, riEndIndex)
             vmaCalcGrid.updateRow('hideRow', menu.param.row, menu.param.col)
           } else if (menu.code === 'showAllRows') {
-            // vmaCalcGrid.showAllRows().then(() => {
-            //   vmaCalcGrid.filterDataByFilterStore().then(() => {
-            //     vmaCalcGrid.setSortCaret()
-            //   })
-            // })
+            vmaCalcGrid.updateRow('showAllRows', menu.param.row, menu.param.col)
           } else if (menu.code === 'insertRowBefore') {
             // const riIndex = menu.param.rowInfoBefore.index
             // console.log(menu.param.rowInfoBefore)
@@ -308,8 +307,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } else if (menu.code === 'insertFirstRow') {
             // // 插入首行
             // vmaCalcGrid.addRow(0, 'before')
-          } else if (menu.code === 'showAllColumns') {
-            // vmaCalcGrid.updateColumn('showColumn', null, null, null, null)
           }
         }
         if (ctxMenuMethods.closeMenu) {
@@ -379,7 +376,11 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         if (
           cornerTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
-          openCtxMenu(evnt, 'grid-corner', {})
+          console.log(cornerTargetNode.targetElem)
+          openCtxMenu(evnt, 'grid-corner', {
+            row: cornerTargetNode.targetElem.getAttribute('row'),
+            col: cornerTargetNode.targetElem.getAttribute('col'),
+          })
         }
         if (
           cellTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
