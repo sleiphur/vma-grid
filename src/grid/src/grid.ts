@@ -690,9 +690,28 @@ export default defineComponent({
           gridReactiveData.gridColumnsVisibleChanged[`${col - 1}`] = 0
           $vmaCalcGrid.recalculate(true)
         }
-        if (type === 'showColumn') {
-          gridReactiveData.columnConfigs[col].visible = false // TODO
-          $vmaCalcGrid.recalculate(false)
+        if (type === 'showAllColumns') {
+          if (Object.keys(gridReactiveData.gridColumnsVisibleChanged).length) {
+            for (const k in Object.keys(
+              gridReactiveData.gridColumnsVisibleChanged,
+            )) {
+              if (
+                gridReactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+                  Object.keys(gridReactiveData.gridColumnsVisibleChanged)[k],
+                )
+              ) {
+                gridReactiveData.columnConfigs[
+                  parseInt(
+                    Object.keys(gridReactiveData.gridColumnsVisibleChanged)[k],
+                    10,
+                  ) + 1
+                ].visible = true
+              }
+            }
+          }
+          console.log(gridReactiveData.columnConfigs)
+          gridReactiveData.gridColumnsVisibleChanged = {}
+          $vmaCalcGrid.recalculate(true)
         }
       },
       updateRow: (type: string, row: number, col: number) => {
@@ -701,9 +720,27 @@ export default defineComponent({
           gridReactiveData.gridRowsVisibleChanged[`${row}`] = 0
           $vmaCalcGrid.recalculate(true)
         }
-        if (type === 'showColumn') {
-          gridReactiveData.columnConfigs[col].visible = false
-          $vmaCalcGrid.recalculate(false)
+        if (type === 'showAllRows') {
+          if (Object.keys(gridReactiveData.gridRowsVisibleChanged).length) {
+            for (const k in Object.keys(
+              gridReactiveData.gridRowsVisibleChanged,
+            )) {
+              if (
+                gridReactiveData.gridRowsVisibleChanged.hasOwnProperty(
+                  Object.keys(gridReactiveData.gridRowsVisibleChanged)[k],
+                )
+              ) {
+                gridReactiveData.rowConfigs[
+                  parseInt(
+                    Object.keys(gridReactiveData.gridRowsVisibleChanged)[k],
+                    10,
+                  )
+                ].visible = true
+              }
+            }
+          }
+          gridReactiveData.gridRowsVisibleChanged = {}
+          $vmaCalcGrid.recalculate(true)
         }
       },
       calcCurrentCellDisplay: () => {
