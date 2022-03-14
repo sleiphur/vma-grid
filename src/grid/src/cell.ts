@@ -284,12 +284,30 @@ export default defineComponent({
       )
     })
 
+    const isFrontwardAdjacentColumnVisible = computed((): boolean => {
+      if (props.c === 1) {
+        return true
+      }
+      return !$vmaCalcGrid.reactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+        `${props.c! - 1 - 1}`,
+      )
+    })
+
     const isDownwardAdjacentRowVisible = computed((): boolean => {
       if (props.r === $vmaCalcGrid.reactiveData.rowConfigs.length) {
         return true
       }
       return !$vmaCalcGrid.reactiveData.gridRowsVisibleChanged.hasOwnProperty(
         `${props.r! + 1}`,
+      )
+    })
+
+    const isBackwardAdjacentColumnVisible = computed((): boolean => {
+      if (props.c === $vmaCalcGrid.reactiveData.columnConfigs.length) {
+        return true
+      }
+      return !$vmaCalcGrid.reactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+        `${props.c!}`,
       )
     })
 
@@ -380,6 +398,48 @@ export default defineComponent({
                 },
               })
             : createCommentVNode(),
+          h(
+            'div',
+            {
+              style: {
+                display: !isFrontwardAdjacentColumnVisible.value
+                  ? 'block'
+                  : 'none',
+              },
+              class: ['column-hide-info-frontward'],
+            },
+            h(IconComponent, {
+              name: 'ellipsis-h',
+              size: $vmaCalcGrid.props.size,
+              // translateY: getHideCaretTranslateY(
+              //     $vmaCalcGrid.props.size!,
+              //     'up',
+              // ),
+              scaleX: 0.7,
+              scaleY: 0.7,
+            }),
+          ),
+          h(
+            'div',
+            {
+              style: {
+                display: !isBackwardAdjacentColumnVisible.value
+                  ? 'block'
+                  : 'none',
+              },
+              class: ['column-hide-info-backward'],
+            },
+            h(IconComponent, {
+              name: 'ellipsis-h',
+              size: $vmaCalcGrid.props.size,
+              // translateY: getHideCaretTranslateY(
+              //     $vmaCalcGrid.props.size!,
+              //     'down',
+              // ),
+              scaleX: 0.7,
+              scaleY: 0.7,
+            }),
+          ),
         ]
       }
       if (props.cat === 'grid-corner') {
