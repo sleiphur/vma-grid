@@ -687,7 +687,7 @@ export default defineComponent({
       updateColumn: (type: string, row: number, col: number) => {
         if (type === 'hideColumn') {
           gridReactiveData.columnConfigs[col].visible = false
-          gridReactiveData.gridColumnsVisibleChanged[`${col}`] = 0
+          gridReactiveData.gridColumnsVisibleChanged[`${col - 1}`] = 0
           $vmaCalcGrid.recalculate(true)
         }
         if (type === 'showColumn') {
@@ -1377,6 +1377,82 @@ export default defineComponent({
                       10,
                     ) + 1
                   }"][col="0"]>div.row-hide-info-upward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'block'
+                })
+            }
+          }
+        }
+      },
+      {
+        deep: true,
+      },
+    )
+
+    watch(
+      () => gridReactiveData.gridColumnsVisibleChanged,
+      (oldValue) => {
+        if (Object.keys(oldValue).length) {
+          for (const k in Object.keys(oldValue)) {
+            if (oldValue.hasOwnProperty(Object.keys(oldValue)[k])) {
+              refGrid.value
+                .querySelectorAll(
+                  `th[col="${parseInt(
+                    Object.keys(oldValue)[k],
+                    10,
+                  )}"][row="0"]>div.column-hide-info-backward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'none'
+                })
+              refGrid.value
+                .querySelectorAll(
+                  `th[col="${
+                    parseInt(Object.keys(oldValue)[k], 10) + 1 + 1
+                  }"][row="0"]>div.column-hide-info-frontward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'none'
+                })
+            }
+          }
+        }
+        if (Object.keys(gridReactiveData.gridColumnsVisibleChanged).length) {
+          for (const k in Object.keys(
+            gridReactiveData.gridColumnsVisibleChanged,
+          )) {
+            if (
+              gridReactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+                Object.keys(gridReactiveData.gridColumnsVisibleChanged)[k],
+              )
+            ) {
+              refGrid.value
+                .querySelectorAll(
+                  `th[col="${parseInt(
+                    Object.keys(gridReactiveData.gridColumnsVisibleChanged)[k],
+                    10,
+                  )}"][row="0"]>div.column-hide-info-backward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'block'
+                })
+              refGrid.value
+                .querySelectorAll(
+                  `th[col="${
+                    parseInt(
+                      Object.keys(gridReactiveData.gridColumnsVisibleChanged)[
+                        k
+                      ],
+                      10,
+                    ) +
+                    1 +
+                    1
+                  }"][row="0"]>div.column-hide-info-frontward`,
                 )
                 .forEach((elem: Element, index: number) => {
                   const target = elem as HTMLDivElement
