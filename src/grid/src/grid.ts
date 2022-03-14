@@ -1318,6 +1318,79 @@ export default defineComponent({
       },
     )
 
+    watch(
+      () => gridReactiveData.gridRowsVisibleChanged,
+      (oldValue) => {
+        if (Object.keys(oldValue).length) {
+          for (const k in Object.keys(oldValue)) {
+            if (oldValue.hasOwnProperty(Object.keys(oldValue)[k])) {
+              refGrid.value
+                .querySelectorAll(
+                  `td[row="${
+                    parseInt(Object.keys(oldValue)[k], 10) - 1
+                  }"][col="0"]>div.row-hide-info-downward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'none'
+                })
+              refGrid.value
+                .querySelectorAll(
+                  `td[row="${
+                    parseInt(Object.keys(oldValue)[k], 10) + 1
+                  }"][col="0"]>div.row-hide-info-upward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'none'
+                })
+            }
+          }
+        }
+        if (Object.keys(gridReactiveData.gridRowsVisibleChanged).length) {
+          for (const k in Object.keys(
+            gridReactiveData.gridRowsVisibleChanged,
+          )) {
+            if (
+              gridReactiveData.gridRowsVisibleChanged.hasOwnProperty(
+                Object.keys(gridReactiveData.gridRowsVisibleChanged)[k],
+              )
+            ) {
+              refGrid.value
+                .querySelectorAll(
+                  `td[row="${
+                    parseInt(
+                      Object.keys(gridReactiveData.gridRowsVisibleChanged)[k],
+                      10,
+                    ) - 1
+                  }"][col="0"]>div.row-hide-info-downward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'block'
+                })
+              refGrid.value
+                .querySelectorAll(
+                  `td[row="${
+                    parseInt(
+                      Object.keys(gridReactiveData.gridRowsVisibleChanged)[k],
+                      10,
+                    ) + 1
+                  }"][col="0"]>div.row-hide-info-upward`,
+                )
+                .forEach((elem: Element, index: number) => {
+                  const target = elem as HTMLDivElement
+                  target.style.display = 'block'
+                })
+            }
+          }
+        }
+      },
+      {
+        deep: true,
+      },
+    )
+
     onMounted(() => {
       loadData().then(() => {
         initCurrentSheetData().then(() => {
