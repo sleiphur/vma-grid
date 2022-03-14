@@ -1,4 +1,5 @@
 import {
+  ComponentOptions,
   computed,
   createCommentVNode,
   defineComponent,
@@ -8,6 +9,7 @@ import {
   PropType,
   provide,
   reactive,
+  resolveComponent,
 } from 'vue'
 import { DomTools } from '../../utils/doms'
 import { getNextColumnIndex } from '../../utils/grid'
@@ -18,6 +20,7 @@ import {
   VmaGridConstructor,
 } from '../../../types/grid'
 import {
+  getHideCaretTranslateY,
   getRenderHeight,
   getRenderWidth,
   getXSpaceFromColumnWidths,
@@ -42,6 +45,8 @@ export default defineComponent({
     // const { slots, emit } = context
 
     const $vmaCalcGrid = inject('$vmaCalcGrid', {} as VmaGridConstructor)
+
+    const IconComponent = resolveComponent('vma-grid-icon') as ComponentOptions
 
     const {
       refGridHeader,
@@ -270,6 +275,24 @@ export default defineComponent({
       }
     }
 
+    const isUpwardAdjacentRowVisible = computed((): boolean => {
+      if (props.r === 0) {
+        return true
+      }
+      return !$vmaCalcGrid.reactiveData.gridRowsVisibleChanged.hasOwnProperty(
+        `${props.r! - 1}`,
+      )
+    })
+
+    const isDownwardAdjacentRowVisible = computed((): boolean => {
+      if (props.r === $vmaCalcGrid.reactiveData.rowConfigs.length) {
+        return true
+      }
+      return !$vmaCalcGrid.reactiveData.gridRowsVisibleChanged.hasOwnProperty(
+        `${props.r! + 1}`,
+      )
+    })
+
     const renderCell = () => {
       if (props.cat === 'row-indicator') {
         return [
@@ -294,6 +317,44 @@ export default defineComponent({
                 },
               })
             : createCommentVNode(),
+          h(
+            'div',
+            {
+              style: {
+                display: !isUpwardAdjacentRowVisible.value ? 'block' : 'none',
+              },
+              class: ['row-hide-info-upward'],
+            },
+            h(IconComponent, {
+              name: 'ellipsis-h',
+              size: $vmaCalcGrid.props.size,
+              translateY: getHideCaretTranslateY(
+                $vmaCalcGrid.props.size!,
+                'up',
+              ),
+              scaleX: 0.7,
+              scaleY: 0.7,
+            }),
+          ),
+          h(
+            'div',
+            {
+              style: {
+                display: !isDownwardAdjacentRowVisible.value ? 'block' : 'none',
+              },
+              class: ['row-hide-info-downward'],
+            },
+            h(IconComponent, {
+              name: 'ellipsis-h',
+              size: $vmaCalcGrid.props.size,
+              translateY: getHideCaretTranslateY(
+                $vmaCalcGrid.props.size!,
+                'down',
+              ),
+              scaleX: 0.7,
+              scaleY: 0.7,
+            }),
+          ),
         ]
       }
       if (props.cat === 'column-indicator') {

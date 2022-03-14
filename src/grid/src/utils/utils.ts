@@ -577,3 +577,52 @@ export const getHeight = (
 
   return total * rowHeight + changeSum
 }
+
+export const getHideCaretTranslateY = (size: string, order: string): number => {
+  if (order === 'up') {
+    if (size === 'xxx-large') {
+      return -9
+    }
+    if (size === 'xx-large') {
+      return -8
+    }
+    if (size === 'x-large') {
+      return -7
+    }
+    if (size === 'large') {
+      return -6
+    }
+    if (size === 'normal') {
+      return -5
+    }
+    if (size === 'small') {
+      return -4
+    }
+    if (size === 'mini') {
+      return -3
+    }
+  } else {
+    if (size === 'xxx-large') {
+      return 10
+    }
+    if (size === 'xx-large') {
+      return 9
+    }
+    if (size === 'x-large') {
+      return 8
+    }
+    if (size === 'large') {
+      return 7
+    }
+    if (size === 'normal') {
+      return 6
+    }
+    if (size === 'small') {
+      return 5
+    }
+    if (size === 'mini') {
+      return 4
+    }
+  }
+  return 0
+}
