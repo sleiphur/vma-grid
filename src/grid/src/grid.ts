@@ -709,7 +709,6 @@ export default defineComponent({
               }
             }
           }
-          console.log(gridReactiveData.columnConfigs)
           gridReactiveData.gridColumnsVisibleChanged = {}
           $vmaCalcGrid.recalculate(true)
         }
