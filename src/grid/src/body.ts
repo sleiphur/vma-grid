@@ -438,7 +438,7 @@ export default defineComponent({
                     ref: refGridLeftFixedBodyX,
                     style: {
                       float: 'left',
-                      height: 0,
+                      height: `1px`,
                     },
                   }),
                   h(
@@ -473,7 +473,7 @@ export default defineComponent({
                   ref: refGridBodyX,
                   style: {
                     float: 'left',
-                    height: 0,
+                    height: `1px`,
                   },
                 }),
                 h(
