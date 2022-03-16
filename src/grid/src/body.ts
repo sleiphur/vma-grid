@@ -439,6 +439,7 @@ export default defineComponent({
                     style: {
                       float: 'left',
                       height: `1px`,
+                      marginTop: `-1px`,
                     },
                   }),
                   h(
@@ -474,6 +475,7 @@ export default defineComponent({
                   style: {
                     float: 'left',
                     height: `1px`,
+                    marginTop: `-1px`,
                   },
                 }),
                 h(

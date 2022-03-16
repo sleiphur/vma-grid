@@ -554,7 +554,7 @@ export default defineComponent({
         gridReactiveData.gridColumnsWidthChanged,
         gridReactiveData.gridColumnsVisibleChanged,
       )
-      const marginLeft = `${leftSpaceWidth}px`
+      const marginLeft = `${Math.max(leftSpaceWidth, 0)}px`
       const topSpaceHeight = getYSpaceFromRowHeights(
         gridReactiveData.startIndex,
         rrh.value,
@@ -780,7 +780,7 @@ export default defineComponent({
             refGridBodyTable.value
               .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
               .forEach((cellElem: any) => {
-                const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
+                const marginLeft = `${Math.max(leftSpaceWidth + cellElem.offsetLeft, 0)}px`
                 const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
                 gridReactiveData.currentCellStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
                 gridReactiveData.currentCellStyle.height = `${cellElem.offsetHeight}px`
