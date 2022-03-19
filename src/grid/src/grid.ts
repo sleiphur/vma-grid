@@ -712,6 +712,86 @@ export default defineComponent({
           gridReactiveData.gridColumnsVisibleChanged = {}
           $vmaCalcGrid.recalculate(true)
         }
+        if (type === 'insertColumnBefore') {
+          gridReactiveData.columnConfigs.map((item: Column) => {
+            if (item.index! >= col) {
+              item.index! += 1
+            }
+            return item
+          })
+          gridReactiveData.columnConfigs.splice(
+            col,
+            0,
+            new Column(
+              Number(col),
+              null,
+              null,
+              'default',
+              null,
+              true,
+              false,
+              'center',
+            ),
+          )
+          const gridColumnsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsVisibleChanged).map((key) => {
+            if (Number(key) >= col) {
+              const newKey = Number(key) + 1
+              gridColumnsVisibleChangedNew[newKey] =
+                gridReactiveData.gridColumnsVisibleChanged[key]
+            } else {
+              gridColumnsVisibleChangedNew[key] =
+                gridReactiveData.gridColumnsVisibleChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsVisibleChanged =
+            gridColumnsVisibleChangedNew
+
+          const gridColumnsWidthChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsWidthChanged).map((key) => {
+            if (Number(key) >= col) {
+              const newKey = Number(key) + 1
+              gridColumnsWidthChangedNew[newKey] =
+                gridReactiveData.gridColumnsWidthChanged[key]
+            } else {
+              gridColumnsWidthChangedNew[key] =
+                gridReactiveData.gridColumnsWidthChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsWidthChanged = gridColumnsWidthChangedNew
+
+          gridReactiveData.currentSheetData.map(
+            (row: Cell[], index: number) => {
+              row.map((cell: Cell) => {
+                if (cell.c! >= col - 1) {
+                  cell.c! += 1
+                }
+                return null
+              })
+              row.splice(
+                Number(col - 1),
+                0,
+                new Cell(
+                  index,
+                  Number(col) - 1,
+                  null,
+                  null,
+                  null,
+                  false,
+                  null,
+                  0,
+                  1,
+                  1,
+                ),
+              )
+              return null
+            },
+          )
+          // TODO 公式怎么调整
+          $vmaCalcGrid.recalculate(true)
+        }
       },
       updateRow: (type: string, row: number, col: number) => {
         if (type === 'hideRow') {
@@ -780,7 +860,10 @@ export default defineComponent({
             refGridBodyTable.value
               .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
               .forEach((cellElem: any) => {
-                const marginLeft = `${Math.max(leftSpaceWidth + cellElem.offsetLeft, 0)}px`
+                const marginLeft = `${Math.max(
+                  leftSpaceWidth + cellElem.offsetLeft,
+                  0,
+                )}px`
                 const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
                 gridReactiveData.currentCellStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
                 gridReactiveData.currentCellStyle.height = `${cellElem.offsetHeight}px`

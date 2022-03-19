@@ -223,8 +223,8 @@ export default defineComponent({
             ref: refGridLeftFixedHeaderX,
             style: {
               float: 'left',
-                height: `1px`,
-                marginTop: `-1px`,
+              height: `1px`,
+              marginTop: `-1px`,
             },
           }),
           h(

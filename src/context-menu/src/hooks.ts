@@ -226,13 +226,11 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
       ctxMenuLinkEvent(evnt: any, menu: any): void {
         if (menu && !menu.disabled) {
           if (menu.code === 'insertColumnBefore') {
-            // vmaCalcGrid.updateColumn(
-            //   'insertColumnBefore',
-            //   menu.param.cidx,
-            //   menu.param.ridx,
-            //   menu.param.columnInfoBefore,
-            //   menu.param.columnInfoAfter
-            // )
+            vmaCalcGrid.updateColumn(
+              'insertColumnBefore',
+              menu.param.row,
+              menu.param.col,
+            )
           } else if (menu.code === 'insertColumnAfter') {
             // vmaCalcGrid.updateColumn(
             //   'insertColumnAfter',
