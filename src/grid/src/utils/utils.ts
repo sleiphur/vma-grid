@@ -432,7 +432,7 @@ export const getRealVisibleWidthSize = (
 ): number => {
   let x = 0
   let xSize = 0
-  while (xSize < viewportWidth * 1.2) {
+  while (xSize < viewportWidth) {
     xSize +=
       changedColumnVisibles[`${visibleIndex + x}`] === 0
         ? 0
@@ -453,7 +453,7 @@ export const getRealVisibleHeightSize = (
 ): number => {
   let y = 0
   let ySize = 0
-  while (ySize < viewportHeight * 1.2) {
+  while (ySize < viewportHeight) {
     ySize +=
       changedRowVisibles[`${visibleIndex + y}`] === 0
         ? 0
@@ -522,7 +522,7 @@ export const getWidth = (
       }
     }
   }
-  return rowIndicatorElemWidth + (total - 1) * colWidth + changeSum
+  return rowIndicatorElemWidth + total * colWidth + changeSum
 }
 
 export const getHeight = (
@@ -581,47 +581,47 @@ export const getHeight = (
 export const getHideCaretTranslateY = (size: string, order: string): number => {
   if (order === 'up') {
     if (size === 'xxx-large') {
-      return -9
-    }
-    if (size === 'xx-large') {
-      return -8
-    }
-    if (size === 'x-large') {
       return -7
     }
-    if (size === 'large') {
+    if (size === 'xx-large') {
       return -6
     }
-    if (size === 'normal') {
+    if (size === 'x-large') {
       return -5
     }
-    if (size === 'small') {
+    if (size === 'large') {
       return -4
     }
-    if (size === 'mini') {
+    if (size === 'normal') {
       return -3
+    }
+    if (size === 'small') {
+      return -2
+    }
+    if (size === 'mini') {
+      return -1
     }
   } else {
     if (size === 'xxx-large') {
-      return 10
-    }
-    if (size === 'xx-large') {
-      return 9
-    }
-    if (size === 'x-large') {
-      return 8
-    }
-    if (size === 'large') {
-      return 7
-    }
-    if (size === 'normal') {
       return 6
     }
-    if (size === 'small') {
+    if (size === 'xx-large') {
       return 5
     }
-    if (size === 'mini') {
+    if (size === 'x-large') {
       return 4
+    }
+    if (size === 'large') {
+      return 3
+    }
+    if (size === 'normal') {
+      return 2
+    }
+    if (size === 'small') {
+      return 1
+    }
+    if (size === 'mini') {
+      return 0
     }
   }
   return 0
