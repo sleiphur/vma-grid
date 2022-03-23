@@ -256,51 +256,31 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               menu.param.col,
             )
           } else if (menu.code === 'fixColumn') {
-            // vmaCalcGrid.updateColumn(
-            //   'fixColumn',
-            //   menu.param.cidx,
-            //   menu.param.ridx,
-            //   menu.param.columnInfoBefore,
-            //   menu.param.columnInfoAfter
-            // )
+            // TODO 固定列
           } else if (menu.code === 'unfixColumn') {
-            // vmaCalcGrid.updateColumn(
-            //   'unfixColumn',
-            //   menu.param.cidx,
-            //   menu.param.ridx,
-            //   menu.param.columnInfoBefore,
-            //   menu.param.columnInfoAfter
-            // )
+            // TODO 取消固定列
           } else if (menu.code === 'hideRow') {
             vmaCalcGrid.updateRow('hideRow', menu.param.row, menu.param.col)
           } else if (menu.code === 'showAllRows') {
             vmaCalcGrid.updateRow('showAllRows', menu.param.row, menu.param.col)
           } else if (menu.code === 'insertRowBefore') {
-            // const riIndex = menu.param.rowInfoBefore.index
-            // console.log(menu.param.rowInfoBefore)
-            // // 前插入行
-            // vmaCalcGrid.addRow(riIndex, 'before')
+            vmaCalcGrid.updateRow(
+              'insertRowBefore',
+              menu.param.row,
+              menu.param.col,
+            )
           } else if (menu.code === 'insertRowAfter') {
-            // const riIndex = menu.param.rowInfoBefore.index
-            // // 后插入行
-            // vmaCalcGrid.addRow(riIndex, 'after')
+            vmaCalcGrid.updateRow(
+              'insertRowAfter',
+              menu.param.row,
+              menu.param.col,
+            )
           } else if (menu.code === 'deleteRow') {
-            // const riIndex = menu.param.rowInfoBefore.index
-            // // 后插入行
-            // vmaCalcGrid.deleteRow(riIndex)
+            vmaCalcGrid.updateRow('deleteRow', menu.param.row, menu.param.col)
           } else if (menu.code === 'insertFirstColumn') {
-            // vmaCalcGrid.updateColumn(
-            //   'insertFirstColumn',
-            //   reactiveData.gridFixedColumnConfig.length > 0
-            //     ? '' + reactiveData.gridFixedColumnConfig[0].colIndex
-            //     : '1',
-            //   '1',
-            //   null,
-            //   null
-            // )
+            // TODO 插入首列
           } else if (menu.code === 'insertFirstRow') {
-            // // 插入首行
-            // vmaCalcGrid.addRow(0, 'before')
+            // TODO 插入首行
           }
         }
         if (ctxMenuMethods.closeMenu) {

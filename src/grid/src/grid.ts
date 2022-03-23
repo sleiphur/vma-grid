@@ -954,6 +954,199 @@ export default defineComponent({
           gridReactiveData.gridRowsVisibleChanged = {}
           $vmaCalcGrid.recalculate(true)
         }
+        if (type === 'insertRowBefore') {
+          gridReactiveData.rowConfigs.map((item: Row) => {
+            if (item.index! >= row) {
+              item.index! += 1
+            }
+            return item
+          })
+          gridReactiveData.rowConfigs.splice(
+            row,
+            0,
+            new Row(
+              Number(row),
+              null,
+              null,
+              'default',
+              null,
+              true,
+              false,
+              'center',
+            ),
+          )
+          // console.log(gridReactiveData.rowConfigs)
+          const gridRowsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
+            if (Number(key) >= row) {
+              const newKey = Number(key) + 1
+              gridRowsVisibleChangedNew[newKey] =
+                gridReactiveData.gridRowsVisibleChanged[key]
+            } else {
+              gridRowsVisibleChangedNew[key] =
+                gridReactiveData.gridRowsVisibleChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
+          const gridRowsHeightChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsHeightChanged).map((key) => {
+            if (Number(key) >= row) {
+              const newKey = Number(key) + 1
+              gridRowsHeightChangedNew[newKey] =
+                gridReactiveData.gridRowsHeightChanged[key]
+            } else {
+              gridRowsHeightChangedNew[key] =
+                gridReactiveData.gridRowsHeightChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridRowsHeightChanged = gridRowsHeightChangedNew
+          gridReactiveData.currentSheetData.map(
+            (aRow: Cell[], index: number) => {
+              aRow.map((cell: Cell) => {
+                if (cell.r! >= row) {
+                  cell.r! += 1
+                }
+                return null
+              })
+              return null
+            },
+          )
+          const aNewRow: Cell[] = []
+          for (let i = 0; i < gridReactiveData.columnConfigs.length - 1; i++) {
+            aNewRow.push(
+              new Cell(Number(row), i, null, null, null, false, null, 0, 1, 1),
+            )
+          }
+          gridReactiveData.currentSheetData.splice(Number(row), 0, aNewRow)
+          // console.log(gridReactiveData.currentSheetData)
+          // TODO 公式调整
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'insertRowAfter') {
+          gridReactiveData.rowConfigs.map((item: Row) => {
+            if (item.index! > row) {
+              item.index! += 1
+            }
+            return item
+          })
+          gridReactiveData.rowConfigs.splice(
+            Number(row) + 1,
+            0,
+            new Row(
+              Number(row) + 1,
+              null,
+              null,
+              'default',
+              null,
+              true,
+              false,
+              'center',
+            ),
+          )
+          // console.log(gridReactiveData.rowConfigs)
+          const gridRowsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
+            if (Number(key) > row) {
+              const newKey = Number(key) + 1
+              gridRowsVisibleChangedNew[newKey] =
+                gridReactiveData.gridRowsVisibleChanged[key]
+            } else {
+              gridRowsVisibleChangedNew[key] =
+                gridReactiveData.gridRowsVisibleChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
+          const gridRowsHeightChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsHeightChanged).map((key) => {
+            if (Number(key) > row) {
+              const newKey = Number(key) + 1
+              gridRowsHeightChangedNew[newKey] =
+                gridReactiveData.gridRowsHeightChanged[key]
+            } else {
+              gridRowsHeightChangedNew[key] =
+                gridReactiveData.gridRowsHeightChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridRowsHeightChanged = gridRowsHeightChangedNew
+          gridReactiveData.currentSheetData.map(
+            (aRow: Cell[], index: number) => {
+              aRow.map((cell: Cell) => {
+                if (cell.r! >= row) {
+                  cell.r! += 1
+                }
+                return null
+              })
+              return null
+            },
+          )
+          const aNewRow: Cell[] = []
+          for (let i = 0; i < gridReactiveData.columnConfigs.length - 1; i++) {
+            aNewRow.push(
+              new Cell(Number(row), i, null, null, null, false, null, 0, 1, 1),
+            )
+          }
+          gridReactiveData.currentSheetData.splice(Number(row) + 1, 0, aNewRow)
+          // console.log(gridReactiveData.currentSheetData)
+          // TODO 公式调整
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'deleteRow') {
+          gridReactiveData.rowConfigs.splice(Number(row), 1)
+          gridReactiveData.rowConfigs.map((item: Row) => {
+            if (item.index! > row) {
+              item.index! -= 1
+            }
+            return item
+          })
+          const gridRowsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
+            if (Number(key) !== Number(row)) {
+              if (Number(key) > Number(row)) {
+                const newKey = Number(key) - 1
+                gridRowsVisibleChangedNew[newKey] =
+                  gridReactiveData.gridRowsVisibleChanged[key]
+              } else {
+                gridRowsVisibleChangedNew[key] =
+                  gridReactiveData.gridRowsVisibleChanged[key]
+              }
+            }
+            return null
+          })
+          gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
+          const gridRowsHeightChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsHeightChanged).map((key) => {
+            if (Number(key) !== Number(row)) {
+              if (Number(key) > Number(row)) {
+                const newKey = Number(key) - 1
+                gridRowsHeightChangedNew[newKey] =
+                  gridReactiveData.gridRowsHeightChanged[key]
+              } else {
+                gridRowsHeightChangedNew[key] =
+                  gridReactiveData.gridRowsHeightChanged[key]
+              }
+            }
+            return null
+          })
+          gridReactiveData.gridRowsHeightChanged = gridRowsHeightChangedNew
+          gridReactiveData.currentSheetData.map(
+            (aRow: Cell[], index: number) => {
+              aRow.map((cell: Cell) => {
+                if (cell.r! > row) {
+                  cell.r! -= 1
+                }
+                return null
+              })
+              return null
+            },
+          )
+          gridReactiveData.currentSheetData.splice(Number(row), 1)
+          // TODO 公式调整
+          $vmaCalcGrid.recalculate(true)
+        }
       },
       calcCurrentCellDisplay: () => {
         if (gridReactiveData.currentCell) {
