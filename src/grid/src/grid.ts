@@ -788,7 +788,141 @@ export default defineComponent({
               return null
             },
           )
-          // TODO 公式怎么调整
+          // TODO 公式调整
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'insertColumnAfter') {
+          gridReactiveData.columnConfigs.map((item: Column) => {
+            if (item.index! > col) {
+              item.index! += 1
+            }
+            return item
+          })
+          gridReactiveData.columnConfigs.splice(
+            Number(col) + 1,
+            0,
+            new Column(
+              Number(col) + 1,
+              null,
+              null,
+              'default',
+              null,
+              true,
+              false,
+              'center',
+            ),
+          )
+          const gridColumnsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsVisibleChanged).map((key) => {
+            if (Number(key) > col) {
+              const newKey = Number(key) + 1
+              gridColumnsVisibleChangedNew[newKey] =
+                gridReactiveData.gridColumnsVisibleChanged[key]
+            } else {
+              gridColumnsVisibleChangedNew[key] =
+                gridReactiveData.gridColumnsVisibleChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsVisibleChanged =
+            gridColumnsVisibleChangedNew
+
+          const gridColumnsWidthChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsWidthChanged).map((key) => {
+            if (Number(key) > col) {
+              const newKey = Number(key) + 1
+              gridColumnsWidthChangedNew[newKey] =
+                gridReactiveData.gridColumnsWidthChanged[key]
+            } else {
+              gridColumnsWidthChangedNew[key] =
+                gridReactiveData.gridColumnsWidthChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsWidthChanged = gridColumnsWidthChangedNew
+
+          gridReactiveData.currentSheetData.map(
+            (row: Cell[], index: number) => {
+              row.map((cell: Cell) => {
+                if (cell.c! > col - 1) {
+                  cell.c! += 1
+                }
+                return null
+              })
+              row.splice(
+                Number(col),
+                0,
+                new Cell(
+                  index,
+                  Number(col),
+                  null,
+                  null,
+                  null,
+                  false,
+                  null,
+                  0,
+                  1,
+                  1,
+                ),
+              )
+              return null
+            },
+          )
+          // TODO 公式调整
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'deleteColumn') {
+          gridReactiveData.columnConfigs.splice(Number(col), 1)
+          gridReactiveData.columnConfigs.map((item: Column) => {
+            if (item.index! > col) {
+              item.index! -= 1
+            }
+            return item
+          })
+          const gridColumnsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsVisibleChanged).map((key) => {
+            if (Number(key) !== Number(col) - 1) {
+              if (Number(key) >= Number(col)) {
+                const newKey = Number(key) - 1
+                gridColumnsVisibleChangedNew[newKey] =
+                  gridReactiveData.gridColumnsVisibleChanged[key]
+              } else {
+                gridColumnsVisibleChangedNew[key] =
+                  gridReactiveData.gridColumnsVisibleChanged[key]
+              }
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsVisibleChanged =
+            gridColumnsVisibleChangedNew
+          const gridColumnsWidthChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsWidthChanged).map((key) => {
+            if (Number(key) !== Number(col) - 1) {
+              if (Number(key) >= Number(col)) {
+                const newKey = Number(key) - 1
+                gridColumnsWidthChangedNew[newKey] =
+                  gridReactiveData.gridColumnsWidthChanged[key]
+              } else {
+                gridColumnsWidthChangedNew[key] =
+                  gridReactiveData.gridColumnsWidthChanged[key]
+              }
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsWidthChanged = gridColumnsWidthChangedNew
+          gridReactiveData.currentSheetData.map(
+            (row: Cell[], index: number) => {
+              row.splice(Number(col) - 1, 1)
+              row.map((cell: Cell) => {
+                if (cell.c! > col - 1) {
+                  cell.c! -= 1
+                }
+                return null
+              })
+              return null
+            },
+          )
+          // TODO 公式调整
           $vmaCalcGrid.recalculate(true)
         }
       },

@@ -232,21 +232,17 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               menu.param.col,
             )
           } else if (menu.code === 'insertColumnAfter') {
-            // vmaCalcGrid.updateColumn(
-            //   'insertColumnAfter',
-            //   menu.param.cidx,
-            //   menu.param.ridx,
-            //   menu.param.columnInfoBefore,
-            //   menu.param.columnInfoAfter
-            // )
+            vmaCalcGrid.updateColumn(
+              'insertColumnAfter',
+              menu.param.row,
+              menu.param.col,
+            )
           } else if (menu.code === 'deleteColumn') {
-            // vmaCalcGrid.updateColumn(
-            //   'deleteColumn',
-            //   menu.param.cidx,
-            //   menu.param.ridx,
-            //   menu.param.columnInfoBefore,
-            //   menu.param.columnInfoAfter
-            // )
+            vmaCalcGrid.updateColumn(
+              'deleteColumn',
+              menu.param.row,
+              menu.param.col,
+            )
           } else if (menu.code === 'hideColumn') {
             vmaCalcGrid.updateColumn(
               'hideColumn',
