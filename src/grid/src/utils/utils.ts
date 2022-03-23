@@ -522,7 +522,7 @@ export const getWidth = (
       }
     }
   }
-  return rowIndicatorElemWidth + total * colWidth + changeSum
+  return rowIndicatorElemWidth + (total - 1) * colWidth + changeSum
 }
 
 export const getHeight = (
