@@ -483,6 +483,15 @@ export default defineComponent({
       refGridBodyY.value.style.height = refGridLeftFixedBodyY.value.style.height
       refGridLeftFixedBody.value.style.top = `${gridReactiveData.gridHeaderHeight}px`
       refGridLeftFixedBodyTable.value.style.width = `${tableWidth}px`
+      if (refGridBodyTable.value) {
+        refGridBodyTable.value.style.width = `${gridReactiveData.tableWidth}px`
+        refGridLeftFixedBodyTable.value.style.width = `${gridReactiveData.tableWidth}px`
+      }
+      if (refGridHeaderTable.value) {
+        refGridHeaderTable.value.style.width = `${
+          gridReactiveData.tableWidth + gridReactiveData.scrollbarWidth
+        }px`
+      }
     }
 
     const calcColumnWidth = () => {
@@ -503,6 +512,9 @@ export default defineComponent({
       })
 
       gridReactiveData.tableWidth = tableWidth
+      console.log(
+        `gridReactiveData.tableWidth - ${gridReactiveData.tableWidth}`,
+      )
 
       nextTick(() => {
         updateStyle()
@@ -564,10 +576,15 @@ export default defineComponent({
       const marginTop = `${topSpaceHeight}px`
       if (refGridBodyTable.value) {
         refGridBodyTable.value.style.transform = `translateX(${marginLeft}) translateY(${marginTop})`
+        refGridBodyTable.value.style.width = `${gridReactiveData.tableWidth}px`
         refGridLeftFixedBodyTable.value.style.transform = `translateY(${marginTop})`
+        refGridLeftFixedBodyTable.value.style.width = `${gridReactiveData.tableWidth}px`
       }
       if (refGridHeaderTable.value) {
         refGridHeaderTable.value.style.transform = `translateX(${marginLeft})`
+        refGridHeaderTable.value.style.width = `${
+          gridReactiveData.tableWidth + gridReactiveData.scrollbarWidth
+        }px`
       }
     }
 
