@@ -13,6 +13,8 @@ import {
   watch,
   ComponentPublicInstance,
   computed,
+  onBeforeUnmount,
+  onUnmounted,
 } from 'vue'
 
 import { isNumeric } from '../../utils/validate/number'
@@ -20,6 +22,7 @@ import { Guid } from '../../utils/guid'
 import { FormulaParser, DepParser } from '../../formula'
 import { Cell } from './helper/Cell'
 import props from './props/grid'
+import { createResizeEvent, ResizeObserver } from '../../utils/resize'
 import {
   VmaGridConstructor,
   VmaGridEmits,
@@ -308,6 +311,8 @@ export default defineComponent({
       },
     } as unknown as VmaGridReactiveData)
 
+    let resizeObserver: ResizeObserver
+
     const $vmaCalcGrid = {
       uId: Guid.create().toString(),
       props,
@@ -512,9 +517,6 @@ export default defineComponent({
       })
 
       gridReactiveData.tableWidth = tableWidth
-      console.log(
-        `gridReactiveData.tableWidth - ${gridReactiveData.tableWidth}`,
-      )
 
       nextTick(() => {
         updateStyle()
@@ -1245,6 +1247,17 @@ export default defineComponent({
         }
         return computeScrollLoad()
       },
+      /**
+       * 获取父容器元素
+       */
+      getParentElem() {
+        const el = refGrid.value
+        if ($vmaCalcGrid) {
+          const gridEl = $vmaCalcGrid.getRefs().refGrid.value
+          return gridEl ? (gridEl.parentNode as HTMLElement) : null
+        }
+        return el ? (el.parentNode as HTMLElement) : null
+      },
       calc: () => {
         const calcCells: Cell[] = []
         gridReactiveData.cells.errorMap = {}
@@ -1724,6 +1737,13 @@ export default defineComponent({
       }
     }
 
+    const handleGlobalResizeEvent = () => {
+      if ($vmaCalcGrid.closeMenu) {
+        $vmaCalcGrid.closeMenu()
+      }
+      $vmaCalcGrid.recalculate(true)
+    }
+
     const handleGlobalMousedownEvent = (event: MouseEvent) => {
       if ($vmaCalcGrid.closeMenu) {
         const { ctxMenuStore } = gridReactiveData
@@ -1765,6 +1785,7 @@ export default defineComponent({
           )
           GlobalEvent.on($vmaCalcGrid, 'mousedown', handleGlobalMousedownEvent)
           GlobalEvent.on($vmaCalcGrid, 'keydown', handleGlobalKeydownEvent)
+          GlobalEvent.on($vmaCalcGrid, 'resize', handleGlobalResizeEvent)
           if ($vmaCalcGrid.handleContextmenuEvent) {
             GlobalEvent.on(
               $vmaCalcGrid,
@@ -1945,6 +1966,17 @@ export default defineComponent({
           $vmaCalcGrid
             .recalculate(true)
             .then(() => {
+              const el = refGrid.value
+              const parentEl = $vmaCalcGrid.getParentElem()
+              resizeObserver = createResizeEvent(() => {
+                $vmaCalcGrid.recalculate(true)
+              })
+              if (el) {
+                resizeObserver.observe(el)
+              }
+              if (parentEl) {
+                resizeObserver.observe(parentEl)
+              }
               GlobalEvent.on(
                 $vmaCalcGrid,
                 'mousewheel',
@@ -1956,6 +1988,7 @@ export default defineComponent({
                 handleGlobalMousedownEvent,
               )
               GlobalEvent.on($vmaCalcGrid, 'keydown', handleGlobalKeydownEvent)
+              GlobalEvent.on($vmaCalcGrid, 'resize', handleGlobalResizeEvent)
               if ($vmaCalcGrid.handleContextmenuEvent) {
                 GlobalEvent.on(
                   $vmaCalcGrid,
@@ -1969,6 +2002,23 @@ export default defineComponent({
             })
         })
       })
+    })
+
+    onBeforeUnmount(() => {
+      if (resizeObserver) {
+        resizeObserver.disconnect()
+      }
+      if ($vmaCalcGrid.closeMenu) {
+        $vmaCalcGrid.closeMenu()
+      }
+    })
+
+    onUnmounted(() => {
+      GlobalEvent.off($vmaCalcGrid, 'mousedown')
+      GlobalEvent.off($vmaCalcGrid, 'mousewheel')
+      GlobalEvent.off($vmaCalcGrid, 'keydown')
+      GlobalEvent.off($vmaCalcGrid, 'resize')
+      GlobalEvent.off($vmaCalcGrid, 'contextmenu')
     })
 
     const renderVN = () =>

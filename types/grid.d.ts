@@ -74,7 +74,7 @@ export interface VmaGridMethods {
   triggerScrollYEvent(evnt: Event): void
   calcCurrentCellPosition(): void
   calcCurrentCellDisplay(): void
-
+  getParentElem(): Element | null;
   updateColumn(type: string, row: number, col: number): void
   updateRow(type: string, row: number, col: number): void
 }
