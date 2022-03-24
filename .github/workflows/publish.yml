@@ -19,7 +19,6 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-      - name: Sync Github Repos To Gitee
       - uses: Yikun/hub-mirror-action@master
         with:
           src: github/sleiphur
