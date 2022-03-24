@@ -31,3 +31,4 @@ jobs:
           force_update: true
           static_list: "vma-grid"
           timeout: '600s'
+          
