@@ -342,6 +342,15 @@ export default defineComponent({
                 display: !isUpwardAdjacentRowVisible.value ? 'block' : 'none',
               },
               class: ['row-hide-info-upward'],
+              onClick: (event: MouseEvent) => {
+                const elem = event.target as HTMLDivElement
+                const targetElem: any = elem.parentElement!.parentElement!
+                $vmaCalcGrid.updateRow(
+                  'showUpRows',
+                  targetElem.attributes.row.value,
+                  targetElem.attributes.col.value,
+                )
+              },
             },
             h(IconComponent, {
               name: 'ellipsis-h',
@@ -361,6 +370,15 @@ export default defineComponent({
                 display: !isDownwardAdjacentRowVisible.value ? 'block' : 'none',
               },
               class: ['row-hide-info-downward'],
+              onClick: (event: MouseEvent) => {
+                const elem = event.target as HTMLDivElement
+                const targetElem: any = elem.parentElement!.parentElement!
+                $vmaCalcGrid.updateRow(
+                  'showDownRows',
+                  targetElem.attributes.row.value,
+                  targetElem.attributes.col.value,
+                )
+              },
             },
             h(IconComponent, {
               name: 'ellipsis-h',

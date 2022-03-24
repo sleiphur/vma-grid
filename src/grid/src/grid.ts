@@ -979,6 +979,56 @@ export default defineComponent({
           gridReactiveData.gridRowsVisibleChanged = {}
           $vmaCalcGrid.recalculate(true)
         }
+        if (type === 'showUpRows') {
+          if (Object.keys(gridReactiveData.gridRowsVisibleChanged).length) {
+            let idx = 1
+            const removeKeys: string[] = []
+            while (
+              gridReactiveData.gridRowsVisibleChanged.hasOwnProperty(
+                `${Number(row) - idx}`,
+              )
+            ) {
+              gridReactiveData.rowConfigs[Number(row) - idx].visible = true
+              removeKeys.push(`${Number(row) - idx}`)
+              idx++
+            }
+            const gridRowsVisibleChangedNew: Record<string, number> = {}
+            Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
+              if (removeKeys.indexOf(key) < 0) {
+                gridRowsVisibleChangedNew[key] =
+                  gridReactiveData.gridRowsVisibleChanged[key]
+              }
+              return null
+            })
+            gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
+          }
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'showDownRows') {
+          if (Object.keys(gridReactiveData.gridRowsVisibleChanged).length) {
+            let idx = 1
+            const removeKeys: string[] = []
+            while (
+              gridReactiveData.gridRowsVisibleChanged.hasOwnProperty(
+                `${Number(row) + idx}`,
+              )
+            ) {
+              gridReactiveData.rowConfigs[Number(row) + idx].visible = true
+              removeKeys.push(`${Number(row) + idx}`)
+              idx++
+            }
+            const gridRowsVisibleChangedNew: Record<string, number> = {}
+            Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
+              if (removeKeys.indexOf(key) < 0) {
+                gridRowsVisibleChangedNew[key] =
+                  gridReactiveData.gridRowsVisibleChanged[key]
+              }
+              return null
+            })
+            gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
+          }
+          $vmaCalcGrid.recalculate(true)
+        }
         if (type === 'insertRowBefore') {
           gridReactiveData.rowConfigs.map((item: Row) => {
             if (item.index! >= row) {
@@ -1814,6 +1864,8 @@ export default defineComponent({
     watch(
       () => gridReactiveData.gridRowsVisibleChanged,
       (oldValue) => {
+        console.log(oldValue)
+        console.log(gridReactiveData.gridRowsVisibleChanged)
         if (Object.keys(oldValue).length) {
           for (const k in Object.keys(oldValue)) {
             if (oldValue.hasOwnProperty(Object.keys(oldValue)[k])) {
