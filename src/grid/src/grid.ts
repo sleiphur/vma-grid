@@ -789,7 +789,9 @@ export default defineComponent({
             },
           )
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calc()
+          })
         }
         if (type === 'insertColumnAfter') {
           gridReactiveData.columnConfigs.map((item: Column) => {
@@ -869,7 +871,9 @@ export default defineComponent({
             },
           )
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calc()
+          })
         }
         if (type === 'deleteColumn') {
           gridReactiveData.columnConfigs.splice(Number(col), 1)
@@ -923,7 +927,9 @@ export default defineComponent({
             },
           )
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calc()
+          })
         }
       },
       updateRow: (type: string, row: number, col: number) => {
@@ -1020,9 +1026,10 @@ export default defineComponent({
             )
           }
           gridReactiveData.currentSheetData.splice(Number(row), 0, aNewRow)
-          // console.log(gridReactiveData.currentSheetData)
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calc()
+          })
         }
         if (type === 'insertRowAfter') {
           gridReactiveData.rowConfigs.map((item: Row) => {
@@ -1090,9 +1097,10 @@ export default defineComponent({
             )
           }
           gridReactiveData.currentSheetData.splice(Number(row) + 1, 0, aNewRow)
-          // console.log(gridReactiveData.currentSheetData)
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calc()
+          })
         }
         if (type === 'deleteRow') {
           gridReactiveData.rowConfigs.splice(Number(row), 1)
@@ -1145,7 +1153,9 @@ export default defineComponent({
           )
           gridReactiveData.currentSheetData.splice(Number(row), 1)
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calc()
+          })
         }
       },
       calcCurrentCellDisplay: () => {
