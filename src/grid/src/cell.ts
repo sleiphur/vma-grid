@@ -425,14 +425,23 @@ export default defineComponent({
                   : 'none',
               },
               class: ['column-hide-info-frontward'],
+              onClick: (event: MouseEvent) => {
+                const elem = event.target as HTMLDivElement
+                const targetElem: any = elem.parentElement!.parentElement!
+                $vmaCalcGrid.updateColumn(
+                  'showFrontColumns',
+                  targetElem.attributes.row.value,
+                  targetElem.attributes.col.value,
+                )
+              },
             },
             h(IconComponent, {
               name: 'ellipsis-h',
               size: $vmaCalcGrid.props.size,
-              // translateY: getHideCaretTranslateY(
-              //     $vmaCalcGrid.props.size!,
-              //     'up',
-              // ),
+              translateY: getHideCaretTranslateY(
+                $vmaCalcGrid.props.size!,
+                'up',
+              ),
               scaleX: 0.7,
               scaleY: 0.7,
             }),
@@ -446,14 +455,23 @@ export default defineComponent({
                   : 'none',
               },
               class: ['column-hide-info-backward'],
+              onClick: (event: MouseEvent) => {
+                const elem = event.target as HTMLDivElement
+                const targetElem: any = elem.parentElement!.parentElement!
+                $vmaCalcGrid.updateColumn(
+                  'showBackColumns',
+                  targetElem.attributes.row.value,
+                  targetElem.attributes.col.value,
+                )
+              },
             },
             h(IconComponent, {
               name: 'ellipsis-h',
               size: $vmaCalcGrid.props.size,
-              // translateY: getHideCaretTranslateY(
-              //     $vmaCalcGrid.props.size!,
-              //     'down',
-              // ),
+              translateY: getHideCaretTranslateY(
+                $vmaCalcGrid.props.size!,
+                'down',
+              ),
               scaleX: 0.7,
               scaleY: 0.7,
             }),

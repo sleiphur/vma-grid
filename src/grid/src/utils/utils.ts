@@ -7,27 +7,27 @@ export function getRowIndicatorRenderWidth(
   gridSize: VmaGridPropTypes.Size,
 ): number {
   if (gridSize === 'xxx-large') {
-    return 14
+    return 20
   }
   if (gridSize === 'xx-large') {
-    return 13
+    return 18
   }
   if (gridSize === 'x-large') {
-    return 12
+    return 16
   }
   if (gridSize === 'large') {
-    return 11
+    return 14
   }
   if (gridSize === 'normal') {
-    return 10
+    return 12
   }
   if (gridSize === 'small') {
-    return 9
+    return 10
   }
   if (gridSize === 'mini') {
     return 8
   }
-  return 10
+  return 12
 }
 
 export function getRenderHeight(
@@ -578,51 +578,4 @@ export const getHeight = (
   return total * rowHeight + changeSum
 }
 
-export const getHideCaretTranslateY = (size: string, order: string): number => {
-  if (order === 'up') {
-    if (size === 'xxx-large') {
-      return -7
-    }
-    if (size === 'xx-large') {
-      return -6
-    }
-    if (size === 'x-large') {
-      return -5
-    }
-    if (size === 'large') {
-      return -4
-    }
-    if (size === 'normal') {
-      return -3
-    }
-    if (size === 'small') {
-      return -2
-    }
-    if (size === 'mini') {
-      return -1
-    }
-  } else {
-    if (size === 'xxx-large') {
-      return 6
-    }
-    if (size === 'xx-large') {
-      return 5
-    }
-    if (size === 'x-large') {
-      return 4
-    }
-    if (size === 'large') {
-      return 3
-    }
-    if (size === 'normal') {
-      return 2
-    }
-    if (size === 'small') {
-      return 1
-    }
-    if (size === 'mini') {
-      return 0
-    }
-  }
-  return 0
-}
+export const getHideCaretTranslateY = (size: string, order: string): number => 0

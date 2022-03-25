@@ -730,6 +730,62 @@ export default defineComponent({
           gridReactiveData.gridColumnsVisibleChanged = {}
           $vmaCalcGrid.recalculate(true)
         }
+        if (type === 'showFrontColumns') {
+          if (Object.keys(gridReactiveData.gridColumnsVisibleChanged).length) {
+            let idx = 1
+            const removeKeys: string[] = []
+            while (
+              gridReactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+                `${Number(col) - idx - 1}`,
+              )
+            ) {
+              gridReactiveData.columnConfigs[Number(col) - idx].visible = true
+              removeKeys.push(`${Number(col) - idx - 1}`)
+              idx++
+            }
+            const gridColumnsVisibleChangedNew: Record<string, number> = {}
+            Object.keys(gridReactiveData.gridColumnsVisibleChanged).map(
+              (key) => {
+                if (removeKeys.indexOf(key) < 0) {
+                  gridColumnsVisibleChangedNew[key] =
+                    gridReactiveData.gridColumnsVisibleChanged[key]
+                }
+                return null
+              },
+            )
+            gridReactiveData.gridColumnsVisibleChanged =
+              gridColumnsVisibleChangedNew
+          }
+          $vmaCalcGrid.recalculate(true)
+        }
+        if (type === 'showBackColumns') {
+          if (Object.keys(gridReactiveData.gridColumnsVisibleChanged).length) {
+            let idx = 1
+            const removeKeys: string[] = []
+            while (
+              gridReactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+                `${Number(col) + idx - 1}`,
+              )
+            ) {
+              gridReactiveData.columnConfigs[Number(col) + idx].visible = true
+              removeKeys.push(`${Number(col) + idx - 1}`)
+              idx++
+            }
+            const gridColumnsVisibleChangedNew: Record<string, number> = {}
+            Object.keys(gridReactiveData.gridColumnsVisibleChanged).map(
+              (key) => {
+                if (removeKeys.indexOf(key) < 0) {
+                  gridColumnsVisibleChangedNew[key] =
+                    gridReactiveData.gridColumnsVisibleChanged[key]
+                }
+                return null
+              },
+            )
+            gridReactiveData.gridColumnsVisibleChanged =
+              gridColumnsVisibleChangedNew
+          }
+          $vmaCalcGrid.recalculate(true)
+        }
         if (type === 'insertColumnBefore') {
           gridReactiveData.columnConfigs.map((item: Column) => {
             if (item.index! >= col) {
