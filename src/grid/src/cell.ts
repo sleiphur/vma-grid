@@ -510,7 +510,7 @@ export default defineComponent({
                 ? 'flex-end'
                 : 'center',
           },
-          onClick: () => {
+          onMousedown: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false
             $vmaCalcGrid.reactiveData.currentCell =
               currentSheetData[props.r!][props.c! - 1]
@@ -540,13 +540,25 @@ export default defineComponent({
             props.cat,
             `${props.type}`,
             {
-              active:
+              'cell-active':
                 props.cat === 'normal' &&
                 $vmaCalcGrid.reactiveData.currentCell &&
                 $vmaCalcGrid.reactiveData.currentCell.r !== undefined &&
                 $vmaCalcGrid.reactiveData.currentCell.c !== undefined &&
                 $vmaCalcGrid.reactiveData.currentCell.r === props.r &&
                 $vmaCalcGrid.reactiveData.currentCell.c === props.c! - 1,
+              'column-indicator-active':
+                props.cat === 'column-indicator' &&
+                $vmaCalcGrid.reactiveData.currentCell &&
+                $vmaCalcGrid.reactiveData.currentCell.r !== undefined &&
+                $vmaCalcGrid.reactiveData.currentCell.c !== undefined &&
+                $vmaCalcGrid.reactiveData.currentCell.c === props.c! - 1,
+              'row-indicator-active':
+                props.cat === 'row-indicator' &&
+                $vmaCalcGrid.reactiveData.currentCell &&
+                $vmaCalcGrid.reactiveData.currentCell.r !== undefined &&
+                $vmaCalcGrid.reactiveData.currentCell.c !== undefined &&
+                $vmaCalcGrid.reactiveData.currentCell.r === props.r,
             },
           ],
           style: {

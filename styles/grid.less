@@ -261,6 +261,13 @@
         white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
         height: inherit;
 
+        &.column-indicator-active {
+          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-primary-color, @grid-primary-color), linear-gradient(darken(@grid-border-color, 5%), darken(@grid-border-color, 5%));
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+          background-position: right top, right bottom, left top;
+        }
+
         .column-resize-handler {
           position: absolute;
           right: 0;
@@ -431,11 +438,10 @@
         font-weight: normal;
         transition: none;
         cursor: default;
-        //white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
         height: inherit;
 
-        &.active {
-          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-primary-color, @grid-primary-color);
+        &.cell-active {
+          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-primary-color, 20%), lighten(@grid-primary-color, 20%));
           background-repeat: no-repeat;
           background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
           background-position: right top, right bottom, left top;
@@ -480,6 +486,13 @@
         cursor: default;
         //white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
         height: inherit;
+
+        &.row-indicator-active {
+          background-image: linear-gradient(@grid-primary-color, @grid-primary-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(darken(@grid-border-color, 5%), darken(@grid-border-color, 5%));
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+          background-position: right top, right bottom, left top;
+        }
 
         .cell {
           white-space:nowrap;
