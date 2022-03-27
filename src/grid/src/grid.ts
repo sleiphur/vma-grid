@@ -424,14 +424,15 @@ export default defineComponent({
       ) {
         Array.from(refGridLeftFixedHeaderColgroup.value.children).forEach(
           (colgroupElem: any, index: number) => {
-            if (index === 0) {
+            const idx = colgroupElem.attributes.idx.value
+            if (idx === 0) {
               colgroupElem.style.width = `${rowIndicatorElemWidth.value}px`
-            } else if (index < columnConfigs.length) {
+            } else if (idx < columnConfigs.length) {
               colgroupElem.style.width = `${
-                columnConfigs[index].visible
-                  ? typeof columnConfigs[index].renderWidth === 'string'
+                columnConfigs[idx].visible
+                  ? typeof columnConfigs[idx].renderWidth === 'string'
                     ? rcw.value
-                    : columnConfigs[index].renderWidth
+                    : columnConfigs[idx].renderWidth
                   : 0
               }px`
             } else {
@@ -441,14 +442,15 @@ export default defineComponent({
         )
         Array.from(refGridLeftFixedBodyColgroup.value.children).forEach(
           (colgroupElem: any, index: number) => {
-            if (index === 0) {
+            const idx = colgroupElem.attributes.idx.value
+            if (idx === 0) {
               colgroupElem.style.width = `${rowIndicatorElemWidth.value}px`
-            } else if (index < columnConfigs.length) {
+            } else if (idx < columnConfigs.length) {
               colgroupElem.style.width = `${
-                columnConfigs[index].visible
-                  ? typeof columnConfigs[index].renderWidth === 'string'
+                columnConfigs[idx].visible
+                  ? typeof columnConfigs[idx].renderWidth === 'string'
                     ? rcw.value
-                    : columnConfigs[index].renderWidth
+                    : columnConfigs[idx].renderWidth
                   : 0
               }px`
             }
@@ -487,7 +489,6 @@ export default defineComponent({
       refGridBodyX.value.style.width = refGridLeftFixedBodyX.value.style.width
       refGridBodyY.value.style.height = refGridLeftFixedBodyY.value.style.height
       refGridLeftFixedBody.value.style.top = `${gridReactiveData.gridHeaderHeight}px`
-      refGridLeftFixedBodyTable.value.style.width = `${tableWidth}px`
       if (refGridBodyTable.value) {
         refGridBodyTable.value.style.width = `${gridReactiveData.tableWidth}px`
         refGridLeftFixedBodyTable.value.style.width = `${gridReactiveData.tableWidth}px`
@@ -568,7 +569,7 @@ export default defineComponent({
         gridReactiveData.gridColumnsWidthChanged,
         gridReactiveData.gridColumnsVisibleChanged,
       )
-      const marginLeft = `${Math.max(leftSpaceWidth, 0)}px`
+      const marginLeft = `${leftSpaceWidth}px`
       const topSpaceHeight = getYSpaceFromRowHeights(
         gridReactiveData.startIndex,
         rrh.value,
@@ -1348,10 +1349,7 @@ export default defineComponent({
             refGridBodyTable.value
               .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
               .forEach((cellElem: any) => {
-                const marginLeft = `${Math.max(
-                  leftSpaceWidth + cellElem.offsetLeft,
-                  0,
-                )}px`
+                const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
                 const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
                 gridReactiveData.currentCellEditorStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
                 gridReactiveData.currentCellEditorStyle.height = `${cellElem.offsetHeight}px`

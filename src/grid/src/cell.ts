@@ -510,7 +510,7 @@ export default defineComponent({
                 ? 'flex-end'
                 : 'center',
           },
-          onMousedown: () => {
+          onMouseup: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false
             $vmaCalcGrid.reactiveData.currentCell =
               currentSheetData[props.r!][props.c! - 1]
