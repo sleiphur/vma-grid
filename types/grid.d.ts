@@ -95,7 +95,7 @@ export interface VmaGridReactiveData {
     rv: Record<string, any>[]
     cv: Record<string, any>[]
   }
-  currentSheetData: any[]
+  currentSheetData: Cell[][]
 
   // 列定义
   columnConfigs: any[]
@@ -167,7 +167,7 @@ export interface VmaGridReactiveData {
   }
 
   currentCell: Cell
-  currentCellStyle: Record<string, any>
+  currentCellEditorStyle: Record<string, any>
   currentCellEditorActive: boolean
   currentCellEditorContent: any
 

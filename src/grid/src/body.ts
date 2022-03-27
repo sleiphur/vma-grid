@@ -508,13 +508,15 @@ export default defineComponent({
                   $vmaCalcGrid.reactiveData.currentCellEditorContent = value
                 },
                 style: {
-                  display: $vmaCalcGrid.reactiveData.currentCellStyle.display,
+                  display:
+                    $vmaCalcGrid.reactiveData.currentCellEditorStyle.display,
                   transform:
-                    $vmaCalcGrid.reactiveData.currentCellStyle.transform,
-                  height: $vmaCalcGrid.reactiveData.currentCellStyle.height,
-                  width: $vmaCalcGrid.reactiveData.currentCellStyle.width,
-                  left: $vmaCalcGrid.reactiveData.currentCellStyle.left,
-                  top: $vmaCalcGrid.reactiveData.currentCellStyle.top,
+                    $vmaCalcGrid.reactiveData.currentCellEditorStyle.transform,
+                  height:
+                    $vmaCalcGrid.reactiveData.currentCellEditorStyle.height,
+                  width: $vmaCalcGrid.reactiveData.currentCellEditorStyle.width,
+                  left: $vmaCalcGrid.reactiveData.currentCellEditorStyle.left,
+                  top: $vmaCalcGrid.reactiveData.currentCellEditorStyle.top,
                 },
                 onBlur: () => {
                   $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(

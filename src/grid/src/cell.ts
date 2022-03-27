@@ -184,8 +184,10 @@ export default defineComponent({
           6,
         )}px`
         $vmaCalcGrid.recalculate(true).then(() => {
-          $vmaCalcGrid.calcCurrentCellPosition()
-          $vmaCalcGrid.calcCurrentCellDisplay()
+          nextTick(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+            $vmaCalcGrid.calcCurrentCellDisplay()
+          })
         })
       }
     }
@@ -269,8 +271,10 @@ export default defineComponent({
           6,
         )}px`
         $vmaCalcGrid.recalculate(true).then(() => {
-          $vmaCalcGrid.calcCurrentCellPosition()
-          $vmaCalcGrid.calcCurrentCellDisplay()
+          nextTick(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+            $vmaCalcGrid.calcCurrentCellDisplay()
+          })
         })
       }
     }
@@ -532,7 +536,19 @@ export default defineComponent({
       h(
         props.cat === 'normal' || props.cat === 'row-indicator' ? 'td' : 'th',
         {
-          class: [props.cat, `${props.type}`],
+          class: [
+            props.cat,
+            `${props.type}`,
+            {
+              active:
+                props.cat === 'normal' &&
+                $vmaCalcGrid.reactiveData.currentCell &&
+                $vmaCalcGrid.reactiveData.currentCell.r !== undefined &&
+                $vmaCalcGrid.reactiveData.currentCell.c !== undefined &&
+                $vmaCalcGrid.reactiveData.currentCell.r === props.r &&
+                $vmaCalcGrid.reactiveData.currentCell.c === props.c! - 1,
+            },
+          ],
           style: {
             overflow: 'hidden',
           },

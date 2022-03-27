@@ -303,6 +303,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         ctxMenuStore.selectChild = child
       },
       handleContextmenuEvent: (evnt: any): void => {
+        // 右键事件发生时，关闭单元格编辑器
+        reactiveData.currentCellEditorActive = false
         const refElem = refGrid.value
         const columnTargetNode = DomTools.getEventTargetNode(
           evnt,

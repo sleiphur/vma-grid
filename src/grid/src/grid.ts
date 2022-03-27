@@ -274,7 +274,7 @@ export default defineComponent({
       },
 
       currentCell: null,
-      currentCellStyle: {
+      currentCellEditorStyle: {
         transform: 'translateX(0) translateY(0)',
         display: 'none',
         left: 0,
@@ -1001,6 +1001,15 @@ export default defineComponent({
               return null
             },
           )
+          if (
+            gridReactiveData.currentCell &&
+            Object.keys(gridReactiveData.currentCell).length > 0
+          ) {
+            const { c } = gridReactiveData.currentCell
+            if (c! === Number(col) - 1) {
+              gridReactiveData.currentCell = {}
+            }
+          }
           // TODO 公式调整
           $vmaCalcGrid.recalculate(true).then(() => {
             $vmaCalcGrid.calc()
@@ -1205,7 +1214,7 @@ export default defineComponent({
           gridReactiveData.currentSheetData.map(
             (aRow: Cell[], index: number) => {
               aRow.map((cell: Cell) => {
-                if (cell.r! >= row) {
+                if (cell.r! > row) {
                   cell.r! += 1
                 }
                 return null
@@ -1216,7 +1225,18 @@ export default defineComponent({
           const aNewRow: Cell[] = []
           for (let i = 0; i < gridReactiveData.columnConfigs.length - 1; i++) {
             aNewRow.push(
-              new Cell(Number(row), i, null, null, null, false, null, 0, 1, 1),
+              new Cell(
+                Number(row) + 1,
+                i,
+                null,
+                null,
+                null,
+                false,
+                null,
+                0,
+                1,
+                1,
+              ),
             )
           }
           gridReactiveData.currentSheetData.splice(Number(row) + 1, 0, aNewRow)
@@ -1275,6 +1295,15 @@ export default defineComponent({
             },
           )
           gridReactiveData.currentSheetData.splice(Number(row), 1)
+          if (
+            gridReactiveData.currentCell &&
+            Object.keys(gridReactiveData.currentCell).length > 0
+          ) {
+            const { r } = gridReactiveData.currentCell
+            if (r! === Number(row)) {
+              gridReactiveData.currentCell = {}
+            }
+          }
           // TODO 公式调整
           $vmaCalcGrid.recalculate(true).then(() => {
             $vmaCalcGrid.calc()
@@ -1291,12 +1320,12 @@ export default defineComponent({
             c! >= gridReactiveData.startColIndex &&
             gridReactiveData.currentCellEditorActive
           ) {
-            gridReactiveData.currentCellStyle.display = 'block'
+            gridReactiveData.currentCellEditorStyle.display = 'block'
           } else {
-            gridReactiveData.currentCellStyle.display = 'none'
+            gridReactiveData.currentCellEditorStyle.display = 'none'
           }
         } else {
-          gridReactiveData.currentCellStyle.display = 'none'
+          gridReactiveData.currentCellEditorStyle.display = 'none'
         }
       },
       calcCurrentCellPosition: () => {
@@ -1324,9 +1353,9 @@ export default defineComponent({
                   0,
                 )}px`
                 const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
-                gridReactiveData.currentCellStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
-                gridReactiveData.currentCellStyle.height = `${cellElem.offsetHeight}px`
-                gridReactiveData.currentCellStyle.width = `${cellElem.offsetWidth}px`
+                gridReactiveData.currentCellEditorStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
+                gridReactiveData.currentCellEditorStyle.height = `${cellElem.offsetHeight}px`
+                gridReactiveData.currentCellEditorStyle.width = `${cellElem.offsetWidth}px`
               })
           })
         }
@@ -1466,7 +1495,7 @@ export default defineComponent({
                             r: r - 1,
                             children: [],
                             ref: gridReactiveData.currentSheetData[r - 1][
-                              `${c - 1}`
+                              c - 1
                             ],
                           }
                         }
@@ -1501,7 +1530,7 @@ export default defineComponent({
                         r: fdItem.row - 1,
                         children: [],
                         ref: gridReactiveData.currentSheetData[fdItem.row - 1][
-                          `${fdItem.col - 1}`
+                          fdItem.col - 1
                         ],
                       }
                     }

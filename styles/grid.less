@@ -434,6 +434,13 @@
         //white-space:nowrap;overflow:hidden;word-break:keep-all;text-overflow:ellipsis;
         height: inherit;
 
+        &.active {
+          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-primary-color, @grid-primary-color);
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+          background-position: right top, right bottom, left top;
+        }
+
         .cell {
           white-space:nowrap;
           overflow:hidden;
