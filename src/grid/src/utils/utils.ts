@@ -36,50 +36,50 @@ export function getRenderHeight(
 ): number {
   if (defaultGridRowHeight) {
     if (gridSize === 'xxx-large') {
-      return Math.max(54, defaultGridRowHeight)
-    }
-    if (gridSize === 'xx-large') {
       return Math.max(50, defaultGridRowHeight)
     }
-    if (gridSize === 'x-large') {
+    if (gridSize === 'xx-large') {
       return Math.max(46, defaultGridRowHeight)
     }
-    if (gridSize === 'large') {
+    if (gridSize === 'x-large') {
       return Math.max(42, defaultGridRowHeight)
     }
-    if (gridSize === 'normal') {
+    if (gridSize === 'large') {
       return Math.max(38, defaultGridRowHeight)
     }
-    if (gridSize === 'small') {
+    if (gridSize === 'normal') {
       return Math.max(34, defaultGridRowHeight)
     }
-    if (gridSize === 'mini') {
+    if (gridSize === 'small') {
       return Math.max(30, defaultGridRowHeight)
+    }
+    if (gridSize === 'mini') {
+      return Math.max(26, defaultGridRowHeight)
     }
   } else {
     if (gridSize === 'xxx-large') {
-      return 54
-    }
-    if (gridSize === 'xx-large') {
       return 50
     }
-    if (gridSize === 'x-large') {
+    if (gridSize === 'xx-large') {
       return 46
     }
-    if (gridSize === 'large') {
+    if (gridSize === 'x-large') {
       return 42
     }
-    if (gridSize === 'normal') {
+    if (gridSize === 'large') {
       return 38
     }
-    if (gridSize === 'small') {
+    if (gridSize === 'normal') {
       return 34
     }
-    if (gridSize === 'mini') {
+    if (gridSize === 'small') {
       return 30
     }
+    if (gridSize === 'mini') {
+      return 26
+    }
   }
-  return 38
+  return 34
 }
 
 export function getRenderWidth(
@@ -88,50 +88,50 @@ export function getRenderWidth(
 ): number {
   if (defaultGridColumnWidth) {
     if (gridSize === 'xxx-large') {
-      return Math.max(192, defaultGridColumnWidth)
-    }
-    if (gridSize === 'xx-large') {
       return Math.max(180, defaultGridColumnWidth)
     }
-    if (gridSize === 'x-large') {
+    if (gridSize === 'xx-large') {
       return Math.max(168, defaultGridColumnWidth)
     }
-    if (gridSize === 'large') {
+    if (gridSize === 'x-large') {
       return Math.max(156, defaultGridColumnWidth)
     }
-    if (gridSize === 'normal') {
+    if (gridSize === 'large') {
       return Math.max(144, defaultGridColumnWidth)
     }
-    if (gridSize === 'small') {
+    if (gridSize === 'normal') {
       return Math.max(132, defaultGridColumnWidth)
     }
-    if (gridSize === 'mini') {
+    if (gridSize === 'small') {
       return Math.max(120, defaultGridColumnWidth)
+    }
+    if (gridSize === 'mini') {
+      return Math.max(108, defaultGridColumnWidth)
     }
   } else {
     if (gridSize === 'xxx-large') {
-      return 192
-    }
-    if (gridSize === 'xx-large') {
       return 180
     }
-    if (gridSize === 'x-large') {
+    if (gridSize === 'xx-large') {
       return 168
     }
-    if (gridSize === 'large') {
+    if (gridSize === 'x-large') {
       return 156
     }
-    if (gridSize === 'normal') {
+    if (gridSize === 'large') {
       return 144
     }
-    if (gridSize === 'small') {
+    if (gridSize === 'normal') {
       return 132
     }
-    if (gridSize === 'mini') {
+    if (gridSize === 'small') {
       return 120
     }
+    if (gridSize === 'mini') {
+      return 108
+    }
   }
-  return 144
+  return 132
 }
 
 export function filterVertexes(
