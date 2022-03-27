@@ -1106,7 +1106,6 @@ export default defineComponent({
               'center',
             ),
           )
-          // console.log(gridReactiveData.rowConfigs)
           const gridRowsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
             if (Number(key) >= row) {
@@ -1177,7 +1176,6 @@ export default defineComponent({
               'center',
             ),
           )
-          // console.log(gridReactiveData.rowConfigs)
           const gridRowsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
             if (Number(key) > row) {
@@ -1920,8 +1918,6 @@ export default defineComponent({
     watch(
       () => gridReactiveData.gridRowsVisibleChanged,
       (oldValue) => {
-        console.log(oldValue)
-        console.log(gridReactiveData.gridRowsVisibleChanged)
         if (Object.keys(oldValue).length) {
           for (const k in Object.keys(oldValue)) {
             if (oldValue.hasOwnProperty(Object.keys(oldValue)[k])) {
