@@ -1,7 +1,6 @@
 @import './common';
 
 .vma-grid-context-menu {
-  //.menu-wrapper {
     display: none;
     &.is--visible {
       position: absolute;
@@ -10,8 +9,8 @@
       border: 1px solid @gray-4;
       box-shadow: 3px 3px 4px -2px rgba(0,0,0,.6);
       z-index: 6;
+      min-width: 150px;
     }
-  //}
 
   .group-wrapper {
     margin: 0;
@@ -23,11 +22,24 @@
       position: relative;
       font-size: 14px;
       margin: 1px 0;
-      padding: 6px 8px;
+      padding: 2px 4px;
       border: 0;
-      //&:last-child {
-      //  border: 0;
-      //}
+      display: flex;
+
+      a {
+        display: flex;
+        color: @gray-8;
+        &.link {
+          width: 100%;
+        }
+        span {
+          flex-grow: 1;
+        }
+        i {
+          width: 18px;
+        }
+      }
+
       &.link--active {
         background-color: @gray-4;
         border-color:@gray-4;

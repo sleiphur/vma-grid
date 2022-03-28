@@ -12,24 +12,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
     const { uId, reactiveData } = vmaCalcGrid
 
     const { refGrid } = vmaCalcGrid.getRefs()
-    // const { refGrid } = getRefs()
-
-    /* const computeCanHandleRow = computed(() => {
-      let canHandleRow = true
-      // if (reactiveData.sort.length > 0) {
-      //   canHandleRow = false
-      //   return canHandleRow
-      // }
-      // if (reactiveData.filterStore.filter.length) {
-      //   for (const o in reactiveData.filterStore.filter) {
-      //     if (reactiveData.filterStore.filter[o].filterTargetContent.length) {
-      //       canHandleRow = false
-      //       return canHandleRow
-      //     }
-      //   }
-      // }
-      return canHandleRow
-    }) */
 
     let ctxMenuMethods = {} as VmaGridCtxMenuMethods
     let ctxMenuPrivateMethods = {} as VmaGridCtxMenuPrivateMethods
@@ -195,7 +177,53 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         list.push(options)
       }
       if (type === 'cell') {
-        const options = []
+        let options = []
+        options.push({
+          name: '复制',
+          code: 'copyCell',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        options.push({
+          name: '粘贴',
+          code: 'pasteCell',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        list.push(options)
+        options = []
+        options.push({
+          name: '格式',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        options.push({
+          name: '字体字号',
+          code: 'cellFont',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        options.push({
+          name: '颜色',
+          code: 'cellFrontColor',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        options.push({
+          name: '填充',
+          code: 'cellBackColor',
+          disabled: false,
+          visible: true,
+          param,
+        })
+        list.push(options)
+        options = []
         options.push({
           name: '固定单元格',
           code: 'fixCell',
@@ -342,13 +370,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               'uid',
             ) === uId,
         )
-        // console.log(uId)
-        // console.log(
-        //   columnTargetNode,
-        //   rowTargetNode,
-        //   cornerTargetNode,
-        //   cellTargetNode,
-        // )
         if (
           cornerTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
@@ -370,112 +391,12 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             row: columnTargetNode.targetElem.getAttribute('row'),
             col: columnTargetNode.targetElem.getAttribute('col'),
           })
-          /* if (
-            reactiveData.gridComputedColumnConfig &&
-            reactiveData.gridComputedColumnConfig.length
-          ) {
-            // 在reactiveData.computedColumnConfigs中寻找 columnTargetNode.targetElem 对应的cidx和ridx
-            const targetElemColumnIndex = columnTargetNode.targetElem.getAttribute('cidx')
-            const targetElemRowIndex = columnTargetNode.targetElem.getAttribute('ridx')
-            // 找到之后根据direction插入gridColumns
-            // 找到之后根据direction插入新的列定义到reactiveData.computedColumnConfigs
-            // 同时要计算新的colspan，递归一直到顶
-            // 若是复杂列配置的情况
-            if (columnTargetNode.targetElem.getAttribute('cidx').indexOf('_') >= 0) {
-              const idxArr = columnTargetNode.targetElem.getAttribute('cidx').split('_')
-              const targetColumnInfoIndexBefore = idxArr[0]
-              let targetColumnInfoBefore: ColumnInfo | null = null
-              const targetColumnInfoIndexAfter = idxArr[idxArr.length - 1]
-              let targetColumnInfoAfter: ColumnInfo | null = null
-              for (const o in reactiveData.gridComputedColumnConfig) {
-                if (
-                  reactiveData.gridComputedColumnConfig[o].index ===
-                  parseInt(targetColumnInfoIndexBefore)
-                ) {
-                  targetColumnInfoBefore = reactiveData.gridComputedColumnConfig[o]
-                }
-                if (
-                  reactiveData.gridComputedColumnConfig[o].index ===
-                  parseInt(targetColumnInfoIndexAfter)
-                ) {
-                  targetColumnInfoAfter = reactiveData.gridComputedColumnConfig[o]
-                }
-              }
-              if (targetColumnInfoBefore && targetColumnInfoAfter) {
-                openCtxMenu(evnt, 'column-indicator', {
-                  cidx: targetElemColumnIndex,
-                  ridx: targetElemRowIndex,
-                  columnInfoBefore: targetColumnInfoBefore,
-                  columnInfoAfter: targetColumnInfoAfter,
-                })
-              }
-            } else {
-              for (const o in reactiveData.gridComputedColumnConfig) {
-                if (
-                  reactiveData.gridComputedColumnConfig[o].index ===
-                  parseInt(columnTargetNode.targetElem.getAttribute('cidx'))
-                ) {
-                  openCtxMenu(evnt, 'column-indicator', {
-                    cidx: targetElemColumnIndex,
-                    ridx: targetElemRowIndex,
-                    columnInfoBefore: reactiveData.gridComputedColumnConfig[o],
-                    columnInfoAfter: reactiveData.gridComputedColumnConfig[o],
-                  })
-                  break
-                }
-              }
-            }
-          } else {
-            // 简单列的情况
-            const targetElemColumnIndex = columnTargetNode.targetElem.getAttribute('cidx')
-            const targetElemRowIndex = columnTargetNode.targetElem.getAttribute('ridx')
-            for (const o in reactiveData.gridComputedColumnConfig) {
-              if (
-                reactiveData.gridComputedColumnConfig[o].index ===
-                parseInt(columnTargetNode.targetElem.getAttribute('cidx'))
-              ) {
-                openCtxMenu(evnt, 'column-indicator', {
-                  cidx: targetElemColumnIndex,
-                  ridx: targetElemRowIndex,
-                  columnInfoBefore: reactiveData.gridComputedColumnConfig[o],
-                  columnInfoAfter: reactiveData.gridComputedColumnConfig[o],
-                })
-                break
-              }
-            }
-          } */
         }
         if (rowTargetNode.flag /* && vmaCalcGrid.props.gridContextRowMenu */) {
           openCtxMenu(evnt, 'row-indicator', {
             row: rowTargetNode.targetElem.getAttribute('row'),
             col: rowTargetNode.targetElem.getAttribute('col'),
           })
-          // const targetElemRowIndex = rowTargetNode.targetElem.getAttribute('ridx')
-          // const item = reactiveData.gridDisplayRowData.find(
-          //   (item) => item._index === parseInt(rowTargetNode.targetElem.getAttribute('ridx'))
-          // )
-          // if (item) {
-          //   openCtxMenu(evnt, 'row-indicator', {
-          //     cidx: null,
-          //     ridx: targetElemRowIndex,
-          //     rowInfoBefore: item,
-          //     rowInfoAfter: item,
-          //   })
-          // }
-          // for (const o in reactiveData.gridDisplayRowData) {
-          //   if (
-          //     reactiveData.gridDisplayRowData.get(parseInt(o))._index ===
-          //     parseInt(rowTargetNode.targetElem.getAttribute('ridx'))
-          //   ) {
-          //     openCtxMenu(evnt, 'row-indicator', {
-          //       cidx: null,
-          //       ridx: targetElemRowIndex,
-          //       rowInfoBefore: reactiveData.gridRows[o],
-          //       rowInfoAfter: reactiveData.gridRows[o],
-          //     })
-          //     break
-          //   }
-          // }
         }
       },
     }
