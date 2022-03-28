@@ -65,7 +65,7 @@ function hasClass(elem: any, cls: any) {
   )
 }
 
-function getDomNode(): Record<string, unknown> {
+function getDomNode(): Record<string, number> {
   const documentElement = document.documentElement
   const bodyElem = document.body
   return {
@@ -135,4 +135,19 @@ export const DomTools = {
   isScale(val: any) {
     return val && /^\d+%$/.test(val)
   },
+}
+
+export function getAbsolutePos(elem: any) {
+  const bounding = elem.getBoundingClientRect()
+  const boundingTop = bounding.top
+  const boundingLeft = bounding.left
+  const { scrollTop, scrollLeft, visibleHeight, visibleWidth } = getDomNode()
+  return {
+    boundingTop,
+    top: scrollTop + boundingTop,
+    boundingLeft,
+    left: scrollLeft + boundingLeft,
+    visibleHeight,
+    visibleWidth,
+  }
 }

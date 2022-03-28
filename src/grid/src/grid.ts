@@ -50,7 +50,6 @@ import {
 } from './utils/utils'
 import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
-import { VmaCtxMenuInstance } from '../../../types'
 import VmaGrid from '../../vma-grid'
 import { DomTools } from '../../utils/doms'
 
@@ -119,7 +118,7 @@ export default defineComponent({
 
     const refCurrentCellEditor = ref() as Ref<ComponentPublicInstance>
 
-    const refGridCtxMenu = ref() as Ref<VmaCtxMenuInstance>
+    const refGridCtxMenu = ref() as Ref<HTMLDivElement>
 
     const refFoobarPlugin = ref() as Ref<ComponentPublicInstance>
 
@@ -1860,8 +1859,7 @@ export default defineComponent({
         if (
           ctxMenuStore.visible &&
           ctxMenu &&
-          !DomTools.getEventTargetNode(event, ctxMenu.getRefs().refElem.value)
-            .flag
+          !DomTools.getEventTargetNode(event, ctxMenu).flag
         ) {
           $vmaCalcGrid.closeMenu()
         }
@@ -1882,8 +1880,7 @@ export default defineComponent({
         if (
           ctxMenuStore.visible &&
           ctxMenu &&
-          !DomTools.getEventTargetNode(event, ctxMenu.getRefs().refElem.value)
-            .flag
+          !DomTools.getEventTargetNode(event, ctxMenu).flag
         ) {
           $vmaCalcGrid.closeMenu()
         }
@@ -1897,8 +1894,7 @@ export default defineComponent({
         if (
           ctxMenuStore.visible &&
           ctxMenu &&
-          !DomTools.getEventTargetNode(event, ctxMenu.getRefs().refElem.value)
-            .flag
+          !DomTools.getEventTargetNode(event, ctxMenu).flag
         ) {
           $vmaCalcGrid.closeMenu()
         }

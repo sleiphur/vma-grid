@@ -5,15 +5,12 @@ import {
   VmaGridComponentInstance,
 } from './common'
 
-export type VmaCtxMenuInstance = ComponentPublicInstance<VmaCtxMenuProps, VmaGridCtxMenuConstructor>
-
 export namespace VmaGridCtxMenuPropTypes {
   export type Size = SizeType
   export type Type = CompType
 }
 
 export interface CtxMenuPrivateRef {
-  refElem: Ref<HTMLDivElement>
 }
 export type VmaCtxMenuPrivateRef = CtxMenuPrivateRef
 

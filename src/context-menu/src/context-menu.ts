@@ -25,13 +25,10 @@ export default defineComponent({
     )
 
     const { reactiveData } = $vmaCalcGrid
+    const { refGridCtxMenu } = $vmaCalcGrid.getRefs()
     const { ctxMenuStore } = reactiveData
 
-    const refElem = ref() as Ref<HTMLDivElement>
-
-    const refMaps: VmaCtxMenuPrivateRef = {
-      refElem,
-    }
+    const refMaps: VmaCtxMenuPrivateRef = {}
 
     const $ctxMenu = {
       uId: Guid.create().toString(),
@@ -45,7 +42,7 @@ export default defineComponent({
         h(
           'div',
           {
-            ref: refElem,
+            ref: refGridCtxMenu,
             class: [
               'vma-grid-context-menu',
               {

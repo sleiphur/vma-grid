@@ -1,17 +1,16 @@
-import { computed, nextTick } from 'vue'
+import { nextTick } from 'vue'
 import { VmaGridGlobalHooksHandlers, VmaGridConstructor } from '../../../types'
 import {
   VmaGridCtxMenuMethods,
   VmaGridCtxMenuPrivateMethods,
 } from '../../../types/context-menu'
-import { DomTools } from '../../utils/doms'
-import { Column } from '../../grid/src/helper/Column'
+import { DomTools, getAbsolutePos } from '../../utils/doms'
 
 const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
   setupGrid(vmaCalcGrid: VmaGridConstructor) {
     const { uId, reactiveData } = vmaCalcGrid
 
-    const { refGrid } = vmaCalcGrid.getRefs()
+    const { refGrid, refGridCtxMenu } = vmaCalcGrid.getRefs()
 
     let ctxMenuMethods = {} as VmaGridCtxMenuMethods
     let ctxMenuPrivateMethods = {} as VmaGridCtxMenuPrivateMethods
@@ -234,8 +233,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         list.push(options)
       }
       evnt.preventDefault()
-      const { scrollTop, scrollLeft, visibleHeight, visibleWidth } =
-        DomTools.getDomNode()
+      const { scrollTop, scrollLeft } = DomTools.getDomNode()
       const top = evnt.clientY + scrollTop
       const left = evnt.clientX + scrollLeft
       Object.assign(reactiveData.ctxMenuStore, {
@@ -249,7 +247,32 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           left: `${left}px`,
         },
       })
+      nextTick(() => {
+        const { scrollTop, scrollLeft, visibleHeight, visibleWidth } =
+          DomTools.getDomNode()
+        const top = evnt.clientY + scrollTop
+        const left = evnt.clientX + scrollLeft
+        const ctxElem = refGridCtxMenu.value
+        const clientHeight = ctxElem.clientHeight
+        const clientWidth = ctxElem.clientWidth
+        const { boundingTop, boundingLeft } = getAbsolutePos(ctxElem)
+        const offsetTop = boundingTop + clientHeight - visibleHeight
+        const offsetLeft = boundingLeft + clientWidth - visibleWidth
+        if (offsetTop > -10) {
+          reactiveData.ctxMenuStore.style.top = `${Math.max(
+            scrollTop + 2,
+            top - clientHeight - 2,
+          )}px`
+        }
+        if (offsetLeft > -10) {
+          reactiveData.ctxMenuStore.style.left = `${Math.max(
+            scrollLeft + 2,
+            left - clientWidth - 2,
+          )}px`
+        }
+      })
     }
+
     ctxMenuPrivateMethods = {
       ctxMenuLinkEvent(evnt: any, menu: any): void {
         if (menu && !menu.disabled) {
@@ -373,7 +396,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         if (
           cornerTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
-          console.log(cornerTargetNode.targetElem)
           openCtxMenu(evnt, 'grid-corner', {
             row: cornerTargetNode.targetElem.getAttribute('row'),
             col: cornerTargetNode.targetElem.getAttribute('col'),

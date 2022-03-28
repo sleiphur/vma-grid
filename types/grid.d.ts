@@ -5,9 +5,6 @@ import {
 } from './common'
 import { ComponentPublicInstance, Ref, RenderFunction, SetupContext } from 'vue'
 import { Cell } from '../src/grid/src/helper/Cell'
-import {Row} from "../src/grid/src/helper/Row";
-import {Column} from "../src/grid/src/helper/Column";
-import {VmaCtxMenuInstance} from "./context-menu";
 
 export type AlignHorizontalType = 'left' | 'center' | 'right'
 
@@ -242,7 +239,7 @@ export interface VmaGridRefs {
 
   refCurrentCellEditor: Ref<ComponentPublicInstance>
 
-  refGridCtxMenu: Ref<VmaCtxMenuInstance>
+  refGridCtxMenu: Ref<HTMLDivElement>
 }
 
 export type VmaGridEmits = ['update:data', 'change']
