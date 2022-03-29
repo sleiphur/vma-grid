@@ -509,6 +509,12 @@ export default defineComponent({
                 : $vmaCalcGrid.props.alignV === 'bottom'
                 ? 'flex-end'
                 : 'center',
+            fontSize: currentSheetData[props.r!][props.c! - 1].fs
+              ? `${currentSheetData[props.r!][props.c! - 1].fs}px`
+              : null,
+            fontFamily: currentSheetData[props.r!][props.c! - 1].ff
+              ? `${currentSheetData[props.r!][props.c! - 1].ff}`
+              : null,
           },
           onMouseup: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false

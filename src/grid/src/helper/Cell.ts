@@ -20,6 +20,10 @@ export class Cell {
 
   t?: number // 计算时间戳
 
+  fs?: number // fontSize
+
+  ff?: string // fontFamily
+
   constructor(
     r: number,
     c: number,
@@ -31,6 +35,8 @@ export class Cell {
     t: number | null,
     rs: number | null,
     cs: number | null,
+    fs: number | null,
+    ff: number | null,
   ) {
     Object.assign(this, {
       r,
@@ -43,6 +49,8 @@ export class Cell {
       t,
       rs,
       cs,
+      fs,
+      ff,
     })
   }
 }

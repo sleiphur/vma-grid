@@ -63,8 +63,8 @@ const gridData = reactive([{
       c: 3,
       w: 120
     }, {
-      c: 7,
-      w: 148
+      c: 4,
+      w: 200
     }],
     rv: [{
       r: 7,
@@ -113,13 +113,16 @@ const gridData = reactive([{
       r: 1,
       c: 2,
       name: 'B1',
-      v: '35'
+      v: '35',
+      fs: 12,
     },
     {
       r: 1,
       c: 3,
       name: 'C1',
-      v: '=3 / 0'
+      v: '=3 / 0',
+      fs: 18,
+      ff: 'Verdana',
     },
     {
       r: 1,
@@ -143,7 +146,25 @@ const gridData = reactive([{
       r: 7,
       c: 4,
       name: 'D7',
-      v: '一小段测试文本'
+      v: '一小段测试文本',
+      fs: 16,
+      ff: '华文行楷'
+    },
+    {
+      r: 6,
+      c: 4,
+      name: 'D6',
+      v: '一小段测试文本',
+      fs: 16,
+      ff: '华文隶书'
+    },
+    {
+      r: 5,
+      c: 4,
+      name: 'D5',
+      v: '一小段测试文本',
+      fs: 26,
+      ff: '华文新魏'
     },
     {
       r: 50,

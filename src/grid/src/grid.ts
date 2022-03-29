@@ -859,6 +859,8 @@ export default defineComponent({
                   0,
                   1,
                   1,
+                  null,
+                  null,
                 ),
               )
               return null
@@ -941,6 +943,8 @@ export default defineComponent({
                   0,
                   1,
                   1,
+                  null,
+                  null,
                 ),
               )
               return null
@@ -1156,7 +1160,20 @@ export default defineComponent({
           const aNewRow: Cell[] = []
           for (let i = 0; i < gridReactiveData.columnConfigs.length - 1; i++) {
             aNewRow.push(
-              new Cell(Number(row), i, null, null, null, false, null, 0, 1, 1),
+              new Cell(
+                Number(row),
+                i,
+                null,
+                null,
+                null,
+                false,
+                null,
+                0,
+                1,
+                1,
+                null,
+                null,
+              ),
             )
           }
           gridReactiveData.currentSheetData.splice(Number(row), 0, aNewRow)
@@ -1237,6 +1254,8 @@ export default defineComponent({
                 0,
                 1,
                 1,
+                null,
+                null,
               ),
             )
           }
@@ -1309,6 +1328,18 @@ export default defineComponent({
           $vmaCalcGrid.recalculate(true).then(() => {
             $vmaCalcGrid.calc()
           })
+        }
+      },
+      updateCell: (type: string, row: number, col: number, item: string) => {
+        if (type === 'updateCellFontSize') {
+          console.log(row, col, item)
+          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].fs =
+            Number(item)
+        }
+        if (type === 'updateCellFontFamily') {
+          console.log(row, col, item)
+          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].ff =
+            item
         }
       },
       calcCurrentCellDisplay: () => {
@@ -1668,6 +1699,8 @@ export default defineComponent({
                   0,
                   1,
                   1,
+                  cellData && cellData.fs ? cellData.fs : null,
+                  cellData && cellData.ff ? cellData.ff : null,
                 )
             }
           })

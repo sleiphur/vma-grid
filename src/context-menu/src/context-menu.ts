@@ -218,8 +218,7 @@ export default defineComponent({
                                             {
                                               class: 'link-content',
                                               style: {
-                                                fontFamily:
-                                                  child.rendererFontFamily,
+                                                fontFamily: child.item,
                                               },
                                             },
                                             child.name,

@@ -12,10 +12,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
 
     const { refGrid, refGridCtxMenu, refStylePlugin } = vmaCalcGrid.getRefs()
 
-    console.log(refGrid)
-    console.log(refGridCtxMenu)
-    console.log(refStylePlugin)
-
     let ctxMenuMethods = {} as VmaGridCtxMenuMethods
     let ctxMenuPrivateMethods = {} as VmaGridCtxMenuPrivateMethods
     ctxMenuMethods = {
@@ -233,10 +229,17 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             .map((item: string, index: number) => {
               subOptions.push({
                 name: item,
-                code: `cellFontFamily-${item}`,
+                code: `cellFontFamilyDetail`,
                 disabled: false,
                 visible: true,
-                rendererFontFamily: item,
+                item,
+                prefixIcon:
+                  reactiveData.currentSheetData[Number(param.row)][
+                    Number(param.col) - 1
+                  ].ff === item
+                    ? 'check'
+                    : null,
+                param,
               })
               return null
             })
@@ -254,9 +257,17 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           refStylePlugin.value.fontSize().map((item: string, index: number) => {
             subOptions.push({
               name: item,
-              code: `cellFontSize-${item}`,
+              code: `cellFontSizeDetail`,
               disabled: false,
               visible: true,
+              item,
+              prefixIcon:
+                reactiveData.currentSheetData[Number(param.row)][
+                  Number(param.col) - 1
+                ].fs === Number(item)
+                  ? 'check'
+                  : null,
+              param,
             })
             return null
           })
@@ -394,6 +405,20 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             // TODO 插入首列
           } else if (menu.code === 'insertFirstRow') {
             // TODO 插入首行
+          } else if (menu.code === 'cellFontSizeDetail') {
+            vmaCalcGrid.updateCell(
+              'updateCellFontSize',
+              menu.param.row,
+              menu.param.col,
+              menu.item,
+            )
+          } else if (menu.code === 'cellFontFamilyDetail') {
+            vmaCalcGrid.updateCell(
+              'updateCellFontFamily',
+              menu.param.row,
+              menu.param.col,
+              menu.item,
+            )
           }
         }
         if (ctxMenuMethods.closeMenu) {
@@ -509,7 +534,10 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         if (
           cellTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
-          openCtxMenu(evnt, 'cell', {})
+          openCtxMenu(evnt, 'cell', {
+            row: cellTargetNode.targetElem.getAttribute('row'),
+            col: cellTargetNode.targetElem.getAttribute('col'),
+          })
         }
         if (
           columnTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */

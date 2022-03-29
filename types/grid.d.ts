@@ -75,6 +75,7 @@ export interface VmaGridMethods {
   getParentElem(): Element | null;
   updateColumn(type: string, row: number, col: number): void
   updateRow(type: string, row: number, col: number): void
+  updateCell(type: string, row: number, col: number, item: string): void
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
