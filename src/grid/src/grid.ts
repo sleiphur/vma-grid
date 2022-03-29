@@ -72,10 +72,8 @@ export default defineComponent({
     ) as ComponentOptions
 
     const StylePluginComponent = resolveComponent(
-      'vma-grid-style-plugin-hahahah',
+      'vma-grid-style-plugin',
     ) as ComponentOptions
-
-    console.log(StylePluginComponent.name)
 
     const refColumnResizeBar = ref() as Ref<HTMLDivElement>
     const refRowResizeBar = ref() as Ref<HTMLDivElement>
