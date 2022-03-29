@@ -52,6 +52,10 @@ import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
 import VmaGrid from '../../vma-grid'
 import { DomTools } from '../../utils/doms'
+import {
+  VmaGridStylePluginConstructor,
+  VmaGridStylePluginPropTypes,
+} from '../../../plugins/types'
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -67,14 +71,11 @@ export default defineComponent({
       'vma-grid-body',
     ) as ComponentOptions
 
-    const FoobarPluginComponent = resolveComponent(
-      'vma-grid-foobar-plugin',
+    const StylePluginComponent = resolveComponent(
+      'vma-grid-style-plugin-hahahah',
     ) as ComponentOptions
 
-    // 下面调用一个并不存在的plugin
-    const FoobarPluginComponent123 = resolveComponent(
-      'vma-grid-foobar-plugin123',
-    ) as ComponentOptions
+    console.log(StylePluginComponent.name)
 
     const refColumnResizeBar = ref() as Ref<HTMLDivElement>
     const refRowResizeBar = ref() as Ref<HTMLDivElement>
@@ -120,7 +121,7 @@ export default defineComponent({
 
     const refGridCtxMenu = ref() as Ref<HTMLDivElement>
 
-    const refFoobarPlugin = ref() as Ref<ComponentPublicInstance>
+    const refStylePlugin = ref() as Ref<VmaGridStylePluginConstructor>
 
     const gridRefs: VmaGridRefs = {
       refColumnResizeBar,
@@ -175,6 +176,8 @@ export default defineComponent({
       refCurrentCellEditor,
 
       refGridCtxMenu,
+
+      refStylePlugin,
     }
 
     const gridReactiveData = reactive({
@@ -2238,6 +2241,12 @@ export default defineComponent({
             fixedType: 'center',
             type: props.type,
           }),
+          StylePluginComponent.name
+            ? h(StylePluginComponent, {
+                type: 'font-size',
+                ref: refStylePlugin,
+              })
+            : createCommentVNode(),
         ],
       )
     $vmaCalcGrid.renderVN = renderVN

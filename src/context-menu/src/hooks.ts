@@ -1,4 +1,4 @@
-import { nextTick } from 'vue'
+import { ComponentOptions, nextTick, resolveComponent } from 'vue'
 import { VmaGridGlobalHooksHandlers, VmaGridConstructor } from '../../../types'
 import {
   VmaGridCtxMenuMethods,
@@ -10,7 +10,11 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
   setupGrid(vmaCalcGrid: VmaGridConstructor) {
     const { uId, reactiveData } = vmaCalcGrid
 
-    const { refGrid, refGridCtxMenu } = vmaCalcGrid.getRefs()
+    const { refGrid, refGridCtxMenu, refStylePlugin } = vmaCalcGrid.getRefs()
+
+    console.log(refGrid)
+    console.log(refGridCtxMenu)
+    console.log(refStylePlugin)
 
     let ctxMenuMethods = {} as VmaGridCtxMenuMethods
     let ctxMenuPrivateMethods = {} as VmaGridCtxMenuPrivateMethods
@@ -177,7 +181,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
       }
       if (type === 'cell') {
         let options = []
-        let subOptions = []
+        let subOptions: any = []
         options.push({
           name: '复制',
           code: 'copyCell',
@@ -222,13 +226,49 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           children: subOptions,
           param,
         })
-        options.push({
-          name: '字体字号',
-          code: 'cellFont',
-          disabled: false,
-          visible: true,
-          param,
-        })
+        subOptions = []
+        if (refStylePlugin.value) {
+          refStylePlugin.value
+            .fontFamily()
+            .map((item: string, index: number) => {
+              subOptions.push({
+                name: item,
+                code: `cellFontFamily-${item}`,
+                disabled: false,
+                visible: true,
+                rendererFontFamily: item,
+              })
+              return null
+            })
+          options.push({
+            name: '字体',
+            code: 'cellFont',
+            disabled: false,
+            visible: true,
+            children: subOptions,
+            param,
+          })
+        }
+        subOptions = []
+        if (refStylePlugin.value) {
+          refStylePlugin.value.fontSize().map((item: string, index: number) => {
+            subOptions.push({
+              name: item,
+              code: `cellFontSize-${item}`,
+              disabled: false,
+              visible: true,
+            })
+            return null
+          })
+          options.push({
+            name: '字号',
+            code: 'cellFontSize',
+            disabled: false,
+            visible: true,
+            children: subOptions,
+            param,
+          })
+        }
         options.push({
           name: '颜色',
           code: 'cellFrontColor',
@@ -369,7 +409,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
       },
       ctxMenuMouseoverEvent(evnt: any, option: any, child?: any): void {
         const menuElem = evnt.currentTarget
-        console.log(menuElem)
         const { ctxMenuStore } = reactiveData
         evnt.preventDefault()
         evnt.stopPropagation()
@@ -381,7 +420,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           if (ctxMenuStore.showChild) {
             nextTick(() => {
               const childWrapperElem = menuElem.nextElementSibling
-              console.log(childWrapperElem)
               if (childWrapperElem) {
                 const {
                   boundingTop,

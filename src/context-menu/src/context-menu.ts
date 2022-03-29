@@ -217,9 +217,19 @@ export default defineComponent({
                                             'span',
                                             {
                                               class: 'link-content',
+                                              style: {
+                                                fontFamily:
+                                                  child.rendererFontFamily,
+                                              },
                                             },
                                             child.name,
                                           ),
+                                          h('i', {
+                                            class: [
+                                              'link-suffix',
+                                              option.suffixIcon,
+                                            ],
+                                          }),
                                         ],
                                       ),
                                     )

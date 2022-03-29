@@ -3,8 +3,9 @@ import {
   CompType,
   VmaGridComponentInstance,
 } from './common'
-import { ComponentPublicInstance, Ref, RenderFunction, SetupContext } from 'vue'
+import {ComponentPublicInstance, ref, Ref, RenderFunction, SetupContext} from 'vue'
 import { Cell } from '../src/grid/src/helper/Cell'
+import {VmaGridStylePluginConstructor} from "../plugins/types";
 
 export type AlignHorizontalType = 'left' | 'center' | 'right'
 
@@ -240,6 +241,8 @@ export interface VmaGridRefs {
   refCurrentCellEditor: Ref<ComponentPublicInstance>
 
   refGridCtxMenu: Ref<HTMLDivElement>
+
+  refStylePlugin: Ref<VmaGridStylePluginConstructor>
 }
 
 export type VmaGridEmits = ['update:data', 'change']
