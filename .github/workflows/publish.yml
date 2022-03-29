@@ -19,6 +19,9 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+      - uses: jakejarvis/wait-action@master
+        with:
+          time: '60s'
       - uses: Yikun/hub-mirror-action@master
         with:
           src: github/sleiphur
