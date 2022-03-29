@@ -1,4 +1,12 @@
-import { defineComponent, h, inject, ref, Ref, Teleport } from 'vue'
+import {
+  ComponentOptions,
+  createCommentVNode,
+  defineComponent,
+  h,
+  inject,
+  resolveComponent,
+  Teleport,
+} from 'vue'
 
 import {
   VmaGridConstructor,
@@ -23,6 +31,8 @@ export default defineComponent({
       '$vmaCalcGrid',
       {} as VmaGridConstructor & VmaGridMethods & VmaGridPrivateMethods,
     )
+
+    const IconComponent = resolveComponent('vma-grid-icon') as ComponentOptions
 
     const { reactiveData } = $vmaCalcGrid
     const { refGridCtxMenu } = $vmaCalcGrid.getRefs()
@@ -66,7 +76,6 @@ export default defineComponent({
                       'li',
                       {
                         class: [
-                          '',
                           {
                             'link--disabled': option.disabled,
                             'link--active': option === ctxMenuStore.selected,
@@ -90,9 +99,19 @@ export default defineComponent({
                             },
                           },
                           [
-                            h('i', {
-                              class: ['link-prefix', option.prefixIcon],
-                            }),
+                            h(
+                              'i',
+                              {
+                                class: ['link-prefix', option.prefixIcon],
+                              },
+                              option.prefixIcon
+                                ? h(IconComponent, {
+                                    name: option.prefixIcon,
+                                    size: 'mini',
+                                    translateY: 1,
+                                  })
+                                : createCommentVNode(),
+                            ),
                             h(
                               'span',
                               {
@@ -100,16 +119,114 @@ export default defineComponent({
                               },
                               option.name,
                             ),
-                            h('i', {
-                              class: [
-                                'link-suffix',
-                                hasChildMenus
-                                  ? option.suffixIcon || 'suffix--has-child'
-                                  : option.suffixIcon,
-                              ],
-                            }),
+                            h(
+                              'i',
+                              {
+                                class: [
+                                  'link-suffix',
+                                  hasChildMenus
+                                    ? option.suffixIcon || 'angle-right'
+                                    : option.suffixIcon,
+                                ],
+                              },
+                              hasChildMenus
+                                ? h(IconComponent, {
+                                    name: option.suffixIcon || 'angle-right',
+                                    size: 'mini',
+                                    translateY: 1,
+                                  })
+                                : option.suffixIcon
+                                ? h(IconComponent, {
+                                    name: option.suffixIcon,
+                                    size: 'mini',
+                                    translateY: 1,
+                                  })
+                                : createCommentVNode(),
+                            ),
                           ],
                         ),
+                        hasChildMenus
+                          ? h(
+                              'ul',
+                              {
+                                class: [
+                                  'sub-group-wrapper',
+                                  {
+                                    'is--show':
+                                      option === ctxMenuStore.selected,
+                                  },
+                                ],
+                              },
+                              option.children.map((child: any, cIndex: any) =>
+                                child.visible
+                                  ? h(
+                                      'li',
+                                      {
+                                        class: [
+                                          {
+                                            'link--disabled': child.disabled,
+                                            'link--active':
+                                              child ===
+                                              ctxMenuStore.selectChild,
+                                          },
+                                        ],
+                                        key: `${optionsIndex}_${optionIndex}_${cIndex}`,
+                                      },
+                                      h(
+                                        'a',
+                                        {
+                                          class: 'link',
+                                          onClick(evnt: Event) {
+                                            $vmaCalcGrid.ctxMenuLinkEvent(
+                                              evnt,
+                                              child,
+                                            )
+                                          },
+                                          onMouseover(evnt: Event) {
+                                            $vmaCalcGrid.ctxMenuMouseoverEvent(
+                                              evnt,
+                                              option,
+                                              child,
+                                            )
+                                          },
+                                          onMouseout(evnt: Event) {
+                                            $vmaCalcGrid.ctxMenuMouseoutEvent(
+                                              evnt,
+                                              option,
+                                            )
+                                          },
+                                        },
+                                        [
+                                          h(
+                                            'i',
+                                            {
+                                              class: [
+                                                'link-prefix',
+                                                child.prefixIcon,
+                                              ],
+                                            },
+                                            child.prefixIcon
+                                              ? h(IconComponent, {
+                                                  name: child.prefixIcon,
+                                                  size: 'mini',
+                                                  translateY: 1,
+                                                })
+                                              : createCommentVNode(),
+                                          ),
+                                          h(
+                                            'span',
+                                            {
+                                              class: 'link-content',
+                                            },
+                                            child.name,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : null,
+                              ),
+                            )
+                          : null,
                       ],
                     )
               }),

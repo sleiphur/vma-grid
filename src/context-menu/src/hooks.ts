@@ -177,6 +177,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
       }
       if (type === 'cell') {
         let options = []
+        let subOptions = []
         options.push({
           name: '复制',
           code: 'copyCell',
@@ -193,11 +194,32 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         })
         list.push(options)
         options = []
+        subOptions = []
+        subOptions.push({
+          name: '自动',
+          code: 'cellFormat-auto',
+          disabled: false,
+          visible: true,
+        })
+        subOptions.push({
+          name: '文本',
+          code: 'cellFormat-string',
+          disabled: false,
+          visible: true,
+        })
+        subOptions.push({
+          name: '数字',
+          code: 'cellFormat-number',
+          disabled: false,
+          visible: true,
+        })
         options.push({
           name: '格式',
+          prefixIcon: 'info',
           code: 'cellFormat',
           disabled: false,
           visible: true,
+          children: subOptions,
           param,
         })
         options.push({
@@ -347,11 +369,56 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
       },
       ctxMenuMouseoverEvent(evnt: any, option: any, child?: any): void {
         const menuElem = evnt.currentTarget
+        console.log(menuElem)
         const { ctxMenuStore } = reactiveData
         evnt.preventDefault()
         evnt.stopPropagation()
         ctxMenuStore.selected = option
         ctxMenuStore.selectChild = child
+        if (!child) {
+          ctxMenuStore.showChild =
+            option && option.children && option.children.length > 0
+          if (ctxMenuStore.showChild) {
+            nextTick(() => {
+              const childWrapperElem = menuElem.nextElementSibling
+              console.log(childWrapperElem)
+              if (childWrapperElem) {
+                const {
+                  boundingTop,
+                  boundingLeft,
+                  visibleHeight,
+                  visibleWidth,
+                } = getAbsolutePos(menuElem)
+                const posTop = boundingTop + menuElem.offsetHeight
+                const posLeft = boundingLeft + menuElem.offsetWidth
+                let left = ''
+                let right = ''
+                // 是否超出右侧
+                if (
+                  posLeft + childWrapperElem.offsetWidth >
+                  visibleWidth - 10
+                ) {
+                  left = 'auto'
+                  right = `${menuElem.offsetWidth}px`
+                }
+                // 是否超出底部
+                let top = ''
+                let bottom = ''
+                if (
+                  posTop + childWrapperElem.offsetHeight >
+                  visibleHeight - 10
+                ) {
+                  top = 'auto'
+                  bottom = '0'
+                }
+                childWrapperElem.style.left = left
+                childWrapperElem.style.right = right
+                childWrapperElem.style.top = top
+                childWrapperElem.style.bottom = bottom
+              }
+            })
+          }
+        }
       },
       handleContextmenuEvent: (evnt: any): void => {
         // 右键事件发生时，关闭单元格编辑器
