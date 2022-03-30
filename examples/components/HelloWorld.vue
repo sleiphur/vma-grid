@@ -148,7 +148,12 @@ const gridData = reactive([{
       name: 'D7',
       v: '一小段测试文本',
       fs: 16,
-      ff: '华文行楷'
+      ff: '华文行楷',
+      ol: 1,
+      cl: 1,
+      ul: 1,
+      it: 1,
+      bl: 1,
     },
     {
       r: 6,
@@ -156,7 +161,10 @@ const gridData = reactive([{
       name: 'D6',
       v: '一小段测试文本',
       fs: 16,
-      ff: '华文隶书'
+      ff: '华文隶书',
+      it: 1,
+      ul: 1,
+      ol: 1,
     },
     {
       r: 5,
@@ -164,7 +172,8 @@ const gridData = reactive([{
       name: 'D5',
       v: '一小段测试文本',
       fs: 26,
-      ff: '华文新魏'
+      ff: '华文新魏',
+      bl: 1,
     },
     {
       r: 50,

@@ -60,7 +60,16 @@ export default defineComponent({
                 ff.push('华文行楷')
                 ff.push('华文隶书')
                 return ff
-            }
+            },
+            fontStyle: (): Record<string, string> => {
+                const fs: Record<string, string> = {}
+                fs.bl = '粗体'
+                fs.it = '斜体'
+                fs.ol = '上划线'
+                fs.cl = '中划线'
+                fs.ul = '下划线'
+                return fs
+            },
         } as VmaGridStylePluginMethods
 
         Object.assign($vmaGridStylePlugin, methods)

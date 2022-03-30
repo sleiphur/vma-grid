@@ -491,6 +491,18 @@ export default defineComponent({
           ),
         ]
       }
+
+      const textDecorations = []
+      if (currentSheetData[props.r!][props.c! - 1].cl) {
+        textDecorations.push('line-through')
+      }
+      if (currentSheetData[props.r!][props.c! - 1].ul) {
+        textDecorations.push('underline')
+      }
+      if (currentSheetData[props.r!][props.c! - 1].ol) {
+        textDecorations.push('overline')
+      }
+
       return h(
         'div',
         {
@@ -515,6 +527,14 @@ export default defineComponent({
             fontFamily: currentSheetData[props.r!][props.c! - 1].ff
               ? `${currentSheetData[props.r!][props.c! - 1].ff}`
               : null,
+            fontStyle: currentSheetData[props.r!][props.c! - 1].it
+              ? 'italic'
+              : null,
+            fontWeight: currentSheetData[props.r!][props.c! - 1].bl
+              ? 'bold'
+              : null,
+            textDecoration:
+              textDecorations.length > 0 ? textDecorations.join(' ') : null,
           },
           onMouseup: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false

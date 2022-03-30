@@ -11,6 +11,7 @@ export interface VmaGridStylePluginMethods {
     foobar(val: number): string
     fontSize(): string[]
     fontFamily(): string[]
+    fontStyle(): Record<string, string>
 }
 
 export type VmaGridStylePluginEmits = []

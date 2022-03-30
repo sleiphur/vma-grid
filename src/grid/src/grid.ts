@@ -861,7 +861,12 @@ export default defineComponent({
                   1,
                   null,
                   null,
-                ),
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                ) as Cell & { [key: string]: string },
               )
               return null
             },
@@ -945,7 +950,12 @@ export default defineComponent({
                   1,
                   null,
                   null,
-                ),
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                ) as Cell & { [key: string]: string },
               )
               return null
             },
@@ -1173,7 +1183,12 @@ export default defineComponent({
                 1,
                 null,
                 null,
-              ),
+                false,
+                false,
+                false,
+                false,
+                false,
+              ) as Cell & { [key: string]: string },
             )
           }
           gridReactiveData.currentSheetData.splice(Number(row), 0, aNewRow)
@@ -1256,7 +1271,12 @@ export default defineComponent({
                 1,
                 null,
                 null,
-              ),
+                false,
+                false,
+                false,
+                false,
+                false,
+              ) as Cell & { [key: string]: string },
             )
           }
           gridReactiveData.currentSheetData.splice(Number(row) + 1, 0, aNewRow)
@@ -1332,14 +1352,39 @@ export default defineComponent({
       },
       updateCell: (type: string, row: number, col: number, item: string) => {
         if (type === 'updateCellFontSize') {
-          console.log(row, col, item)
           gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].fs =
             Number(item)
         }
         if (type === 'updateCellFontFamily') {
-          console.log(row, col, item)
           gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].ff =
             item
+        }
+        if (type === 'updateCellFontStyle') {
+          if (item === 'bl') {
+            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].bl =
+              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
+                .bl
+          }
+          if (item === 'it') {
+            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].it =
+              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
+                .it
+          }
+          if (item === 'ol') {
+            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].ol =
+              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
+                .ol
+          }
+          if (item === 'cl') {
+            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].cl =
+              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
+                .cl
+          }
+          if (item === 'ul') {
+            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].ul =
+              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
+                .ul
+          }
         }
       },
       calcCurrentCellDisplay: () => {
@@ -1701,7 +1746,12 @@ export default defineComponent({
                   1,
                   cellData && cellData.fs ? cellData.fs : null,
                   cellData && cellData.ff ? cellData.ff : null,
-                )
+                  !!(cellData && cellData.bl),
+                  !!(cellData && cellData.it),
+                  !!(cellData && cellData.ol),
+                  !!(cellData && cellData.cl),
+                  !!(cellData && cellData.ul),
+                ) as Cell & { [key: string]: string }
             }
           })
         })

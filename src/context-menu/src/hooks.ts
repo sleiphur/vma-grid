@@ -5,6 +5,7 @@ import {
   VmaGridCtxMenuPrivateMethods,
 } from '../../../types/context-menu'
 import { DomTools, getAbsolutePos } from '../../utils/doms'
+import { Cell } from '../../grid/src/helper/Cell'
 
 const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
   setupGrid(vmaCalcGrid: VmaGridConstructor) {
@@ -280,6 +281,32 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             param,
           })
         }
+        subOptions = []
+        if (refStylePlugin.value) {
+          Object.keys(refStylePlugin.value.fontStyle()).map((key: string) => {
+            const cell = reactiveData.currentSheetData[Number(param.row)][
+              Number(param.col) - 1
+            ] as Cell & { [key: string]: any }
+            subOptions.push({
+              name: refStylePlugin.value.fontStyle()[key],
+              code: `cellFontStyleDetail`,
+              disabled: false,
+              visible: true,
+              item: key,
+              prefixIcon: cell[`${key}`] === true ? 'check' : null,
+              param,
+            })
+            return null
+          })
+          options.push({
+            name: '风格',
+            code: 'cellFontStyle',
+            disabled: false,
+            visible: true,
+            children: subOptions,
+            param,
+          })
+        }
         options.push({
           name: '颜色',
           code: 'cellFrontColor',
@@ -415,6 +442,13 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } else if (menu.code === 'cellFontFamilyDetail') {
             vmaCalcGrid.updateCell(
               'updateCellFontFamily',
+              menu.param.row,
+              menu.param.col,
+              menu.item,
+            )
+          } else if (menu.code === 'cellFontStyleDetail') {
+            vmaCalcGrid.updateCell(
+              'updateCellFontStyle',
               menu.param.row,
               menu.param.col,
               menu.item,

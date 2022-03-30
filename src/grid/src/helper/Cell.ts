@@ -24,6 +24,16 @@ export class Cell {
 
   ff?: string // fontFamily
 
+  bl?: boolean // bold
+
+  it?: boolean // italic
+
+  ol?: boolean // over line
+
+  cl?: boolean // cancel line
+
+  ul?: boolean // under line
+
   constructor(
     r: number,
     c: number,
@@ -37,6 +47,11 @@ export class Cell {
     cs: number | null,
     fs: number | null,
     ff: number | null,
+    bl: boolean | null,
+    it: boolean | null,
+    ol: boolean | null,
+    cl: boolean | null,
+    ul: boolean | null,
   ) {
     Object.assign(this, {
       r,
@@ -51,6 +66,11 @@ export class Cell {
       cs,
       fs,
       ff,
+      bl,
+      it,
+      ol,
+      cl,
+      ul,
     })
   }
 }
