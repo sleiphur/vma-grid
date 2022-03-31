@@ -538,12 +538,25 @@ export default defineComponent({
             color: currentSheetData[props.r!][props.c! - 1].fc,
           },
           onMouseup: () => {
+            console.log('onMouseup', props.r, props.c! - 1)
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false
             $vmaCalcGrid.reactiveData.currentCell =
               currentSheetData[props.r!][props.c! - 1]
             $vmaCalcGrid.reactiveData.currentCellEditorContent =
               currentSheetData[props.r!][props.c! - 1].v
           },
+          onMousedown: () => {
+            console.log('onMousedown', props.r, props.c! - 1)
+          },
+          // onDrag: (event: MouseEvent) => {
+          //   // console.log('onDragging', event.target)
+          // },
+          // onDragenter: () => {
+          //   console.log('onDragenter', props.r, props.c! - 1)
+          // },
+          // onDragleave: () => {
+          //   console.log('onDragleave', props.r, props.c! - 1)
+          // },
           onDblclick: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = true
             nextTick(() => {

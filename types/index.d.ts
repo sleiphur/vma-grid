@@ -35,6 +35,7 @@ export * from './checkbox-group'
 export * from './textarea'
 export * from './hooks'
 export * from './context-menu'
+export * from './color-picker'
 export * from './grid'
 
 export {

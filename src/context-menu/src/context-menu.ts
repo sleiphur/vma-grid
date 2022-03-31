@@ -52,11 +52,8 @@ export default defineComponent({
 
     const rendererSuffixComp = (comp: string, menu: any) => {
       if (comp === 'colorPicker') {
-        // console.log(menu.code)
-        // console.log('------')
-        // console.log($vmaCalcGrid.getCell(menu.code, menu.param.row, menu.param.col))
-        // console.log(menu.code === 'cellFrontColor' ? $vmaCalcGrid.getCell(menu.code, menu.param.row, menu.param.col) || '#000000' : $vmaCalcGrid.getCell(menu.code, menu.param.row, menu.param.col))
         return h(ColorPickerComponent, {
+          readonly: false,
           value:
             menu.code === 'cellFrontColor'
               ? $vmaCalcGrid.getCell(

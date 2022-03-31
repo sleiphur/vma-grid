@@ -1,7 +1,7 @@
 {
   "name": "vma-grid",
   "private": false,
-  "version": "0.5.3",
+  "version": "0.5.4",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
@@ -37,7 +37,7 @@
     "src",
     "styles"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "bahttext": "^2.1.0",
     "bessel": "^1.0.2",
     "chevrotain": "^10.1.1",
@@ -90,7 +90,12 @@
     "vite": "^2.8.0",
     "vue-tsc": "^0.29.8",
     "vuepress": "^2.0.0-beta.35",
-    "vuepress-plugin-typedoc": "^0.10.3"
+    "vuepress-plugin-typedoc": "^0.10.3",
+    "bahttext": "^2.1.0",
+    "bessel": "^1.0.2",
+    "chevrotain": "^10.1.1",
+    "jstat": "^1.9.5",
+    "vue": "^3.2.25"
   },
   "license": "MIT",
   "repository": {

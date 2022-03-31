@@ -1,7 +1,5 @@
 @import './common';
 
-// Color Picker
-@color-picker-color-button-disabled-opacity: @disabled-opacity;
 
 .vma-grid-color-picker {
   position: relative;
@@ -26,9 +24,9 @@
     width: 15px;
     height: 15px;
 
-    &--disabled {
-      cursor: not-allowed;
-      opacity: @color-picker-color-button-disabled-opacity;
+    &--readonly {
+      //cursor: not-allowed;
+      //opacity: @color-picker-color-button-readonly-opacity;
     }
   }
 
@@ -37,7 +35,7 @@
     width: 190px;
     background: #fff;
     border: 1px solid #ddd;
-    visibility: hidden;
+    display: none;
     border-radius: 2px;
     margin-top: 2px;
     padding: 10px;
@@ -58,7 +56,7 @@
     }
 
     &--open {
-      visibility: visible;
+      display: block;
       opacity: 1;
       z-index: 1001;
     }

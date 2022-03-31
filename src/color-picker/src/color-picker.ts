@@ -5,13 +5,21 @@ import {
   resolveComponent,
   ComponentOptions,
   VNode,
-  ref,
+  ref, provide, Ref, nextTick,
 } from 'vue'
+import {Guid} from "../../utils/guid";
+import {
+  VmaGridButtonConstructor,
+  VmaGridColorPickerConstructor,
+  VmaGridColorPickerRefs,
+  VmaGridRefs
+} from "../../../types";
+import {getAbsolutePos} from "../../utils/doms";
 
 export default defineComponent({
   name: 'VmaGridColorPicker',
   props: {
-    disabled: {
+    readonly: {
       type: Boolean,
       default: false,
     },
@@ -23,10 +31,24 @@ export default defineComponent({
   },
   emits: ['change'],
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  setup(props, { slots, emit }) {
+  setup(props, context) {
+    const { slots, emit } = context
     const ButtonComponent = resolveComponent(
       'vma-grid-button',
     ) as ComponentOptions
+
+    const refColorPickerPallet = ref() as Ref<HTMLDivElement>
+
+    const gridColorPickerRefs: VmaGridColorPickerRefs = {
+      refColorPickerPallet
+    }
+
+    const $vmaGridColorPicker = {
+      uId: Guid.create().toString(),
+      props,
+      context,
+      getRefs: () => gridColorPickerRefs,
+    } as unknown as VmaGridColorPickerConstructor
 
     const hoverColor = ref('')
     // const colorValue = ref(props.value)
@@ -145,13 +167,54 @@ export default defineComponent({
       openStatus.value = false
     }
 
-    const onClickColorButton = () => {
-      openStatus.value = true
+    const onClickColorButton = (evnt: MouseEvent) => {
+      if (!props.readonly) {
+        openStatus.value = true
+        nextTick(() => {
+          const item: any = evnt.currentTarget
+          const childWrapperElem = item.nextElementSibling
+          if (childWrapperElem) {
+            const {
+              boundingTop,
+              boundingLeft,
+              visibleHeight,
+              visibleWidth,
+            } = getAbsolutePos(item)
+            const posTop = boundingTop + item.offsetHeight
+            const posLeft = boundingLeft + item.offsetWidth
+            let left = ''
+            let right = ''
+            // 是否超出右侧
+            if (
+                posLeft + childWrapperElem.offsetWidth >
+                visibleWidth - 10
+            ) {
+              left = 'auto'
+              right = `${item.offsetWidth}px`
+            }
+            // 是否超出底部
+            let top = ''
+            let bottom = ''
+            if (
+                posTop + childWrapperElem.offsetHeight >
+                visibleHeight - 10
+            ) {
+              top = 'auto'
+              bottom = '0'
+            }
+            childWrapperElem.style.left = left
+            childWrapperElem.style.right = right
+            childWrapperElem.style.top = top
+            childWrapperElem.style.bottom = bottom
+          }
+        })
+
+      }
     }
 
     const colorBtnClassNames = ['vma-grid-color-picker--color-button']
-    if (props.disabled) {
-      colorBtnClassNames.push('vma-grid-color-picker--color-button--disabled')
+    if (props.readonly) {
+      colorBtnClassNames.push('vma-grid-color-picker--color-button--readonly')
     }
 
     const onColorLiClick = (event: Event, color: string) => {
@@ -307,6 +370,7 @@ export default defineComponent({
       h(
         'div',
         {
+          ref: refColorPickerPallet,
           class: [
             'vma-grid-color-picker--color-pallet',
             openStatus.value ? 'vma-grid-color-picker--color-pallet--open' : '',
@@ -320,7 +384,7 @@ export default defineComponent({
         ],
       )
 
-    return () =>
+    const renderVN = () =>
       h(
         'div',
         {
@@ -340,5 +404,14 @@ export default defineComponent({
           renderColorPallet(),
         ],
       )
+
+    $vmaGridColorPicker.renderVN = renderVN
+
+    provide('$vmaGridColorPicker', $vmaGridColorPicker)
+
+    return $vmaGridColorPicker
+  },
+  render() {
+    return this.renderVN()
   },
 })
