@@ -33,6 +33,9 @@ export default defineComponent({
     )
 
     const IconComponent = resolveComponent('vma-grid-icon') as ComponentOptions
+    const ColorPickerComponent = resolveComponent(
+      'vma-grid-color-picker',
+    ) as ComponentOptions
 
     const { reactiveData } = $vmaCalcGrid
     const { refGridCtxMenu } = $vmaCalcGrid.getRefs()
@@ -46,6 +49,35 @@ export default defineComponent({
       context,
       getRefs: () => refMaps,
     } as unknown as VmaGridCtxMenuConstructor
+
+    const rendererSuffixComp = (comp: string, menu: any) => {
+      if (comp === 'colorPicker') {
+        // console.log(menu.code)
+        // console.log('------')
+        // console.log($vmaCalcGrid.getCell(menu.code, menu.param.row, menu.param.col))
+        // console.log(menu.code === 'cellFrontColor' ? $vmaCalcGrid.getCell(menu.code, menu.param.row, menu.param.col) || '#000000' : $vmaCalcGrid.getCell(menu.code, menu.param.row, menu.param.col))
+        return h(ColorPickerComponent, {
+          value:
+            menu.code === 'cellFrontColor'
+              ? $vmaCalcGrid.getCell(
+                  menu.code,
+                  menu.param.row,
+                  menu.param.col,
+                ) || '#000000'
+              : $vmaCalcGrid.getCell(menu.code, menu.param.row, menu.param.col),
+          defaultColor: menu.code === 'cellFrontColor' ? '#000000' : null,
+          onChange: (evnt: MouseEvent, color: string) => {
+            $vmaCalcGrid.updateCell(
+              menu.code,
+              menu.param.row,
+              menu.param.col,
+              color,
+            )
+          },
+        })
+      }
+      return createCommentVNode()
+    }
 
     const renderVN = () =>
       h(Teleport, { to: 'body', disabled: false }, [
@@ -129,19 +161,27 @@ export default defineComponent({
                                     : option.suffixIcon,
                                 ],
                               },
-                              hasChildMenus
-                                ? h(IconComponent, {
-                                    name: option.suffixIcon || 'angle-right',
-                                    size: 'mini',
-                                    translateY: 1,
-                                  })
-                                : option.suffixIcon
-                                ? h(IconComponent, {
-                                    name: option.suffixIcon,
-                                    size: 'mini',
-                                    translateY: 1,
-                                  })
-                                : createCommentVNode(),
+                              [
+                                option.suffixComp
+                                  ? rendererSuffixComp(
+                                      option.suffixComp,
+                                      option,
+                                    )
+                                  : createCommentVNode(),
+                                hasChildMenus
+                                  ? h(IconComponent, {
+                                      name: option.suffixIcon || 'angle-right',
+                                      size: 'mini',
+                                      translateY: 1,
+                                    })
+                                  : option.suffixIcon
+                                  ? h(IconComponent, {
+                                      name: option.suffixIcon,
+                                      size: 'mini',
+                                      translateY: 1,
+                                    })
+                                  : createCommentVNode(),
+                              ],
                             ),
                           ],
                         ),

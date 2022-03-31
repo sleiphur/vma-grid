@@ -24,6 +24,13 @@
 @grid-resize-bar-warning-color: @orange;
 @grid-resize-bar-danger-color: @red;
 
+.cell-background(@bg) {
+  background-image: linear-gradient(@bg, @bg), linear-gradient(@bg, @bg);
+  background-repeat: no-repeat;
+  background-size: 1px 100%, 100% 1px;
+  background-position: right top, right bottom;
+}
+
 .vma-grid {
   position: relative;
   border: 1px solid @grid-default-color;
@@ -428,10 +435,13 @@
       table-layout: fixed;
       td.normal {
         position: relative;
-        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
-        background-repeat: no-repeat;
-        background-size: 1px 100%, 100% 1px;
-        background-position: right top, right bottom;
+        //background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
+        //background-repeat: no-repeat;
+        //background-size: 1px 100%, 100% 1px;
+        //background-position: right top, right bottom;
+
+        .cell-background(@grid-border-color);
+
         padding: 0;
         margin: 2px;
         font-size: inherit;

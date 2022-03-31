@@ -1,0 +1,124 @@
+@import './common';
+
+// Color Picker
+@color-picker-color-button-disabled-opacity: @disabled-opacity;
+
+.vma-grid-color-picker {
+  position: relative;
+  text-align: left;
+  font-size: 14px;
+  display: inline-block;
+  outline: none;
+  box-shadow: 1px 1px 4px 0 rgba(0,0,0,.5);
+
+
+  ul, li, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  input {
+    display: none;
+  }
+
+  &--color-button {
+    width: 15px;
+    height: 15px;
+
+    &--disabled {
+      cursor: not-allowed;
+      opacity: @color-picker-color-button-disabled-opacity;
+    }
+  }
+
+  &--color-pallet {
+    position: absolute;
+    width: 190px;
+    background: #fff;
+    border: 1px solid #ddd;
+    visibility: hidden;
+    border-radius: 2px;
+    margin-top: 2px;
+    padding: 10px;
+    padding-bottom: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .15);
+    opacity: 0;
+    transition: all .3s ease;
+    box-sizing: content-box;
+
+    h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: normal;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      line-height: 1;
+      color: #333;
+    }
+
+    &--open {
+      visibility: visible;
+      opacity: 1;
+      z-index: 1001;
+    }
+
+    &--default {
+      overflow: hidden;
+      //line-height: 29px;
+
+      &-color-view {
+        width: 115px;
+        height: 32px;
+        float: left;
+        transition: background-color .3s ease;
+      }
+
+      &-default-color {
+        //width: 80px;
+        float: right;
+        text-align: center;
+        //border: 1px solid #ddd;
+        cursor: pointer;
+        color: #333;
+      }
+    }
+
+    &--theme {
+      li {
+        width: 15px;
+        height: 15px;
+        display: inline-block;
+        margin: 0 2px;
+        transition: all .3s ease;
+      }
+
+      li:hover {
+        box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+        transform: scale(1.3);
+      }
+    }
+
+    &--gradient {
+      li {
+        width: 15px;
+        display: inline-block;
+        margin: 0 2px;
+
+        li {
+          display: block;
+          width: 15px;
+          height: 15px;
+          transition: all .3s ease;
+          margin: 0;
+        }
+
+        li:hover {
+          box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+          transform: scale(1.3);
+        }
+      }
+    }
+  }
+
+}

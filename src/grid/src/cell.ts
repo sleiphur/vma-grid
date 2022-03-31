@@ -535,6 +535,7 @@ export default defineComponent({
               : null,
             textDecoration:
               textDecorations.length > 0 ? textDecorations.join(' ') : null,
+            color: currentSheetData[props.r!][props.c! - 1].fc,
           },
           onMouseup: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false
@@ -589,6 +590,26 @@ export default defineComponent({
           ],
           style: {
             overflow: 'hidden',
+            backgroundImage: // TODO 消除样式硬编码
+              props.cat === 'normal' &&
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].bg
+                ? `linear-gradient(#dcdee0, #dcdee0), linear-gradient(#dcdee0, #dcdee0), linear-gradient(${
+                    currentSheetData[props.r!][props.c! - 1].bg
+                  }, ${currentSheetData[props.r!][props.c! - 1].bg}`
+                : null,
+            backgroundSize: // TODO 消除样式硬编码
+              props.cat === 'normal' &&
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].bg
+                ? `1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px)`
+                : null,
+            backgroundPosition: // TODO 消除样式硬编码
+              props.cat === 'normal' &&
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].bg
+                ? `right top, right bottom, left top`
+                : null,
           },
         },
         renderCell(),

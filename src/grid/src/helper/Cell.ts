@@ -34,6 +34,10 @@ export class Cell {
 
   ul?: boolean // under line
 
+  bg?: any // background color
+
+  fc?: any // font color
+
   constructor(
     r: number,
     c: number,
@@ -52,6 +56,8 @@ export class Cell {
     ol: boolean | null,
     cl: boolean | null,
     ul: boolean | null,
+    bg: any,
+    fc: any,
   ) {
     Object.assign(this, {
       r,
@@ -71,6 +77,8 @@ export class Cell {
       ol,
       cl,
       ul,
+      bg,
+      fc,
     })
   }
 }

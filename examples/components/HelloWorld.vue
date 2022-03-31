@@ -128,7 +128,8 @@ const gridData = reactive([{
       r: 1,
       c: 4,
       name: 'D1',
-      v: '= 1 - EXP(C1 ^ 3)'
+      v: '= 1 - EXP(C1 ^ 3)',
+      bg: '#e6e0ec',
     },
     {
       r: 10,
@@ -154,6 +155,8 @@ const gridData = reactive([{
       ul: 1,
       it: 1,
       bl: 1,
+      bg: '#0071be',
+      fc: '#f2f2f2',
     },
     {
       r: 6,
@@ -165,6 +168,8 @@ const gridData = reactive([{
       it: 1,
       ul: 1,
       ol: 1,
+      fc: '#0071be',
+      bg: '#f2f2f2',
     },
     {
       r: 5,

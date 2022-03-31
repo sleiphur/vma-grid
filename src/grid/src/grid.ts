@@ -119,6 +119,8 @@ export default defineComponent({
 
     const refGridCtxMenu = ref() as Ref<HTMLDivElement>
 
+    const refColorPicker = ref() as Ref<HTMLDivElement>
+
     const refStylePlugin = ref() as Ref<VmaGridStylePluginConstructor>
 
     const gridRefs: VmaGridRefs = {
@@ -174,6 +176,8 @@ export default defineComponent({
       refCurrentCellEditor,
 
       refGridCtxMenu,
+
+      refColorPicker,
 
       refStylePlugin,
     }
@@ -866,6 +870,8 @@ export default defineComponent({
                   false,
                   false,
                   false,
+                  null,
+                  null,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -955,6 +961,8 @@ export default defineComponent({
                   false,
                   false,
                   false,
+                  null,
+                  null,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -1188,6 +1196,8 @@ export default defineComponent({
                 false,
                 false,
                 false,
+                null,
+                null,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -1276,6 +1286,8 @@ export default defineComponent({
                 false,
                 false,
                 false,
+                null,
+                null,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -1351,6 +1363,14 @@ export default defineComponent({
         }
       },
       updateCell: (type: string, row: number, col: number, item: string) => {
+        if (type === 'cellFrontColor') {
+          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].fc =
+            item
+        }
+        if (type === 'cellBackColor') {
+          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].bg =
+            item
+        }
         if (type === 'updateCellFontSize') {
           gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].fs =
             Number(item)
@@ -1386,6 +1406,17 @@ export default defineComponent({
                 .ul
           }
         }
+      },
+      getCell: (type: string, row: number, col: number) => {
+        if (type === 'cellFrontColor') {
+          return gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
+            .fc
+        }
+        if (type === 'cellBackColor') {
+          return gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
+            .bg
+        }
+        return null
       },
       calcCurrentCellDisplay: () => {
         if (gridReactiveData.currentCell) {
@@ -1751,6 +1782,8 @@ export default defineComponent({
                   !!(cellData && cellData.ol),
                   !!(cellData && cellData.cl),
                   !!(cellData && cellData.ul),
+                  cellData && cellData.bg ? cellData.bg : null,
+                  cellData && cellData.fc ? cellData.fc : null,
                 ) as Cell & { [key: string]: string }
             }
           })

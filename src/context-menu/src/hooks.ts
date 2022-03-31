@@ -11,7 +11,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
   setupGrid(vmaCalcGrid: VmaGridConstructor) {
     const { uId, reactiveData } = vmaCalcGrid
 
-    const { refGrid, refGridCtxMenu, refStylePlugin } = vmaCalcGrid.getRefs()
+    const { refGrid, refGridCtxMenu, refStylePlugin, refColorPicker } =
+      vmaCalcGrid.getRefs()
 
     let ctxMenuMethods = {} as VmaGridCtxMenuMethods
     let ctxMenuPrivateMethods = {} as VmaGridCtxMenuPrivateMethods
@@ -312,6 +313,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           code: 'cellFrontColor',
           disabled: false,
           visible: true,
+          suffixComp: 'colorPicker',
           param,
         })
         options.push({
@@ -319,6 +321,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           code: 'cellBackColor',
           disabled: false,
           visible: true,
+          suffixComp: 'colorPicker',
           param,
         })
         list.push(options)

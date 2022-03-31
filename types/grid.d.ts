@@ -76,6 +76,7 @@ export interface VmaGridMethods {
   updateColumn(type: string, row: number, col: number): void
   updateRow(type: string, row: number, col: number): void
   updateCell(type: string, row: number, col: number, item: string): void
+  getCell(type: string, row: number, col: number): any
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -242,6 +243,8 @@ export interface VmaGridRefs {
   refCurrentCellEditor: Ref<ComponentPublicInstance>
 
   refGridCtxMenu: Ref<HTMLDivElement>
+
+  refColorPicker: Ref<HTMLDivElement>
 
   refStylePlugin: Ref<VmaGridStylePluginConstructor>
 }
