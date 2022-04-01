@@ -731,7 +731,16 @@ export default defineComponent({
         if (type === 'hideColumn') {
           gridReactiveData.columnConfigs[col].visible = false
           gridReactiveData.gridColumnsVisibleChanged[`${col - 1}`] = 0
-          $vmaCalcGrid.recalculate(true)
+          if (
+            gridReactiveData.currentCell &&
+            Object.keys(gridReactiveData.currentCell).length > 0 &&
+            gridReactiveData.currentCell.c === Number(col) - 1
+          ) {
+            gridReactiveData.currentCell = {}
+          }
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'showAllColumns') {
           if (Object.keys(gridReactiveData.gridColumnsVisibleChanged).length) {
@@ -753,7 +762,9 @@ export default defineComponent({
             }
           }
           gridReactiveData.gridColumnsVisibleChanged = {}
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'showFrontColumns') {
           if (Object.keys(gridReactiveData.gridColumnsVisibleChanged).length) {
@@ -781,7 +792,9 @@ export default defineComponent({
             gridReactiveData.gridColumnsVisibleChanged =
               gridColumnsVisibleChangedNew
           }
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'showBackColumns') {
           if (Object.keys(gridReactiveData.gridColumnsVisibleChanged).length) {
@@ -809,7 +822,9 @@ export default defineComponent({
             gridReactiveData.gridColumnsVisibleChanged =
               gridColumnsVisibleChangedNew
           }
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'insertColumnBefore') {
           gridReactiveData.columnConfigs.map((item: Column) => {
@@ -1063,7 +1078,16 @@ export default defineComponent({
         if (type === 'hideRow') {
           gridReactiveData.rowConfigs[row].visible = false
           gridReactiveData.gridRowsVisibleChanged[`${row}`] = 0
-          $vmaCalcGrid.recalculate(true)
+          if (
+            gridReactiveData.currentCell &&
+            Object.keys(gridReactiveData.currentCell).length > 0 &&
+            gridReactiveData.currentCell.r === Number(row)
+          ) {
+            gridReactiveData.currentCell = {}
+          }
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'showAllRows') {
           if (Object.keys(gridReactiveData.gridRowsVisibleChanged).length) {
@@ -1085,7 +1109,9 @@ export default defineComponent({
             }
           }
           gridReactiveData.gridRowsVisibleChanged = {}
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'showUpRows') {
           if (Object.keys(gridReactiveData.gridRowsVisibleChanged).length) {
@@ -1110,7 +1136,9 @@ export default defineComponent({
             })
             gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
           }
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'showDownRows') {
           if (Object.keys(gridReactiveData.gridRowsVisibleChanged).length) {
@@ -1135,7 +1163,9 @@ export default defineComponent({
             })
             gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
           }
-          $vmaCalcGrid.recalculate(true)
+          $vmaCalcGrid.recalculate(true).then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
         }
         if (type === 'insertRowBefore') {
           gridReactiveData.rowConfigs.map((item: Row) => {
@@ -2078,6 +2108,9 @@ export default defineComponent({
       () => gridReactiveData.currentCell,
       () => {
         $vmaCalcGrid.calcCurrentCellPosition()
+      },
+      {
+        deep: true,
       },
     )
 
