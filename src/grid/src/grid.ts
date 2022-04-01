@@ -913,9 +913,14 @@ export default defineComponent({
             },
           )
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true).then(() => {
-            $vmaCalcGrid.calc()
-          })
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
         if (type === 'insertColumnAfter') {
           gridReactiveData.columnConfigs.map((item: Column) => {
@@ -1004,9 +1009,14 @@ export default defineComponent({
             },
           )
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true).then(() => {
-            $vmaCalcGrid.calc()
-          })
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
         if (type === 'deleteColumn') {
           gridReactiveData.columnConfigs.splice(Number(col), 1)
@@ -1069,9 +1079,14 @@ export default defineComponent({
             }
           }
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true).then(() => {
-            $vmaCalcGrid.calc()
-          })
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
       },
       updateRow: (type: string, row: number, col: number) => {
@@ -1253,9 +1268,14 @@ export default defineComponent({
           }
           gridReactiveData.currentSheetData.splice(Number(row), 0, aNewRow)
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true).then(() => {
-            $vmaCalcGrid.calc()
-          })
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
         if (type === 'insertRowAfter') {
           gridReactiveData.rowConfigs.map((item: Row) => {
@@ -1343,9 +1363,14 @@ export default defineComponent({
           }
           gridReactiveData.currentSheetData.splice(Number(row) + 1, 0, aNewRow)
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true).then(() => {
-            $vmaCalcGrid.calc()
-          })
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
         if (type === 'deleteRow') {
           gridReactiveData.rowConfigs.splice(Number(row), 1)
@@ -1407,9 +1432,14 @@ export default defineComponent({
             }
           }
           // TODO 公式调整
-          $vmaCalcGrid.recalculate(true).then(() => {
-            $vmaCalcGrid.calc()
-          })
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
       },
       updateCell: (type: string, row: number, col: number, item: string) => {
@@ -1501,8 +1531,9 @@ export default defineComponent({
             gridReactiveData.gridRowsHeightChanged,
             gridReactiveData.gridRowsVisibleChanged,
           )
-          const { r, c } = gridReactiveData.currentCell
+
           nextTick(() => {
+            const { r, c } = gridReactiveData.currentCell
             refGridBodyTable.value
               .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
               .forEach((cellElem: any) => {
