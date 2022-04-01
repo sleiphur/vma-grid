@@ -117,6 +117,12 @@ export default defineComponent({
 
     const refCurrentCellEditor = ref() as Ref<ComponentPublicInstance>
 
+    const refCurrentCellBorderTop = ref() as Ref<HTMLDivElement>
+    const refCurrentCellBorderRight = ref() as Ref<HTMLDivElement>
+    const refCurrentCellBorderBottom = ref() as Ref<HTMLDivElement>
+    const refCurrentCellBorderLeft = ref() as Ref<HTMLDivElement>
+    const refCurrentCellBorderCorner = ref() as Ref<HTMLDivElement>
+
     const refGridCtxMenu = ref() as Ref<HTMLDivElement>
 
     const refColorPicker = ref() as Ref<HTMLDivElement>
@@ -174,6 +180,12 @@ export default defineComponent({
       refGridLeftFixedHeaderColgroup, // table colgroup
 
       refCurrentCellEditor,
+
+      refCurrentCellBorderTop,
+      refCurrentCellBorderRight,
+      refCurrentCellBorderBottom,
+      refCurrentCellBorderLeft,
+      refCurrentCellBorderCorner,
 
       refGridCtxMenu,
 
@@ -278,6 +290,14 @@ export default defineComponent({
       },
 
       currentCell: null,
+      currentCellBorderStyle: {
+        transform: 'translateX(0) translateY(0)',
+        // display: 'none',
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+      },
       currentCellEditorStyle: {
         transform: 'translateX(0) translateY(0)',
         display: 'none',
@@ -1458,9 +1478,22 @@ export default defineComponent({
               .forEach((cellElem: any) => {
                 const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
                 const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
+                const borderMarginLeft = `${
+                  leftSpaceWidth + cellElem.offsetLeft - 2
+                }px`
+                const borderMarginTop = `${
+                  topSpaceHeight + cellElem.offsetTop - 2
+                }px`
                 gridReactiveData.currentCellEditorStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
                 gridReactiveData.currentCellEditorStyle.height = `${cellElem.offsetHeight}px`
                 gridReactiveData.currentCellEditorStyle.width = `${cellElem.offsetWidth}px`
+                gridReactiveData.currentCellBorderStyle.transform = `translateX(${borderMarginLeft}) translateY(${borderMarginTop})`
+                gridReactiveData.currentCellBorderStyle.height = `${
+                  cellElem.offsetHeight + 1
+                }px`
+                gridReactiveData.currentCellBorderStyle.width = `${
+                  cellElem.offsetWidth + 1
+                }px`
               })
           })
         }

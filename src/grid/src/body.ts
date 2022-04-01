@@ -55,6 +55,11 @@ export default defineComponent({
       refGridLeftFixedBodyColgroup,
       refGridHeader,
       refCurrentCellEditor,
+      refCurrentCellBorderTop,
+      refCurrentCellBorderRight,
+      refCurrentCellBorderBottom,
+      refCurrentCellBorderLeft,
+      refCurrentCellBorderCorner,
     } = $vmaCalcGrid.getRefs()
 
     const { columnConfigs, rowConfigs } = $vmaCalcGrid.reactiveData
@@ -530,6 +535,113 @@ export default defineComponent({
                   })
                 },
               })
+            : createCommentVNode(),
+          props.fixedType === 'center'
+            ? [
+                h('div', {
+                  ref: refCurrentCellBorderLeft,
+                  class: ['current-cell-border', 'left'],
+                  style: {
+                    transform:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle
+                        .transform,
+                    left: $vmaCalcGrid.reactiveData.currentCellBorderStyle.left,
+                    top: $vmaCalcGrid.reactiveData.currentCellBorderStyle.top,
+                    height:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.height,
+                    display:
+                      $vmaCalcGrid.reactiveData.currentCell &&
+                      Object.keys($vmaCalcGrid.reactiveData.currentCell)
+                        .length > 0
+                        ? 'block'
+                        : 'none',
+                  },
+                }),
+                h('div', {
+                  ref: refCurrentCellBorderTop,
+                  class: ['current-cell-border', 'top'],
+                  style: {
+                    transform:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle
+                        .transform,
+                    left: $vmaCalcGrid.reactiveData.currentCellBorderStyle.left,
+                    top: $vmaCalcGrid.reactiveData.currentCellBorderStyle.top,
+                    width:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.width,
+                    display:
+                      $vmaCalcGrid.reactiveData.currentCell &&
+                      Object.keys($vmaCalcGrid.reactiveData.currentCell)
+                        .length > 0
+                        ? 'block'
+                        : 'none',
+                  },
+                }),
+                h('div', {
+                  ref: refCurrentCellBorderRight,
+                  class: ['current-cell-border', 'right'],
+                  style: {
+                    transform:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle
+                        .transform,
+                    left:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.left +
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.width,
+                    top: $vmaCalcGrid.reactiveData.currentCellBorderStyle.top,
+                    height:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.height,
+                    display:
+                      $vmaCalcGrid.reactiveData.currentCell &&
+                      Object.keys($vmaCalcGrid.reactiveData.currentCell)
+                        .length > 0
+                        ? 'block'
+                        : 'none',
+                  },
+                }),
+                h('div', {
+                  ref: refCurrentCellBorderBottom,
+                  class: ['current-cell-border', 'bottom'],
+                  style: {
+                    transform:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle
+                        .transform,
+                    left: $vmaCalcGrid.reactiveData.currentCellBorderStyle.left,
+                    top:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.top +
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.height,
+                    width:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.width,
+                    display:
+                      $vmaCalcGrid.reactiveData.currentCell &&
+                      Object.keys($vmaCalcGrid.reactiveData.currentCell)
+                        .length > 0
+                        ? 'block'
+                        : 'none',
+                  },
+                }),
+                h('div', {
+                  ref: refCurrentCellBorderCorner,
+                  class: ['current-cell-border', 'corner'],
+                  style: {
+                    transform:
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle
+                        .transform,
+                    left: `calc(${
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.left +
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.width
+                    } - 3px)`,
+                    top: `calc(${
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.top +
+                      $vmaCalcGrid.reactiveData.currentCellBorderStyle.height
+                    } - 3px)`,
+                    display:
+                      $vmaCalcGrid.reactiveData.currentCell &&
+                      Object.keys($vmaCalcGrid.reactiveData.currentCell)
+                        .length > 0
+                        ? 'block'
+                        : 'none',
+                  },
+                }),
+              ]
             : createCommentVNode(),
         ],
       )

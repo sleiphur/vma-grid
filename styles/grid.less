@@ -75,6 +75,7 @@
     position: absolute;
     //background-color: @grid-cell-border-current-background-color;
     opacity: 1;
+    z-index: 10;
 
     textarea {
       width: 100%;
@@ -231,10 +232,7 @@
       table-layout: fixed;
       th.grid-corner {
         position: relative;
-        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
-        background-repeat: no-repeat;
-        background-size: 1px 100%, 100% 1px;
-        background-position: right top, right bottom;
+        .cell-background(@grid-border-color);
         padding: 0;
         margin: 2px;
         font-size: inherit;
@@ -255,10 +253,7 @@
       }
       th.column-indicator {
         position: relative;
-        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
-        background-repeat: no-repeat;
-        background-size: 1px 100%, 100% 1px;
-        background-position: right top, right bottom;
+        .cell-background(@grid-border-color);
         padding: 0;
         margin: 2px;
         font-size: inherit;
@@ -429,7 +424,36 @@
       display: none;
     }
 
+    .current-cell-border {
+      display: none;
+      position: absolute;
+      background-color: @grid-primary-color;
 
+      &.left {
+        width: 2px;
+        height: 0;
+      }
+
+      &.top {
+        width: 0;
+        height: 2px;
+      }
+
+      &.right {
+        width: 2px;
+        height: 0;
+      }
+
+      &.bottom {
+        width: 0;
+        height: 2px;
+      }
+
+      &.corner {
+        width: 7px;
+        height: 7px;
+      }
+    }
 
     .body {
       table-layout: fixed;
@@ -451,10 +475,13 @@
         height: inherit;
 
         &.cell-active {
-          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-primary-color, 20%), lighten(@grid-primary-color, 20%));
-          background-repeat: no-repeat;
-          background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
-          background-position: right top, right bottom, left top;
+          //background-image: linear-gradient(@grid-primary-color, @grid-primary-color), linear-gradient(@grid-primary-color, @grid-primary-color), linear-gradient(@grid-primary-color, @grid-primary-color), linear-gradient(@grid-primary-color, @grid-primary-color)/*, linear-gradient(lighten(@grid-primary-color, 20%), lighten(@grid-primary-color, 20%))*/;
+          //background-repeat: no-repeat;
+          //background-size: 1px 100%, 100% 1px, 1px 100%, 100% 1px /*, calc(100% - 1px) calc(100% - 1px)*/;
+          //background-position: right top, right bottom, left bottom, left top/*, left top*/;
+
+          //box-shadow: -2px -2px 4px 1px rgba(0,0,0,.6);
+          //box-shadow: 3px 3px red, -1em 0 .4em olive;
         }
 
         .cell {
@@ -484,10 +511,7 @@
       }
       td.row-indicator {
         position: relative;
-        background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
-        background-repeat: no-repeat;
-        background-size: 1px 100%, 100% 1px;
-        background-position: right top, right bottom;
+        .cell-background(@grid-border-color);
         padding: 0;
         margin: 2px;
         font-size: inherit;

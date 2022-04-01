@@ -5,16 +5,19 @@ import {
   resolveComponent,
   ComponentOptions,
   VNode,
-  ref, provide, Ref, nextTick,
+  ref,
+  provide,
+  Ref,
+  nextTick,
 } from 'vue'
-import {Guid} from "../../utils/guid";
+import { Guid } from '../../utils/guid'
 import {
   VmaGridButtonConstructor,
   VmaGridColorPickerConstructor,
   VmaGridColorPickerRefs,
-  VmaGridRefs
-} from "../../../types";
-import {getAbsolutePos} from "../../utils/doms";
+  VmaGridRefs,
+} from '../../../types'
+import { getAbsolutePos } from '../../utils/doms'
 
 export default defineComponent({
   name: 'VmaGridColorPicker',
@@ -40,7 +43,7 @@ export default defineComponent({
     const refColorPickerPallet = ref() as Ref<HTMLDivElement>
 
     const gridColorPickerRefs: VmaGridColorPickerRefs = {
-      refColorPickerPallet
+      refColorPickerPallet,
     }
 
     const $vmaGridColorPicker = {
@@ -174,31 +177,21 @@ export default defineComponent({
           const item: any = evnt.currentTarget
           const childWrapperElem = item.nextElementSibling
           if (childWrapperElem) {
-            const {
-              boundingTop,
-              boundingLeft,
-              visibleHeight,
-              visibleWidth,
-            } = getAbsolutePos(item)
+            const { boundingTop, boundingLeft, visibleHeight, visibleWidth } =
+              getAbsolutePos(item)
             const posTop = boundingTop + item.offsetHeight
             const posLeft = boundingLeft + item.offsetWidth
             let left = ''
             let right = ''
             // 是否超出右侧
-            if (
-                posLeft + childWrapperElem.offsetWidth >
-                visibleWidth - 10
-            ) {
+            if (posLeft + childWrapperElem.offsetWidth > visibleWidth - 10) {
               left = 'auto'
               right = `${item.offsetWidth}px`
             }
             // 是否超出底部
             let top = ''
             let bottom = ''
-            if (
-                posTop + childWrapperElem.offsetHeight >
-                visibleHeight - 10
-            ) {
+            if (posTop + childWrapperElem.offsetHeight > visibleHeight - 10) {
               top = 'auto'
               bottom = '0'
             }
@@ -208,7 +201,6 @@ export default defineComponent({
             childWrapperElem.style.bottom = bottom
           }
         })
-
       }
     }
 

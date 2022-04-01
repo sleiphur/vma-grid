@@ -603,7 +603,8 @@ export default defineComponent({
           ],
           style: {
             overflow: 'hidden',
-            backgroundImage: // TODO 消除样式硬编码
+            // TODO 消除样式硬编码
+            backgroundImage:
               props.cat === 'normal' &&
               currentSheetData[props.r!][props.c! - 1] &&
               currentSheetData[props.r!][props.c! - 1].bg
@@ -611,13 +612,15 @@ export default defineComponent({
                     currentSheetData[props.r!][props.c! - 1].bg
                   }, ${currentSheetData[props.r!][props.c! - 1].bg}`
                 : null,
-            backgroundSize: // TODO 消除样式硬编码
+            // TODO 消除样式硬编码
+            backgroundSize:
               props.cat === 'normal' &&
               currentSheetData[props.r!][props.c! - 1] &&
               currentSheetData[props.r!][props.c! - 1].bg
                 ? `1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px)`
                 : null,
-            backgroundPosition: // TODO 消除样式硬编码
+            // TODO 消除样式硬编码
+            backgroundPosition:
               props.cat === 'normal' &&
               currentSheetData[props.r!][props.c! - 1] &&
               currentSheetData[props.r!][props.c! - 1].bg

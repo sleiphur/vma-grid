@@ -167,6 +167,7 @@ export interface VmaGridReactiveData {
   }
 
   currentCell: Cell
+  currentCellBorderStyle: Record<string, any>
   currentCellEditorStyle: Record<string, any>
   currentCellEditorActive: boolean
   currentCellEditorContent: any
@@ -241,6 +242,12 @@ export interface VmaGridRefs {
   refGridLeftFixedHeaderColgroup: Ref<HTMLTableColElement>
 
   refCurrentCellEditor: Ref<ComponentPublicInstance>
+
+  refCurrentCellBorderTop: Ref<HTMLDivElement>
+  refCurrentCellBorderRight: Ref<HTMLDivElement>
+  refCurrentCellBorderBottom: Ref<HTMLDivElement>
+  refCurrentCellBorderLeft: Ref<HTMLDivElement>
+  refCurrentCellBorderCorner: Ref<HTMLDivElement>
 
   refGridCtxMenu: Ref<HTMLDivElement>
 
