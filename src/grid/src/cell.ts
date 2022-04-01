@@ -279,42 +279,6 @@ export default defineComponent({
       }
     }
 
-    const isUpwardAdjacentRowVisible = computed((): boolean => {
-      if (props.r === 0) {
-        return true
-      }
-      return !$vmaCalcGrid.reactiveData.gridRowsVisibleChanged.hasOwnProperty(
-        `${props.r! - 1}`,
-      )
-    })
-
-    const isFrontwardAdjacentColumnVisible = computed((): boolean => {
-      if (props.c === 1) {
-        return true
-      }
-      return !$vmaCalcGrid.reactiveData.gridColumnsVisibleChanged.hasOwnProperty(
-        `${props.c! - 1 - 1}`,
-      )
-    })
-
-    const isDownwardAdjacentRowVisible = computed((): boolean => {
-      if (props.r === $vmaCalcGrid.reactiveData.rowConfigs.length) {
-        return true
-      }
-      return !$vmaCalcGrid.reactiveData.gridRowsVisibleChanged.hasOwnProperty(
-        `${props.r! + 1}`,
-      )
-    })
-
-    const isBackwardAdjacentColumnVisible = computed((): boolean => {
-      if (props.c === $vmaCalcGrid.reactiveData.columnConfigs.length) {
-        return true
-      }
-      return !$vmaCalcGrid.reactiveData.gridColumnsVisibleChanged.hasOwnProperty(
-        `${props.c!}`,
-      )
-    })
-
     const renderCell = () => {
       if (props.cat === 'row-indicator') {
         return [
@@ -343,7 +307,15 @@ export default defineComponent({
             'div',
             {
               style: {
-                display: !isUpwardAdjacentRowVisible.value ? 'block' : 'none',
+                display:
+                  $vmaCalcGrid.reactiveData.gridRowsVisibleChanged &&
+                  Object.keys($vmaCalcGrid.reactiveData.gridRowsVisibleChanged)
+                    .length > 0 &&
+                  $vmaCalcGrid.reactiveData.gridRowsVisibleChanged.hasOwnProperty(
+                    `${props.r! - 1}`,
+                  )
+                    ? 'block'
+                    : 'none',
               },
               class: ['row-hide-info-upward'],
               onClick: (event: MouseEvent) => {
@@ -371,7 +343,15 @@ export default defineComponent({
             'div',
             {
               style: {
-                display: !isDownwardAdjacentRowVisible.value ? 'block' : 'none',
+                display:
+                  $vmaCalcGrid.reactiveData.gridRowsVisibleChanged &&
+                  Object.keys($vmaCalcGrid.reactiveData.gridRowsVisibleChanged)
+                    .length > 0 &&
+                  $vmaCalcGrid.reactiveData.gridRowsVisibleChanged.hasOwnProperty(
+                    `${props.r! + 1}`,
+                  )
+                    ? 'block'
+                    : 'none',
               },
               class: ['row-hide-info-downward'],
               onClick: (event: MouseEvent) => {
@@ -424,9 +404,16 @@ export default defineComponent({
             'div',
             {
               style: {
-                display: !isFrontwardAdjacentColumnVisible.value
-                  ? 'block'
-                  : 'none',
+                display:
+                  $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged &&
+                  Object.keys(
+                    $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
+                  ).length > 0 &&
+                  $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+                    `${props.c! - 1 - 1}`,
+                  )
+                    ? 'block'
+                    : 'none',
               },
               class: ['column-hide-info-frontward'],
               onClick: (event: MouseEvent) => {
@@ -454,9 +441,16 @@ export default defineComponent({
             'div',
             {
               style: {
-                display: !isBackwardAdjacentColumnVisible.value
-                  ? 'block'
-                  : 'none',
+                display:
+                  $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged &&
+                  Object.keys(
+                    $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
+                  ).length > 0 &&
+                  $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged.hasOwnProperty(
+                    `${props.c!}`,
+                  )
+                    ? 'block'
+                    : 'none',
               },
               class: ['column-hide-info-backward'],
               onClick: (event: MouseEvent) => {
