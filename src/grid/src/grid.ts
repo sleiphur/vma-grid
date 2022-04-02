@@ -52,10 +52,7 @@ import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
 import VmaGrid from '../../vma-grid'
 import { DomTools } from '../../utils/doms'
-import {
-  VmaGridStylePluginConstructor,
-  VmaGridStylePluginPropTypes,
-} from '../../../plugins/types'
+import { VmaGridStylePluginConstructor } from '../../../plugins/types'
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -2115,23 +2112,32 @@ export default defineComponent({
     watch(
       () => props.size,
       () => {
-        $vmaCalcGrid.recalculate(true).finally(() => {
-          GlobalEvent.on(
-            $vmaCalcGrid,
-            'mousewheel',
-            handleGlobalMousewheelEvent,
-          )
-          GlobalEvent.on($vmaCalcGrid, 'mousedown', handleGlobalMousedownEvent)
-          GlobalEvent.on($vmaCalcGrid, 'keydown', handleGlobalKeydownEvent)
-          GlobalEvent.on($vmaCalcGrid, 'resize', handleGlobalResizeEvent)
-          if ($vmaCalcGrid.handleContextmenuEvent) {
+        $vmaCalcGrid
+          .recalculate(true)
+          .then(() => {
+            $vmaCalcGrid.calcCurrentCellPosition()
+          })
+          .finally(() => {
             GlobalEvent.on(
               $vmaCalcGrid,
-              'contextmenu',
-              $vmaCalcGrid.handleContextmenuEvent,
+              'mousewheel',
+              handleGlobalMousewheelEvent,
             )
-          }
-        })
+            GlobalEvent.on(
+              $vmaCalcGrid,
+              'mousedown',
+              handleGlobalMousedownEvent,
+            )
+            GlobalEvent.on($vmaCalcGrid, 'keydown', handleGlobalKeydownEvent)
+            GlobalEvent.on($vmaCalcGrid, 'resize', handleGlobalResizeEvent)
+            if ($vmaCalcGrid.handleContextmenuEvent) {
+              GlobalEvent.on(
+                $vmaCalcGrid,
+                'contextmenu',
+                $vmaCalcGrid.handleContextmenuEvent,
+              )
+            }
+          })
       },
     )
 

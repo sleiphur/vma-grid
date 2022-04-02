@@ -20,6 +20,7 @@ Formula Error.
 
 - [\_details](index.FormulaError.md#_details)
 - [\_error](index.FormulaError.md#_error)
+- [cause](index.FormulaError.md#cause)
 - [message](index.FormulaError.md#message)
 - [stack](index.FormulaError.md#stack)
 - [ARG\_MISSING](index.FormulaError.md#arg_missing)
@@ -90,6 +91,20 @@ ___
 #### Defined in
 
 src/formula/formulas/error.ts:38
+
+___
+
+### cause
+
+• `Optional` **cause**: `Error`
+
+#### Inherited from
+
+Error.cause
+
+#### Defined in
+
+node_modules/typescript/lib/lib.es2022.error.d.ts:26
 
 ___
 

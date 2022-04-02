@@ -13,7 +13,7 @@ const selectedValues = ref<String>('2');
 const checkedValues = reactive(['2', '3']);
 const inputValue = ref<String>('测试文本');
 
-const selectedSizeValue = ref<String>('small');
+const selectedSizeValue = ref<String>('normal');
 const selectedThemeValue = ref<String>('primary');
 
 const customFunctions = reactive({

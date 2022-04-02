@@ -540,7 +540,7 @@ export default defineComponent({
             ? [
                 h('div', {
                   ref: refCurrentCellBorderLeft,
-                  class: ['current-cell-border', 'left'],
+                  class: ['current-cell-border', 'left', `${props.type}`],
                   style: {
                     transform:
                       $vmaCalcGrid.reactiveData.currentCellBorderStyle
@@ -559,7 +559,7 @@ export default defineComponent({
                 }),
                 h('div', {
                   ref: refCurrentCellBorderTop,
-                  class: ['current-cell-border', 'top'],
+                  class: ['current-cell-border', 'top', `${props.type}`],
                   style: {
                     transform:
                       $vmaCalcGrid.reactiveData.currentCellBorderStyle
@@ -578,7 +578,7 @@ export default defineComponent({
                 }),
                 h('div', {
                   ref: refCurrentCellBorderRight,
-                  class: ['current-cell-border', 'right'],
+                  class: ['current-cell-border', 'right', `${props.type}`],
                   style: {
                     transform:
                       $vmaCalcGrid.reactiveData.currentCellBorderStyle
@@ -599,7 +599,7 @@ export default defineComponent({
                 }),
                 h('div', {
                   ref: refCurrentCellBorderBottom,
-                  class: ['current-cell-border', 'bottom'],
+                  class: ['current-cell-border', 'bottom', `${props.type}`],
                   style: {
                     transform:
                       $vmaCalcGrid.reactiveData.currentCellBorderStyle
@@ -620,7 +620,7 @@ export default defineComponent({
                 }),
                 h('div', {
                   ref: refCurrentCellBorderCorner,
-                  class: ['current-cell-border', 'corner'],
+                  class: ['current-cell-border', 'corner', `${props.type}`],
                   style: {
                     transform:
                       $vmaCalcGrid.reactiveData.currentCellBorderStyle

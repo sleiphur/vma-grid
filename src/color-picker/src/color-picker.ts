@@ -256,7 +256,6 @@ export default defineComponent({
               h(
                 ButtonComponent,
                 {
-                  size: 'small',
                   onMouseDown: onDefaultBtnClick,
                 },
                 () => '默认颜色',
