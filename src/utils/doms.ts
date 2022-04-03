@@ -118,7 +118,13 @@ export const DomTools = {
         (!queryMethod || queryMethod(target))
       ) {
         targetElem = target
-      } else if (target === container) {
+        return {
+          flag: queryCls ? !!targetElem : true,
+          container,
+          targetElem,
+        }
+      }
+      if (target === container) {
         return {
           flag: queryCls ? !!targetElem : true,
           container,

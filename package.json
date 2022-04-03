@@ -1,9 +1,9 @@
 {
   "name": "vma-grid",
   "private": false,
-  "version": "0.5.7",
+  "version": "0.5.8",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "lib:modules": "gulp build",

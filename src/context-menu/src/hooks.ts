@@ -1,5 +1,5 @@
-import { ComponentOptions, nextTick, resolveComponent } from 'vue'
-import { VmaGridGlobalHooksHandlers, VmaGridConstructor } from '../../../types'
+import { nextTick } from 'vue'
+import { VmaGridConstructor, VmaGridGlobalHooksHandlers } from '../../../types'
 import {
   VmaGridCtxMenuMethods,
   VmaGridCtxMenuPrivateMethods,
@@ -521,6 +521,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         }
       },
       handleContextmenuEvent: (evnt: any): void => {
+        evnt.preventDefault()
+        evnt.stopPropagation()
         // 右键事件发生时，关闭单元格编辑器
         reactiveData.currentCellEditorActive = false
         const refElem = refGrid.value
@@ -528,37 +530,38 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           evnt,
           refElem,
           `column-indicator`,
-          (target: any) =>
-            target.parentNode.parentNode.parentNode.parentNode.getAttribute(
-              'uid',
-            ) === uId,
+          (target: any) => {
+            const elem = target.parentNode.parentNode.parentNode.parentNode
+            return elem !== document && elem.getAttribute('uid') === uId
+          },
         )
         const rowTargetNode = DomTools.getEventTargetNode(
           evnt,
           refElem,
           `row-indicator`,
-          (target: any) =>
-            target.parentNode.parentNode.parentNode.parentNode.parentNode.getAttribute(
-              'uid',
-            ) === uId,
+          (target: any) => {
+            const elem =
+              target.parentNode.parentNode.parentNode.parentNode.parentNode
+            return elem !== document && elem.getAttribute('uid') === uId
+          },
         )
         const cornerTargetNode = DomTools.getEventTargetNode(
           evnt,
           refElem,
           `grid-corner`,
-          (target: any) =>
-            target.parentNode.parentNode.parentNode.parentNode.getAttribute(
-              'uid',
-            ) === uId,
+          (target: any) => {
+            const elem = target.parentNode.parentNode.parentNode.parentNode
+            return elem !== document && elem.getAttribute('uid') === uId
+          },
         )
         const cellTargetNode = DomTools.getEventTargetNode(
           evnt,
           refElem,
           `normal`,
-          (target: any) =>
-            target.parentNode.parentNode.parentNode.parentNode.getAttribute(
-              'uid',
-            ) === uId,
+          (target: any) => {
+            const elem: any = target.parentNode.parentNode.parentNode.parentNode
+            return elem !== document && elem.getAttribute('uid') === uId
+          },
         )
         if (
           cornerTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
