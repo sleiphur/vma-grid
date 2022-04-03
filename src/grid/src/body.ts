@@ -524,6 +524,7 @@ export default defineComponent({
                   top: $vmaCalcGrid.reactiveData.currentCellEditorStyle.top,
                 },
                 onBlur: () => {
+                  console.log('onBlur')
                   $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
                     $vmaCalcGrid.reactiveData.currentCellEditorContent,
                   )

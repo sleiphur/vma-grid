@@ -521,8 +521,6 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         }
       },
       handleContextmenuEvent: (evnt: any): void => {
-        evnt.preventDefault()
-        evnt.stopPropagation()
         // 右键事件发生时，关闭单元格编辑器
         reactiveData.currentCellEditorActive = false
         const refElem = refGrid.value
