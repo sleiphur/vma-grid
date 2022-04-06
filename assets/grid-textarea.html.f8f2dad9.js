@@ -1,0 +1,1 @@
+const t={key:"v-0016c312",path:"/basic/grid-textarea.html",title:"",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:3,title:"3.1",slug:"_3-1",children:[]}],git:{updatedTime:1649214574e3,contributors:[{name:"MaHongming",email:"99596783@qq.com",commits:2}]},filePathRelative:"basic/grid-textarea.md"};export{t as data};
