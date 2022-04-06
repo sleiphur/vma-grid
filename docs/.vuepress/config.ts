@@ -62,26 +62,6 @@ export default defineUserConfig<DefaultThemeOptions>({
                         text: '多行文本',
                         link: '/basic/grid-textarea.md'
                     },
-                    // {
-                    //     text: '表格',
-                    //     link: '/basic/grid.md'
-                    // },
-                    // {
-                    //     text: '单元格水平垂直位置',
-                    //     link: '/basic/grid-column-align.md'
-                    // },
-                    // {
-                    //     text: '列宽拖动行高拖动',
-                    //     link: '/basic/grid-resize-column-row.md'
-                    // },
-                    // {
-                    //     text: '表头分组',
-                    //     link: '/basic/grid-column-header-group.md'
-                    // },
-                    // {
-                    //     text: '列名助记',
-                    //     link: '/basic/grid-column-helper.md'
-                    // }
                 ]
             },
             {
@@ -99,6 +79,35 @@ export default defineUserConfig<DefaultThemeOptions>({
                         text: '表格主题',
                         link: '/grid/grid-theme.md'
                     },
+                    {
+                        text: '表格行高列宽全局自定义',
+                        link: '/grid/grid-row-height-column-width.md'
+                    },
+                    {
+                        text: '表格行列隐藏',
+                        link: '/grid/grid-row-column-hide.md'
+                    },
+                    {
+                        text: '表格行列插入',
+                        link: '/grid/grid-row-column-insert.md'
+                    },
+                    {
+                        text: '表格行列删除',
+                        link: '/grid/grid-row-column-delete.md'
+                    },
+                    {
+                        text: '单元格字体风格',
+                        link: '/grid/grid-cell-font-style.md'
+                    },
+                    {
+                        text: '单元格字号',
+                        link: '/grid/grid-cell-font-size.md'
+                    },
+                    {
+                        text: '单元格颜色',
+                        link: '/grid/grid-cell-color.md'
+                    },
+
                 ],
             },
             {
