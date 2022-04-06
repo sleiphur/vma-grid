@@ -1,4 +1,5 @@
 ### 3.1
+
 <vma-grid-textarea size="mini" placeholder="迷你尺寸--disabled" disabled :rows="1" />
 <vma-grid-textarea size="small" placeholder="小尺寸--readonly" readonly type="primary" />
 <vma-grid-textarea placeholder="默认尺寸" v-model="inputValue" wrap :rows="16" type="success" />
@@ -10,7 +11,6 @@
           v-model="inputValue"
           type="danger"
         />
-
 
 <script lang="ts">
   import {defineComponent, reactive, ref} from 'vue';
@@ -101,18 +101,18 @@
         },
         data: [
             {
-                r: 1, 
-                c: 2, 
+                r: 1,
+                c: 2,
                 v: '123'
-            }, 
+            },
             {
-                r: 10, 
-                c: 20, 
+                r: 10,
+                c: 20,
                 v: 123
-            }, 
+            },
             {
-                r: 7, 
-                c: 4, 
+                r: 7,
+                c: 4,
                 v: '值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1'
             }
         ]

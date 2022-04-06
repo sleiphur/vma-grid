@@ -35,10 +35,6 @@ export default defineUserConfig<DefaultThemeOptions>({
                 text: '首页',
                 link: '/README.md'
             },
-          {
-            text: '公式支持',
-            link: '/formula/modules.md'
-          },
             {
                 text: '基础组件',
                 children: [
@@ -66,28 +62,50 @@ export default defineUserConfig<DefaultThemeOptions>({
                         text: '多行文本',
                         link: '/basic/grid-textarea.md'
                     },
-                    {
-                        text: '表格',
-                        link: '/basic/grid.md'
-                    },
-                    {
-                        text: '单元格水平垂直位置',
-                        link: '/basic/grid-column-align.md'
-                    },
-                    {
-                        text: '列宽拖动行高拖动',
-                        link: '/basic/grid-resize-column-row.md'
-                    },
-                    {
-                        text: '表头分组',
-                        link: '/basic/grid-column-header-group.md'
-                    },
-                    {
-                        text: '列名助记',
-                        link: '/basic/grid-column-helper.md'
-                    }
+                    // {
+                    //     text: '表格',
+                    //     link: '/basic/grid.md'
+                    // },
+                    // {
+                    //     text: '单元格水平垂直位置',
+                    //     link: '/basic/grid-column-align.md'
+                    // },
+                    // {
+                    //     text: '列宽拖动行高拖动',
+                    //     link: '/basic/grid-resize-column-row.md'
+                    // },
+                    // {
+                    //     text: '表头分组',
+                    //     link: '/basic/grid-column-header-group.md'
+                    // },
+                    // {
+                    //     text: '列名助记',
+                    //     link: '/basic/grid-column-helper.md'
+                    // }
                 ]
-            }
+            },
+            {
+                text: '表格',
+                children: [
+                    {
+                        text: '表格初始化',
+                        link: '/grid/grid-init.md',
+                    },
+                    {
+                        text: '表格尺寸',
+                        link: '/grid/grid-size.md'
+                    },
+                    {
+                        text: '表格主题',
+                        link: '/grid/grid-theme.md'
+                    },
+                ],
+            },
+            {
+              text: '公式支持',
+              link: '/formula/modules.md'
+            },
+
         ],
     },
 })

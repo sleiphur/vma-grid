@@ -30,7 +30,6 @@
   <vma-grid-radio size="mini" label="5">选项5</vma-grid-radio>
 </vma-grid-radio-group>
 
-
 <script lang="ts">
   import {defineComponent, reactive, ref} from 'vue';
   export default defineComponent({
@@ -120,18 +119,18 @@
         },
         data: [
             {
-                r: 1, 
-                c: 2, 
+                r: 1,
+                c: 2,
                 v: '123'
-            }, 
+            },
             {
-                r: 10, 
-                c: 20, 
+                r: 10,
+                c: 20,
                 v: 123
-            }, 
+            },
             {
-                r: 7, 
-                c: 4, 
+                r: 7,
+                c: 4,
                 v: '值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1'
             }
         ]

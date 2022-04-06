@@ -62,7 +62,6 @@
 | Y   | <vma-grid-icon name="Y" size="normal"></vma-grid-icon> |
 | Z   | <vma-grid-icon name="Z" size="normal"></vma-grid-icon> |
 
-
 | 名称           |                                        预览                                        |
 |:-------------|:--------------------------------------------------------------------------------:|
 | number-one1  | <vma-grid-icon name="number-one1" size="normal"></vma-grid-icon>  |
@@ -76,7 +75,6 @@
 | number-eight | <vma-grid-icon name="number-eight" size="normal"></vma-grid-icon> |
 | number-nine  | <vma-grid-icon name="number-nine" size="normal"></vma-grid-icon>  |
 
-
 ## 颜色
 
 | 名称           |                                      预览                                      |
@@ -86,7 +84,6 @@
 | success       | <vma-grid-icon name="bookmark" size="normal" type="success"></vma-grid-icon> |
 | warning        | <vma-grid-icon name="bookmark" size="normal" type="warning"></vma-grid-icon> |
 | danger      |        <vma-grid-icon name="bookmark" size="normal" type="danger"></vma-grid-icon>        |
-
 
 ## 尺寸
 

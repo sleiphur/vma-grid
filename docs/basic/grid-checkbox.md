@@ -16,7 +16,6 @@
     <vma-grid-checkbox size="mini" label="6" disabled>迷你尺寸</vma-grid-checkbox>
 </vma-grid-checkbox-group>
 
-
 <script lang="ts">
   import {defineComponent, reactive, ref} from 'vue';
   export default defineComponent({
@@ -106,18 +105,18 @@
         },
         data: [
             {
-                r: 1, 
-                c: 2, 
+                r: 1,
+                c: 2,
                 v: '123'
-            }, 
+            },
             {
-                r: 10, 
-                c: 20, 
+                r: 10,
+                c: 20,
                 v: 123
-            }, 
+            },
             {
-                r: 7, 
-                c: 4, 
+                r: 7,
+                c: 4,
                 v: '值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1值1'
             }
         ]
