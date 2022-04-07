@@ -1,1 +1,0 @@
-const t={key:"v-2f4d3eda",path:"/basic/grid-button.html",title:"",lang:"zh-CN",frontmatter:{},excerpt:"",headers:[{level:3,title:"1",slug:"_1",children:[]}],git:{updatedTime:1649214574e3,contributors:[{name:"MaHongming",email:"99596783@qq.com",commits:2}]},filePathRelative:"basic/grid-button.md"};export{t as data};
