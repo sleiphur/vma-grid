@@ -120,6 +120,11 @@ export default defineComponent({
     const refCurrentCellBorderLeft = ref() as Ref<HTMLDivElement>
     const refCurrentCellBorderCorner = ref() as Ref<HTMLDivElement>
 
+    const refCurrentAreaBorderTop = ref() as Ref<HTMLDivElement>
+    const refCurrentAreaBorderRight = ref() as Ref<HTMLDivElement>
+    const refCurrentAreaBorderBottom = ref() as Ref<HTMLDivElement>
+    const refCurrentAreaBorderLeft = ref() as Ref<HTMLDivElement>
+
     const refGridCtxMenu = ref() as Ref<HTMLDivElement>
 
     const refColorPicker = ref() as Ref<HTMLDivElement>
@@ -183,6 +188,11 @@ export default defineComponent({
       refCurrentCellBorderBottom,
       refCurrentCellBorderLeft,
       refCurrentCellBorderCorner,
+
+      refCurrentAreaBorderTop,
+      refCurrentAreaBorderRight,
+      refCurrentAreaBorderBottom,
+      refCurrentAreaBorderLeft,
 
       refGridCtxMenu,
 
@@ -330,6 +340,8 @@ export default defineComponent({
         list: [],
         style: null,
       },
+
+      currentAreaStatus: false,
     } as unknown as VmaGridReactiveData)
 
     let resizeObserver: ResizeObserver

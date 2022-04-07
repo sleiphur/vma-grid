@@ -198,6 +198,8 @@ export interface VmaGridReactiveData {
     style: any
     [key: string]: any
   }
+
+  currentAreaStatus: boolean
 }
 
 export interface VmaGridRefs {
@@ -248,6 +250,11 @@ export interface VmaGridRefs {
   refCurrentCellBorderBottom: Ref<HTMLDivElement>
   refCurrentCellBorderLeft: Ref<HTMLDivElement>
   refCurrentCellBorderCorner: Ref<HTMLDivElement>
+
+  refCurrentAreaBorderTop: Ref<HTMLDivElement>
+  refCurrentAreaBorderRight: Ref<HTMLDivElement>
+  refCurrentAreaBorderBottom: Ref<HTMLDivElement>
+  refCurrentAreaBorderLeft: Ref<HTMLDivElement>
 
   refGridCtxMenu: Ref<HTMLDivElement>
 

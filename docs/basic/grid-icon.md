@@ -2,7 +2,7 @@
 
 ## 内置图标
 
-| 名称                 |                                           预览                                           | 名称                 |                                           预览                                           | 名称                 |                                           预览                                           | 
+| 名称                 |                                           预览                                           | 名称                 |                                           预览                                           | 名称                 |                                           预览                                           |
 |:-------------------|:--------------------------------------------------------------------------------------:|:-------------------|:--------------------------------------------------------------------------------------:|:-------------------|:--------------------------------------------------------------------------------------:|
 | ellipsis-h         |     <vma-grid-icon name="ellipsis-h" size="normal"></vma-grid-icon>     | caret-left         |     <vma-grid-icon name="caret-left" size="normal"></vma-grid-icon>     | sort-desc          |     <vma-grid-icon name="sort-desc" size="normal"></vma-grid-icon>      |
 | ellipsis-v         |     <vma-grid-icon name="ellipsis-v" size="normal"></vma-grid-icon>     | caret-right        |    <vma-grid-icon name="caret-right" size="normal"></vma-grid-icon>     | info               |        <vma-grid-icon name="info" size="normal"></vma-grid-icon>        |
@@ -14,7 +14,6 @@
 | angle-double-right | <vma-grid-icon name="angle-double-right" size="normal"></vma-grid-icon> | close              |       <vma-grid-icon name="close" size="normal"></vma-grid-icon>        | question-circle    |  <vma-grid-icon name="question-circle" size="normal"></vma-grid-icon>   |
 | angle-double-up    |  <vma-grid-icon name="angle-double-up" size="normal"></vma-grid-icon>   | search             |       <vma-grid-icon name="search" size="normal"></vma-grid-icon>       |
 | angle-double-down  | <vma-grid-icon name="angle-double-down" size="normal"></vma-grid-icon>  | sort-asc           |      <vma-grid-icon name="sort-asc" size="normal"></vma-grid-icon>      |
-
 
 | 名称  |                                  预览                                   | 名称  |                                  预览                                   | 名称  |                                  预览                                   |
 |:----|:---------------------------------------------------------------------:|:----|:---------------------------------------------------------------------:|:----|:---------------------------------------------------------------------:|

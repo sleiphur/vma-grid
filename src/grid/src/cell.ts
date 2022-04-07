@@ -533,6 +533,7 @@ export default defineComponent({
           },
           onMouseup: () => {
             console.log('onMouseup', props.r, props.c! - 1)
+            $vmaCalcGrid.reactiveData.currentAreaStatus = false
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false
             $vmaCalcGrid.reactiveData.currentCell =
               currentSheetData[props.r!][props.c! - 1]
@@ -541,6 +542,13 @@ export default defineComponent({
           },
           onMousedown: () => {
             console.log('onMousedown', props.r, props.c! - 1)
+            $vmaCalcGrid.reactiveData.currentAreaStatus = true
+          },
+          onMousemove: (event: MouseEvent) => {
+            // console.log('onMousemove', event.currentTarget)
+            if ($vmaCalcGrid.reactiveData.currentAreaStatus) {
+              // console.log('onMousemove', event.currentTarget)
+            }
           },
           // onDrag: (event: MouseEvent) => {
           //   // console.log('onDragging', event.target)
