@@ -26,6 +26,7 @@ import {
   getXSpaceFromColumnWidths,
   getYSpaceFromRowHeights,
 } from './utils/utils'
+import { debounce } from './utils/debounce/debounce'
 
 export default defineComponent({
   name: 'VmaGridCell',
@@ -108,6 +109,46 @@ export default defineComponent({
         },
         text,
       )
+    }
+
+    const mousemoveHandler = debounce((event: MouseEvent) => {
+      const elem = event.target as HTMLDivElement
+      const targetElem: any = elem.parentElement!
+      if (targetElem) {
+        console.log(
+          'onMousemove',
+          targetElem.attributes.row.value,
+          targetElem.attributes.col.value - 1,
+        )
+      }
+    }, 36)
+
+    const resizeCurrentSelectArea = (event: MouseEvent) => {
+      console.log('onMousedown', props.r, props.c! - 1)
+      const domMousemove = document.onmousemove
+      const domMouseup = document.onmouseup
+
+      const updateEvent = (event: MouseEvent) => {
+        event.stopPropagation()
+        event.preventDefault()
+        mousemoveHandler(event)
+      }
+
+      document.onmousemove = updateEvent
+
+      document.onmouseup = (event: MouseEvent) => {
+        document.onmousemove = domMousemove
+        document.onmouseup = domMouseup
+        const elem = event.target as HTMLDivElement
+        const targetElem: any = elem.parentElement!
+        if (targetElem) {
+          console.log(
+            'onMouseup',
+            targetElem.attributes.row.value,
+            targetElem.attributes.col.value - 1,
+          )
+        }
+      }
     }
 
     const resizeColumnMousedown = (event: MouseEvent) => {
@@ -532,24 +573,31 @@ export default defineComponent({
             color: currentSheetData[props.r!][props.c! - 1].fc,
           },
           onMouseup: () => {
-            console.log('onMouseup', props.r, props.c! - 1)
+            // console.log('onMouseup', props.r, props.c! - 1)
             $vmaCalcGrid.reactiveData.currentAreaStatus = false
+            // $vmaCalcGrid.reactiveData.currentCellEditorActive = false
+            // $vmaCalcGrid.reactiveData.currentCell =
+            //   currentSheetData[props.r!][props.c! - 1]
+            // $vmaCalcGrid.reactiveData.currentCellEditorContent =
+            //   currentSheetData[props.r!][props.c! - 1].v
+          },
+          onMousedown: (event: MouseEvent) => {
+            // console.log('onMousedown', props.r, props.c! - 1)
+            $vmaCalcGrid.reactiveData.currentAreaStatus = true
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false
             $vmaCalcGrid.reactiveData.currentCell =
               currentSheetData[props.r!][props.c! - 1]
             $vmaCalcGrid.reactiveData.currentCellEditorContent =
               currentSheetData[props.r!][props.c! - 1].v
+
+            resizeCurrentSelectArea(event)
           },
-          onMousedown: () => {
-            console.log('onMousedown', props.r, props.c! - 1)
-            $vmaCalcGrid.reactiveData.currentAreaStatus = true
-          },
-          onMousemove: (event: MouseEvent) => {
-            // console.log('onMousemove', event.currentTarget)
-            if ($vmaCalcGrid.reactiveData.currentAreaStatus) {
-              // console.log('onMousemove', event.currentTarget)
-            }
-          },
+          // onMousemove: (event: MouseEvent) => {
+          //   // console.log('onMousemove', event.currentTarget)
+          //   if ($vmaCalcGrid.reactiveData.currentAreaStatus) {
+          //     // console.log('onMousemove', event.currentTarget)
+          //   }
+          // },
           // onDrag: (event: MouseEvent) => {
           //   // console.log('onDragging', event.target)
           // },

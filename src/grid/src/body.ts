@@ -523,13 +523,25 @@ export default defineComponent({
                   left: $vmaCalcGrid.reactiveData.currentCellEditorStyle.left,
                   top: $vmaCalcGrid.reactiveData.currentCellEditorStyle.top,
                 },
-                onBlur: () => {
-                  console.log('onBlur')
+                onChange: () => {
+                  console.log('onChange')
                   $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
                     $vmaCalcGrid.reactiveData.currentCellEditorContent,
                   )
                     ? Number($vmaCalcGrid.reactiveData.currentCellEditorContent)
                     : $vmaCalcGrid.reactiveData.currentCellEditorContent
+                  // // 重新计算
+                  // nextTick(() => {
+                  //   $vmaCalcGrid.calc()
+                  // })
+                },
+                onBlur: () => {
+                  // console.log('onChange')
+                  // $vmaCalcGrid.reactiveData.currentCell.v = isNumeric(
+                  //   $vmaCalcGrid.reactiveData.currentCellEditorContent,
+                  // )
+                  //   ? Number($vmaCalcGrid.reactiveData.currentCellEditorContent)
+                  //   : $vmaCalcGrid.reactiveData.currentCellEditorContent
                   // 重新计算
                   nextTick(() => {
                     $vmaCalcGrid.calc()
