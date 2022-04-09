@@ -2,7 +2,7 @@ import { defineHopeConfig } from "vuepress-theme-hope";
 import themeConfig from "./themeConfig";
 
 export default defineHopeConfig({
-  base: "/",
+  base: process.env.BUILD_WEB === 'true' ? '/' : '/vma-grid/',
 
   head: [
     [
@@ -26,6 +26,21 @@ export default defineHopeConfig({
       description: "vuepress-theme-hope 的演示",
     },
   },
+
+  plugins: [[
+    'vuepress-plugin-typedoc',
+    // Plugin / TypeDoc options
+    {
+      entryPoints: ['./src/formula/index.ts', './src/formula/formulas/index.ts'],
+      tsconfig: './tsconfig.json',
+      // Plugin options
+      out: 'formula',
+      sidebar: {
+        fullNames: true,
+        parentCategory: 'API',
+      },
+    },
+  ]],
 
   themeConfig,
 });
