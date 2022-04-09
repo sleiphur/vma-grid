@@ -379,7 +379,7 @@ export const getXSpaceFromColumnWidths = (
     Object.keys(changedColumnVisibles).length
   ) {
     // 配置中既有列宽定义，又有列隐藏定义
-    let sidx = 0
+    let sidx = 1
     let xSpace = 0
     while (startColIndex > sidx) {
       if (changedColumnVisibles[`${sidx}`] === 0) {
@@ -396,11 +396,11 @@ export const getXSpaceFromColumnWidths = (
       }
       sidx++
     }
-    return xSpace - 1
+    return xSpace
   }
   if (Object.keys(changedColumnWidths).length) {
     // 配置中只有列宽定义
-    let sidx = 0
+    let sidx = 1
     let xSpace = 0
     while (startColIndex > sidx) {
       xSpace += changedColumnWidths[`${sidx}`]
@@ -412,7 +412,7 @@ export const getXSpaceFromColumnWidths = (
   }
   if (Object.keys(changedColumnVisibles).length) {
     // 配置中只有列隐藏定义
-    let sidx = 0
+    let sidx = 1
     let xSpace = 0
     while (startColIndex > sidx) {
       xSpace += changedColumnVisibles[`${sidx}`] === 0 ? 0 : colWidth
