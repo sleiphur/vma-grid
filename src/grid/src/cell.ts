@@ -20,6 +20,8 @@ import {
   VmaGridConstructor,
 } from '../../../types/grid'
 import {
+  getCurrentAreaHeight,
+  getCurrentAreaWidth,
   getHideCaretTranslateY,
   getRenderHeight,
   getRenderWidth,
@@ -51,7 +53,7 @@ export default defineComponent({
 
     const {
       refGridHeader,
-      refGridBody,
+      refGridBodyTable,
       refGridLeftFixedBody,
       refRowResizeBar,
       refColumnResizeBar,
@@ -111,20 +113,96 @@ export default defineComponent({
       )
     }
 
-    const mousemoveHandler = debounce((event: MouseEvent) => {
+    const mousemoveHandler = /* debounce( */ (event: MouseEvent) => {
       const elem = event.target as HTMLDivElement
       const targetElem: any = elem.parentElement!
-      if (targetElem) {
-        console.log(
-          'onMousemove',
-          targetElem.attributes.row.value,
-          targetElem.attributes.col.value - 1,
+      if (
+        targetElem &&
+        targetElem.attributes.hasOwnProperty('row') &&
+        targetElem.attributes.hasOwnProperty('col')
+      ) {
+        // 3、move时赋值end
+        $vmaCalcGrid.reactiveData.currentArea.end = {
+          r: Number(targetElem.attributes.row.value),
+          c: Number(targetElem.attributes.col.value) - 1,
+        }
+        // 计算current area style
+        const startColIndex =
+          $vmaCalcGrid.reactiveData.currentArea.start.c >
+          $vmaCalcGrid.reactiveData.currentArea.end.c
+            ? $vmaCalcGrid.reactiveData.currentArea.end.c
+            : $vmaCalcGrid.reactiveData.currentArea.start.c
+        const endColIndex =
+          $vmaCalcGrid.reactiveData.currentArea.end.c <
+          $vmaCalcGrid.reactiveData.currentArea.start.c
+            ? $vmaCalcGrid.reactiveData.currentArea.start.c
+            : $vmaCalcGrid.reactiveData.currentArea.end.c
+        const startRowIndex =
+          $vmaCalcGrid.reactiveData.currentArea.start.r >
+          $vmaCalcGrid.reactiveData.currentArea.end.r
+            ? $vmaCalcGrid.reactiveData.currentArea.end.r
+            : $vmaCalcGrid.reactiveData.currentArea.start.r
+        const endRowIndex =
+          $vmaCalcGrid.reactiveData.currentArea.end.r <
+          $vmaCalcGrid.reactiveData.currentArea.start.r
+            ? $vmaCalcGrid.reactiveData.currentArea.start.r
+            : $vmaCalcGrid.reactiveData.currentArea.end.r
+
+        const leftSpaceWidth = getXSpaceFromColumnWidths(
+          $vmaCalcGrid.reactiveData.startColIndex,
+          rcw.value,
+          $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+          $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
         )
+
+        const topSpaceHeight = getYSpaceFromRowHeights(
+          $vmaCalcGrid.reactiveData.startIndex,
+          rrh.value,
+          $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+          $vmaCalcGrid.reactiveData.gridRowsVisibleChanged,
+        )
+        nextTick(() => {
+          refGridBodyTable.value
+            .querySelectorAll(
+              `td[row="${startRowIndex}"][col="${startColIndex + 1}"]`,
+            )
+            .forEach((cellElem: any) => {
+              // console.log(leftSpaceWidth, cellElem.offsetLeft)
+              const borderMarginLeft = `${
+                leftSpaceWidth + cellElem.offsetLeft - 1
+              }px`
+              const borderMarginTop = `${
+                topSpaceHeight + cellElem.offsetTop - 1
+              }px`
+              $vmaCalcGrid.reactiveData.currentAreaBorderStyle.transform = `translateX(${borderMarginLeft}) translateY(${borderMarginTop})`
+              const w = getCurrentAreaWidth(
+                startColIndex,
+                endColIndex,
+                rcw.value,
+                $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+                $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
+              )
+              const h = getCurrentAreaHeight(
+                startRowIndex,
+                endRowIndex,
+                rrh.value,
+                $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+                $vmaCalcGrid.reactiveData.gridRowsVisibleChanged,
+              )
+              $vmaCalcGrid.reactiveData.currentAreaBorderStyle.height = `${h}px`
+              $vmaCalcGrid.reactiveData.currentAreaBorderStyle.width = `${w}px`
+            })
+        })
       }
-    }, 36)
+    } /* , 20) */
 
     const resizeCurrentSelectArea = (event: MouseEvent) => {
-      console.log('onMousedown', props.r, props.c! - 1)
+      // 2、赋值start
+      $vmaCalcGrid.reactiveData.currentArea.start = {
+        r: Number(props.r),
+        c: Number(props.c!) - 1,
+      }
+      // console.log('onMousedown', $vmaCalcGrid.reactiveData.currentArea)
       const domMousemove = document.onmousemove
       const domMouseup = document.onmouseup
 
@@ -141,12 +219,83 @@ export default defineComponent({
         document.onmouseup = domMouseup
         const elem = event.target as HTMLDivElement
         const targetElem: any = elem.parentElement!
-        if (targetElem) {
-          console.log(
-            'onMouseup',
-            targetElem.attributes.row.value,
-            targetElem.attributes.col.value - 1,
+        if (
+          targetElem &&
+          targetElem.attributes.hasOwnProperty('row') &&
+          targetElem.attributes.hasOwnProperty('col')
+        ) {
+          // 4、结束时赋值end
+          $vmaCalcGrid.reactiveData.currentArea.end = {
+            r: Number(targetElem.attributes.row.value),
+            c: Number(targetElem.attributes.col.value) - 1,
+          }
+          // 计算current area style
+          const startColIndex =
+            $vmaCalcGrid.reactiveData.currentArea.start.c >
+            $vmaCalcGrid.reactiveData.currentArea.end.c
+              ? $vmaCalcGrid.reactiveData.currentArea.end.c
+              : $vmaCalcGrid.reactiveData.currentArea.start.c
+          const endColIndex =
+            $vmaCalcGrid.reactiveData.currentArea.end.c <
+            $vmaCalcGrid.reactiveData.currentArea.start.c
+              ? $vmaCalcGrid.reactiveData.currentArea.start.c
+              : $vmaCalcGrid.reactiveData.currentArea.end.c
+          const startRowIndex =
+            $vmaCalcGrid.reactiveData.currentArea.start.r >
+            $vmaCalcGrid.reactiveData.currentArea.end.r
+              ? $vmaCalcGrid.reactiveData.currentArea.end.r
+              : $vmaCalcGrid.reactiveData.currentArea.start.r
+          const endRowIndex =
+            $vmaCalcGrid.reactiveData.currentArea.end.r <
+            $vmaCalcGrid.reactiveData.currentArea.start.r
+              ? $vmaCalcGrid.reactiveData.currentArea.start.r
+              : $vmaCalcGrid.reactiveData.currentArea.end.r
+
+          const leftSpaceWidth = getXSpaceFromColumnWidths(
+            $vmaCalcGrid.reactiveData.startColIndex,
+            rcw.value,
+            $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+            $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
           )
+
+          const topSpaceHeight = getYSpaceFromRowHeights(
+            $vmaCalcGrid.reactiveData.startIndex,
+            rrh.value,
+            $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+            $vmaCalcGrid.reactiveData.gridRowsVisibleChanged,
+          )
+          nextTick(() => {
+            refGridBodyTable.value
+              .querySelectorAll(
+                `td[row="${startRowIndex}"][col="${startColIndex + 1}"]`,
+              )
+              .forEach((cellElem: any) => {
+                // console.log(leftSpaceWidth, cellElem.offsetLeft)
+                const borderMarginLeft = `${
+                  leftSpaceWidth + cellElem.offsetLeft - 1
+                }px`
+                const borderMarginTop = `${
+                  topSpaceHeight + cellElem.offsetTop - 1
+                }px`
+                $vmaCalcGrid.reactiveData.currentAreaBorderStyle.transform = `translateX(${borderMarginLeft}) translateY(${borderMarginTop})`
+                const w = getCurrentAreaWidth(
+                  startColIndex,
+                  endColIndex,
+                  rcw.value,
+                  $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+                  $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
+                )
+                const h = getCurrentAreaHeight(
+                  startRowIndex,
+                  endRowIndex,
+                  rrh.value,
+                  $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+                  $vmaCalcGrid.reactiveData.gridRowsVisibleChanged,
+                )
+                $vmaCalcGrid.reactiveData.currentAreaBorderStyle.height = `${h}px`
+                $vmaCalcGrid.reactiveData.currentAreaBorderStyle.width = `${w}px`
+              })
+          })
         }
       }
     }
@@ -590,7 +739,12 @@ export default defineComponent({
             $vmaCalcGrid.reactiveData.currentCellEditorContent =
               currentSheetData[props.r!][props.c! - 1].v
 
-            resizeCurrentSelectArea(event)
+            // 1、清理currentArea
+            $vmaCalcGrid.reactiveData.currentArea = {}
+
+            nextTick(() => {
+              resizeCurrentSelectArea(event)
+            })
           },
           // onMousemove: (event: MouseEvent) => {
           //   // console.log('onMousemove', event.currentTarget)

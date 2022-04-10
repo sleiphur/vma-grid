@@ -71,7 +71,9 @@ export interface VmaGridMethods {
   triggerScrollXEvent(evnt: Event): void
   triggerScrollYEvent(evnt: Event): void
   calcCurrentCellPosition(): void
+  calcCurrentAreaPosition(): void
   calcCurrentCellDisplay(): void
+  calcCurrentAreaDisplay(): void
   getParentElem(): Element | null;
   updateColumn(type: string, row: number, col: number): void
   updateRow(type: string, row: number, col: number): void
@@ -172,6 +174,9 @@ export interface VmaGridReactiveData {
   currentCellEditorActive: boolean
   currentCellEditorContent: any
 
+  currentArea: Record<string, any>
+  currentAreaBorderStyle: Record<string, any>
+
   startIndex: number
   endIndex: number
 
@@ -255,6 +260,7 @@ export interface VmaGridRefs {
   refCurrentAreaBorderRight: Ref<HTMLDivElement>
   refCurrentAreaBorderBottom: Ref<HTMLDivElement>
   refCurrentAreaBorderLeft: Ref<HTMLDivElement>
+  refCurrentAreaBorderCorner: Ref<HTMLDivElement>
 
   refGridCtxMenu: Ref<HTMLDivElement>
 

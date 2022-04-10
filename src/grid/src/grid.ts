@@ -47,6 +47,8 @@ import {
   getYSpaceFromRowHeights,
   getRealVisibleWidthSize,
   getRealVisibleHeightSize,
+  getCurrentAreaWidth,
+  getCurrentAreaHeight,
 } from './utils/utils'
 import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
@@ -124,6 +126,7 @@ export default defineComponent({
     const refCurrentAreaBorderRight = ref() as Ref<HTMLDivElement>
     const refCurrentAreaBorderBottom = ref() as Ref<HTMLDivElement>
     const refCurrentAreaBorderLeft = ref() as Ref<HTMLDivElement>
+    const refCurrentAreaBorderCorner = ref() as Ref<HTMLDivElement>
 
     const refGridCtxMenu = ref() as Ref<HTMLDivElement>
 
@@ -193,6 +196,7 @@ export default defineComponent({
       refCurrentAreaBorderRight,
       refCurrentAreaBorderBottom,
       refCurrentAreaBorderLeft,
+      refCurrentAreaBorderCorner,
 
       refGridCtxMenu,
 
@@ -315,6 +319,15 @@ export default defineComponent({
       },
       currentCellEditorActive: false,
       currentCellEditorContent: null,
+
+      currentAreaBorderStyle: {
+        transform: 'translateX(0) translateY(0)',
+        // display: 'none',
+        left: 0,
+        top: 0,
+        width: 0,
+        height: 0,
+      },
 
       startIndex: 0,
       endIndex: 0,
@@ -1525,6 +1538,14 @@ export default defineComponent({
           gridReactiveData.currentCellEditorStyle.display = 'none'
         }
       },
+      calcCurrentAreaDisplay: () => {},
+      calcCurrentAreaPosition: () => {
+        if (
+          gridReactiveData.currentArea &&
+          Object.keys(gridReactiveData.currentArea).length > 1
+        ) {
+        }
+      },
       calcCurrentCellPosition: () => {
         if (gridReactiveData.currentCell) {
           const leftSpaceWidth = getXSpaceFromColumnWidths(
@@ -1546,24 +1567,116 @@ export default defineComponent({
             refGridBodyTable.value
               .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
               .forEach((cellElem: any) => {
+                // console.log(leftSpaceWidth, cellElem.offsetLeft)
                 const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
                 const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
                 const borderMarginLeft = `${
-                  leftSpaceWidth + cellElem.offsetLeft - 2
+                  leftSpaceWidth + cellElem.offsetLeft - 1
                 }px`
                 const borderMarginTop = `${
-                  topSpaceHeight + cellElem.offsetTop - 2
+                  topSpaceHeight + cellElem.offsetTop - 1
                 }px`
                 gridReactiveData.currentCellEditorStyle.transform = `translateX(${marginLeft}) translateY(${marginTop})`
                 gridReactiveData.currentCellEditorStyle.height = `${cellElem.offsetHeight}px`
                 gridReactiveData.currentCellEditorStyle.width = `${cellElem.offsetWidth}px`
                 gridReactiveData.currentCellBorderStyle.transform = `translateX(${borderMarginLeft}) translateY(${borderMarginTop})`
-                gridReactiveData.currentCellBorderStyle.height = `${
-                  cellElem.offsetHeight + 1
+
+                gridReactiveData.currentCellBorderStyle.height = `${cellElem.offsetHeight}px`
+                gridReactiveData.currentCellBorderStyle.width = `${cellElem.offsetWidth}px`
+              })
+            // 计算current area style
+            // if (gridReactiveData.currentArea && Object.keys(gridReactiveData.currentArea).length > 1) {
+            //   let startColIndex = $vmaCalcGrid.reactiveData.currentArea.start.c > $vmaCalcGrid.reactiveData.currentArea.end.c ? $vmaCalcGrid.reactiveData.currentArea.end.c : $vmaCalcGrid.reactiveData.currentArea.start.c
+            //   let endColIndex = $vmaCalcGrid.reactiveData.currentArea.end.c < $vmaCalcGrid.reactiveData.currentArea.start.c ? $vmaCalcGrid.reactiveData.currentArea.start.c : $vmaCalcGrid.reactiveData.currentArea.end.c
+            //   const w = getCurrentAreaWidth(startColIndex, endColIndex,rcw.value,
+            //       $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+            //       $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged, )
+            //   let startRowIndex = $vmaCalcGrid.reactiveData.currentArea.start.r > $vmaCalcGrid.reactiveData.currentArea.end.r ? $vmaCalcGrid.reactiveData.currentArea.end.r : $vmaCalcGrid.reactiveData.currentArea.start.r
+            //   let endRowIndex = $vmaCalcGrid.reactiveData.currentArea.end.r < $vmaCalcGrid.reactiveData.currentArea.start.r ? $vmaCalcGrid.reactiveData.currentArea.start.r : $vmaCalcGrid.reactiveData.currentArea.end.r
+            //   const h = getCurrentAreaHeight(startRowIndex, endRowIndex, rrh.value,
+            //       $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+            //       $vmaCalcGrid.reactiveData.gridRowsVisibleChanged)
+            //   $vmaCalcGrid.reactiveData.currentAreaBorderStyle.height = `${
+            //       h + 2
+            //   }px`
+            //   $vmaCalcGrid.reactiveData.currentAreaBorderStyle.width = `${
+            //       w + 2
+            //   }px`
+            // }
+
+            // console.log(
+            //     'onMousemove',
+            //     w, h
+            // )
+          })
+        }
+        if (
+          gridReactiveData.currentArea &&
+          Object.keys(gridReactiveData.currentArea).length > 1
+        ) {
+          const startColIndex =
+            $vmaCalcGrid.reactiveData.currentArea.start.c >
+            $vmaCalcGrid.reactiveData.currentArea.end.c
+              ? $vmaCalcGrid.reactiveData.currentArea.end.c
+              : $vmaCalcGrid.reactiveData.currentArea.start.c
+          const endColIndex =
+            $vmaCalcGrid.reactiveData.currentArea.end.c <
+            $vmaCalcGrid.reactiveData.currentArea.start.c
+              ? $vmaCalcGrid.reactiveData.currentArea.start.c
+              : $vmaCalcGrid.reactiveData.currentArea.end.c
+          const startRowIndex =
+            $vmaCalcGrid.reactiveData.currentArea.start.r >
+            $vmaCalcGrid.reactiveData.currentArea.end.r
+              ? $vmaCalcGrid.reactiveData.currentArea.end.r
+              : $vmaCalcGrid.reactiveData.currentArea.start.r
+          const endRowIndex =
+            $vmaCalcGrid.reactiveData.currentArea.end.r <
+            $vmaCalcGrid.reactiveData.currentArea.start.r
+              ? $vmaCalcGrid.reactiveData.currentArea.start.r
+              : $vmaCalcGrid.reactiveData.currentArea.end.r
+          const leftSpaceWidth = getXSpaceFromColumnWidths(
+            gridReactiveData.startColIndex,
+            rcw.value,
+            gridReactiveData.gridColumnsWidthChanged,
+            gridReactiveData.gridColumnsVisibleChanged,
+          )
+
+          const topSpaceHeight = getYSpaceFromRowHeights(
+            gridReactiveData.startIndex,
+            rrh.value,
+            gridReactiveData.gridRowsHeightChanged,
+            gridReactiveData.gridRowsVisibleChanged,
+          )
+          nextTick(() => {
+            refGridBodyTable.value
+              .querySelectorAll(
+                `td[row="${startRowIndex}"][col="${startColIndex + 1}"]`,
+              )
+              .forEach((cellElem: any) => {
+                // console.log(leftSpaceWidth, cellElem.offsetLeft)
+                const borderMarginLeft = `${
+                  leftSpaceWidth + cellElem.offsetLeft - 1
                 }px`
-                gridReactiveData.currentCellBorderStyle.width = `${
-                  cellElem.offsetWidth + 1
+                const borderMarginTop = `${
+                  topSpaceHeight + cellElem.offsetTop - 1
                 }px`
+                gridReactiveData.currentAreaBorderStyle.transform = `translateX(${borderMarginLeft}) translateY(${borderMarginTop})`
+                const w = getCurrentAreaWidth(
+                  startColIndex,
+                  endColIndex,
+                  rcw.value,
+                  $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
+                  $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged,
+                )
+                const h = getCurrentAreaHeight(
+                  startRowIndex,
+                  endRowIndex,
+                  rrh.value,
+                  $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
+                  $vmaCalcGrid.reactiveData.gridRowsVisibleChanged,
+                )
+                $vmaCalcGrid.reactiveData.currentAreaBorderStyle.height = `${h}px`
+                $vmaCalcGrid.reactiveData.currentAreaBorderStyle.width = `${w}px`
               })
           })
         }

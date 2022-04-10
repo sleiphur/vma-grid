@@ -313,6 +313,32 @@ export const getIndexFromColumnWidths = (
   return Math.floor(scrollLeft / columnWidth)
 }
 
+export const getCurrentAreaHeight = (
+  startRowIndex: number,
+  endRowIndex: number,
+  rowHeight: number,
+  changedRowHeights: Record<string, number>,
+  changedRowVisibles: Record<string, number>,
+): number => {
+  let height = 0
+  for (let i = startRowIndex; i <= endRowIndex; i++) {
+    if (
+      Object.keys(changedRowVisibles).length &&
+      changedRowVisibles[`${i}`] === 0
+    ) {
+      height += 0
+    } else if (
+      Object.keys(changedRowHeights).length &&
+      changedRowHeights[`${i}`]
+    ) {
+      height += changedRowHeights[`${i}`]
+    } else {
+      height += rowHeight
+    }
+  }
+  return height
+}
+
 export const getYSpaceFromRowHeights = (
   startIndex: number,
   rowHeight: number,
@@ -366,6 +392,32 @@ export const getYSpaceFromRowHeights = (
     return ySpace
   }
   return Math.max(0, startIndex * rowHeight)
+}
+
+export const getCurrentAreaWidth = (
+  startColIndex: number,
+  endColIndex: number,
+  columnWidth: number,
+  changedColumnWidths: Record<string, number>,
+  changedColumnVisibles: Record<string, number>,
+): number => {
+  let width = 0
+  for (let i = startColIndex; i <= endColIndex; i++) {
+    if (
+      Object.keys(changedColumnVisibles).length &&
+      changedColumnVisibles[`${i}`] === 0
+    ) {
+      width += 0
+    } else if (
+      Object.keys(changedColumnWidths).length &&
+      changedColumnWidths[`${i + 1}`]
+    ) {
+      width += changedColumnWidths[`${i + 1}`]
+    } else {
+      width += columnWidth
+    }
+  }
+  return width
 }
 
 export const getXSpaceFromColumnWidths = (

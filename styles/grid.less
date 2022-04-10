@@ -472,29 +472,81 @@
       }
 
       &.left {
-        width: 2px;
+        width: 1px;
         height: 0;
       }
 
       &.top {
         width: 0;
-        height: 2px;
+        height: 1px;
       }
 
       &.right {
-        width: 2px;
+        width: 1px;
         height: 0;
       }
 
       &.bottom {
         width: 0;
-        height: 2px;
+        height: 1px;
       }
 
       &.corner {
-        width: 7px;
-        height: 7px;
+        width: 6px;
+        height: 6px;
       }
+    }
+
+    .current-area-border {
+      display: none;
+      position: absolute;
+      background-color: @grid-primary-color;
+
+      &.default {
+        background-color: @grid-default-color;
+      }
+
+      &.primary {
+        background-color: @grid-primary-color;
+      }
+
+      &.success {
+        background-color: @grid-success-color;
+      }
+
+      &.warning {
+        background-color: @grid-warning-color;
+      }
+
+      &.danger {
+        background-color: @grid-danger-color;
+      }
+
+      &.left {
+        width: 1px;
+        height: 0;
+      }
+
+      &.top {
+        width: 0;
+        height: 1px;
+      }
+
+      &.right {
+        width: 1px;
+        height: 0;
+      }
+
+      &.bottom {
+        width: 0;
+        height: 1px;
+      }
+
+      &.corner {
+        width: 6px;
+        height: 6px;
+      }
+
     }
 
     .body {
