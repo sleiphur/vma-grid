@@ -793,16 +793,24 @@ export default defineComponent({
                 $vmaCalcGrid.reactiveData.currentCell.c === props.c! - 1,
               'column-indicator-active':
                 props.cat === 'column-indicator' &&
-                $vmaCalcGrid.reactiveData.currentCell &&
-                $vmaCalcGrid.reactiveData.currentCell.r !== undefined &&
-                $vmaCalcGrid.reactiveData.currentCell.c !== undefined &&
-                $vmaCalcGrid.reactiveData.currentCell.c === props.c! - 1,
+                $vmaCalcGrid.reactiveData.currentArea &&
+                Object.keys($vmaCalcGrid.reactiveData.currentArea).length > 1 &&
+                ((props.c! - 1 >=
+                  $vmaCalcGrid.reactiveData.currentArea.start.c &&
+                  props.c! - 1 <=
+                    $vmaCalcGrid.reactiveData.currentArea.end.c) ||
+                  (props.c! - 1 >=
+                    $vmaCalcGrid.reactiveData.currentArea.end.c &&
+                    props.c! - 1 <=
+                      $vmaCalcGrid.reactiveData.currentArea.start.c)),
               'row-indicator-active':
                 props.cat === 'row-indicator' &&
-                $vmaCalcGrid.reactiveData.currentCell &&
-                $vmaCalcGrid.reactiveData.currentCell.r !== undefined &&
-                $vmaCalcGrid.reactiveData.currentCell.c !== undefined &&
-                $vmaCalcGrid.reactiveData.currentCell.r === props.r,
+                $vmaCalcGrid.reactiveData.currentArea &&
+                Object.keys($vmaCalcGrid.reactiveData.currentArea).length > 1 &&
+                ((props.r! >= $vmaCalcGrid.reactiveData.currentArea.start.r &&
+                  props.r! <= $vmaCalcGrid.reactiveData.currentArea.end.r) ||
+                  (props.r! >= $vmaCalcGrid.reactiveData.currentArea.end.r &&
+                    props.r! <= $vmaCalcGrid.reactiveData.currentArea.start.r)),
             },
           ],
           style: {

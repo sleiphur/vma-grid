@@ -572,7 +572,7 @@ export default defineComponent({
                       $vmaCalcGrid.reactiveData.currentCell &&
                       Object.keys($vmaCalcGrid.reactiveData.currentCell)
                         .length > 0
-                        ? 'block'
+                        ? 'none'
                         : 'none',
                   },
                 }),
@@ -591,7 +591,7 @@ export default defineComponent({
                       $vmaCalcGrid.reactiveData.currentCell &&
                       Object.keys($vmaCalcGrid.reactiveData.currentCell)
                         .length > 0
-                        ? 'block'
+                        ? 'none'
                         : 'none',
                   },
                 }),
@@ -612,7 +612,7 @@ export default defineComponent({
                       $vmaCalcGrid.reactiveData.currentCell &&
                       Object.keys($vmaCalcGrid.reactiveData.currentCell)
                         .length > 0
-                        ? 'block'
+                        ? 'none'
                         : 'none',
                   },
                 }),
@@ -633,7 +633,7 @@ export default defineComponent({
                       $vmaCalcGrid.reactiveData.currentCell &&
                       Object.keys($vmaCalcGrid.reactiveData.currentCell)
                         .length > 0
-                        ? 'block'
+                        ? 'none'
                         : 'none',
                   },
                 }),
@@ -656,7 +656,7 @@ export default defineComponent({
                       $vmaCalcGrid.reactiveData.currentCell &&
                       Object.keys($vmaCalcGrid.reactiveData.currentCell)
                         .length > 0
-                        ? 'block'
+                        ? 'none'
                         : 'none',
                   },
                 }),
