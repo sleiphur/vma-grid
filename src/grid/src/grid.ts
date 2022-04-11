@@ -869,6 +869,30 @@ export default defineComponent({
               'center',
             ),
           )
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startColIndex =
+              gridReactiveData.currentArea.start.c >
+              gridReactiveData.currentArea.end.c
+                ? gridReactiveData.currentArea.end.c
+                : gridReactiveData.currentArea.start.c
+            const endColIndex =
+              gridReactiveData.currentArea.end.c <
+              gridReactiveData.currentArea.start.c
+                ? gridReactiveData.currentArea.start.c
+                : gridReactiveData.currentArea.end.c
+            if (Number(col) - 1 <= startColIndex) {
+              gridReactiveData.currentArea.start.c += 1
+              gridReactiveData.currentArea.end.c += 1
+            } else if (
+              Number(col) - 1 > startColIndex &&
+              Number(col) - 1 <= endColIndex
+            ) {
+              gridReactiveData.currentArea.end.c += 1
+            }
+          }
           const gridColumnsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridColumnsVisibleChanged).map((key) => {
             if (Number(key) >= col) {
@@ -965,9 +989,33 @@ export default defineComponent({
               'center',
             ),
           )
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startColIndex =
+              gridReactiveData.currentArea.start.c >
+              gridReactiveData.currentArea.end.c
+                ? gridReactiveData.currentArea.end.c
+                : gridReactiveData.currentArea.start.c
+            const endColIndex =
+              gridReactiveData.currentArea.end.c <
+              gridReactiveData.currentArea.start.c
+                ? gridReactiveData.currentArea.start.c
+                : gridReactiveData.currentArea.end.c
+            if (Number(col) - 1 < startColIndex) {
+              gridReactiveData.currentArea.start.c += 1
+              gridReactiveData.currentArea.end.c += 1
+            } else if (
+              Number(col) - 1 >= startColIndex &&
+              Number(col) - 1 < endColIndex
+            ) {
+              gridReactiveData.currentArea.end.c += 1
+            }
+          }
           const gridColumnsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridColumnsVisibleChanged).map((key) => {
-            if (Number(key) > col) {
+            if (Number(key) >= col) {
               const newKey = Number(key) + 1
               gridColumnsVisibleChangedNew[newKey] =
                 gridReactiveData.gridColumnsVisibleChanged[key]
@@ -1048,6 +1096,30 @@ export default defineComponent({
             }
             return item
           })
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startColIndex =
+              gridReactiveData.currentArea.start.c >
+              gridReactiveData.currentArea.end.c
+                ? gridReactiveData.currentArea.end.c
+                : gridReactiveData.currentArea.start.c
+            const endColIndex =
+              gridReactiveData.currentArea.end.c <
+              gridReactiveData.currentArea.start.c
+                ? gridReactiveData.currentArea.start.c
+                : gridReactiveData.currentArea.end.c
+            if (Number(col) - 1 < startColIndex) {
+              gridReactiveData.currentArea.start.c -= 1
+              gridReactiveData.currentArea.end.c -= 1
+            } else if (
+              Number(col) - 1 >= startColIndex &&
+              Number(col) - 1 <= endColIndex
+            ) {
+              gridReactiveData.currentArea.end.c -= 1
+            }
+          }
           const gridColumnsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridColumnsVisibleChanged).map((key) => {
             if (Number(key) !== Number(col) - 1) {
@@ -1225,6 +1297,30 @@ export default defineComponent({
               'center',
             ),
           )
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startRowIndex =
+              gridReactiveData.currentArea.start.r >
+              gridReactiveData.currentArea.end.r
+                ? gridReactiveData.currentArea.end.r
+                : gridReactiveData.currentArea.start.r
+            const endRowIndex =
+              gridReactiveData.currentArea.end.r <
+              gridReactiveData.currentArea.start.r
+                ? gridReactiveData.currentArea.start.r
+                : gridReactiveData.currentArea.end.r
+            if (Number(row) <= startRowIndex) {
+              gridReactiveData.currentArea.start.r += 1
+              gridReactiveData.currentArea.end.r += 1
+            } else if (
+              Number(row) > startRowIndex &&
+              Number(row) <= endRowIndex
+            ) {
+              gridReactiveData.currentArea.end.r += 1
+            }
+          }
           const gridRowsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
             if (Number(key) >= row) {
@@ -1320,6 +1416,30 @@ export default defineComponent({
               'center',
             ),
           )
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startRowIndex =
+              gridReactiveData.currentArea.start.r >
+              gridReactiveData.currentArea.end.r
+                ? gridReactiveData.currentArea.end.r
+                : gridReactiveData.currentArea.start.r
+            const endRowIndex =
+              gridReactiveData.currentArea.end.r <
+              gridReactiveData.currentArea.start.r
+                ? gridReactiveData.currentArea.start.r
+                : gridReactiveData.currentArea.end.r
+            if (Number(row) < startRowIndex) {
+              gridReactiveData.currentArea.start.r += 1
+              gridReactiveData.currentArea.end.r += 1
+            } else if (
+              Number(row) >= startRowIndex &&
+              Number(row) <= endRowIndex
+            ) {
+              gridReactiveData.currentArea.end.r += 1
+            }
+          }
           const gridRowsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
             if (Number(key) > row) {
@@ -1402,6 +1522,30 @@ export default defineComponent({
             }
             return item
           })
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startRowIndex =
+              gridReactiveData.currentArea.start.r >
+              gridReactiveData.currentArea.end.r
+                ? gridReactiveData.currentArea.end.r
+                : gridReactiveData.currentArea.start.r
+            const endRowIndex =
+              gridReactiveData.currentArea.end.r <
+              gridReactiveData.currentArea.start.r
+                ? gridReactiveData.currentArea.start.r
+                : gridReactiveData.currentArea.end.r
+            if (Number(row) < startRowIndex) {
+              gridReactiveData.currentArea.start.r -= 1
+              gridReactiveData.currentArea.end.r -= 1
+            } else if (
+              Number(row) >= startRowIndex &&
+              Number(row) <= endRowIndex
+            ) {
+              gridReactiveData.currentArea.end.r -= 1
+            }
+          }
           const gridRowsVisibleChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
             if (Number(key) !== Number(row)) {
@@ -1538,14 +1682,14 @@ export default defineComponent({
           gridReactiveData.currentCellEditorStyle.display = 'none'
         }
       },
-      calcCurrentAreaDisplay: () => {},
-      calcCurrentAreaPosition: () => {
-        if (
-          gridReactiveData.currentArea &&
-          Object.keys(gridReactiveData.currentArea).length > 1
-        ) {
-        }
-      },
+      // calcCurrentAreaDisplay: () => {},
+      // calcCurrentAreaPosition: () => {
+      //   if (
+      //     gridReactiveData.currentArea &&
+      //     Object.keys(gridReactiveData.currentArea).length > 1
+      //   ) {
+      //   }
+      // },
       calcCurrentCellPosition: () => {
         if (gridReactiveData.currentCell) {
           const leftSpaceWidth = getXSpaceFromColumnWidths(
@@ -1584,30 +1728,6 @@ export default defineComponent({
                 gridReactiveData.currentCellBorderStyle.height = `${cellElem.offsetHeight}px`
                 gridReactiveData.currentCellBorderStyle.width = `${cellElem.offsetWidth}px`
               })
-            // 计算current area style
-            // if (gridReactiveData.currentArea && Object.keys(gridReactiveData.currentArea).length > 1) {
-            //   let startColIndex = $vmaCalcGrid.reactiveData.currentArea.start.c > $vmaCalcGrid.reactiveData.currentArea.end.c ? $vmaCalcGrid.reactiveData.currentArea.end.c : $vmaCalcGrid.reactiveData.currentArea.start.c
-            //   let endColIndex = $vmaCalcGrid.reactiveData.currentArea.end.c < $vmaCalcGrid.reactiveData.currentArea.start.c ? $vmaCalcGrid.reactiveData.currentArea.start.c : $vmaCalcGrid.reactiveData.currentArea.end.c
-            //   const w = getCurrentAreaWidth(startColIndex, endColIndex,rcw.value,
-            //       $vmaCalcGrid.reactiveData.gridColumnsWidthChanged,
-            //       $vmaCalcGrid.reactiveData.gridColumnsVisibleChanged, )
-            //   let startRowIndex = $vmaCalcGrid.reactiveData.currentArea.start.r > $vmaCalcGrid.reactiveData.currentArea.end.r ? $vmaCalcGrid.reactiveData.currentArea.end.r : $vmaCalcGrid.reactiveData.currentArea.start.r
-            //   let endRowIndex = $vmaCalcGrid.reactiveData.currentArea.end.r < $vmaCalcGrid.reactiveData.currentArea.start.r ? $vmaCalcGrid.reactiveData.currentArea.start.r : $vmaCalcGrid.reactiveData.currentArea.end.r
-            //   const h = getCurrentAreaHeight(startRowIndex, endRowIndex, rrh.value,
-            //       $vmaCalcGrid.reactiveData.gridRowsHeightChanged,
-            //       $vmaCalcGrid.reactiveData.gridRowsVisibleChanged)
-            //   $vmaCalcGrid.reactiveData.currentAreaBorderStyle.height = `${
-            //       h + 2
-            //   }px`
-            //   $vmaCalcGrid.reactiveData.currentAreaBorderStyle.width = `${
-            //       w + 2
-            //   }px`
-            // }
-
-            // console.log(
-            //     'onMousemove',
-            //     w, h
-            // )
           })
         }
         if (
@@ -1653,7 +1773,6 @@ export default defineComponent({
                 `td[row="${startRowIndex}"][col="${startColIndex + 1}"]`,
               )
               .forEach((cellElem: any) => {
-                // console.log(leftSpaceWidth, cellElem.offsetLeft)
                 const borderMarginLeft = `${
                   leftSpaceWidth + cellElem.offsetLeft - 1
                 }px`
@@ -1927,6 +2046,7 @@ export default defineComponent({
         })
         for (let i = 0; i < topological.length; i++) {
           if (
+            noCycleVertexes[topological[i]] &&
             noCycleVertexes[topological[i]].ref.v &&
             typeof noCycleVertexes[topological[i]].ref.v === 'string' &&
             noCycleVertexes[topological[i]].ref.v.trim().startsWith('=')
@@ -2275,6 +2395,16 @@ export default defineComponent({
         deep: true,
       },
     )
+
+    // watch(
+    //     () => gridReactiveData.currentArea,
+    //     () => {
+    //       $vmaCalcGrid.calcCurrentCellPosition()
+    //     },
+    //     {
+    //       deep: true,
+    //     },
+    // )
 
     watch(
       () => gridReactiveData.currentCellEditorActive,
