@@ -806,7 +806,7 @@ export default defineComponent({
                   Number(c - 1) <= endColIndex
                 ) {
                   // 如果右键事件发生在table上的选定区域内时
-                  // do nothing
+                  // 不再进行选择区域的选择变更 do nothing
                 } else {
                   // 如果右键事件发生在table上的选定区域外时
                   // 1、清理currentArea
