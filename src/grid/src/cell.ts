@@ -113,20 +113,22 @@ export default defineComponent({
       )
     }
 
-    const mousemoveHandler = /* debounce( */ (event: MouseEvent) => {
-      const elem = event.target as HTMLDivElement
-      const targetElem: any = elem.parentElement!
-      if (
-        targetElem &&
-        targetElem.attributes.hasOwnProperty('row') &&
-        targetElem.attributes.hasOwnProperty('col')
-      ) {
+    const mousemoveHandler = (event: MouseEvent) => {
+      const eventTargetNode: any = DomTools.getEventTargetNode(
+        event,
+        refGridBodyTable,
+        `normal`,
+        (target: any) =>
+          target.attributes.hasOwnProperty('row') &&
+          target.attributes.hasOwnProperty('col'),
+      )
+      if (eventTargetNode && eventTargetNode.flag) {
+        const targetElem: any = eventTargetNode.targetElem
         // 3、move时赋值end
         $vmaCalcGrid.reactiveData.currentArea.end = {
           r: Number(targetElem.attributes.row.value),
           c: Number(targetElem.attributes.col.value) - 1,
         }
-        // 计算current area style
         const startColIndex =
           $vmaCalcGrid.reactiveData.currentArea.start.c >
           $vmaCalcGrid.reactiveData.currentArea.end.c
@@ -167,7 +169,6 @@ export default defineComponent({
               `td[row="${startRowIndex}"][col="${startColIndex + 1}"]`,
             )
             .forEach((cellElem: any) => {
-              // console.log(leftSpaceWidth, cellElem.offsetLeft)
               const borderMarginLeft = `${
                 leftSpaceWidth + cellElem.offsetLeft - 1
               }px`
@@ -194,15 +195,13 @@ export default defineComponent({
             })
         })
       }
-    } /* , 20) */
+    }
 
     const resizeCurrentSelectArea = (event: MouseEvent) => {
-      // 2、赋值start
       $vmaCalcGrid.reactiveData.currentArea.start = {
         r: Number(props.r),
         c: Number(props.c!) - 1,
       }
-      // console.log('onMousedown', $vmaCalcGrid.reactiveData.currentArea)
       const domMousemove = document.onmousemove
       const domMouseup = document.onmouseup
 
@@ -217,19 +216,20 @@ export default defineComponent({
       document.onmouseup = (event: MouseEvent) => {
         document.onmousemove = domMousemove
         document.onmouseup = domMouseup
-        const elem = event.target as HTMLDivElement
-        const targetElem: any = elem.parentElement!
-        if (
-          targetElem &&
-          targetElem.attributes.hasOwnProperty('row') &&
-          targetElem.attributes.hasOwnProperty('col')
-        ) {
-          // 4、结束时赋值end
+        const eventTargetNode: any = DomTools.getEventTargetNode(
+          event,
+          refGridBodyTable,
+          `normal`,
+          (target: any) =>
+            target.attributes.hasOwnProperty('row') &&
+            target.attributes.hasOwnProperty('col'),
+        )
+        if (eventTargetNode && eventTargetNode.flag) {
+          const targetElem: any = eventTargetNode.targetElem
           $vmaCalcGrid.reactiveData.currentArea.end = {
             r: Number(targetElem.attributes.row.value),
             c: Number(targetElem.attributes.col.value) - 1,
           }
-          // 计算current area style
           const startColIndex =
             $vmaCalcGrid.reactiveData.currentArea.start.c >
             $vmaCalcGrid.reactiveData.currentArea.end.c
@@ -270,7 +270,6 @@ export default defineComponent({
                 `td[row="${startRowIndex}"][col="${startColIndex + 1}"]`,
               )
               .forEach((cellElem: any) => {
-                // console.log(leftSpaceWidth, cellElem.offsetLeft)
                 const borderMarginLeft = `${
                   leftSpaceWidth + cellElem.offsetLeft - 1
                 }px`
@@ -722,13 +721,7 @@ export default defineComponent({
             color: currentSheetData[props.r!][props.c! - 1].fc,
           },
           onMouseup: () => {
-            // console.log('onMouseup', props.r, props.c! - 1)
             $vmaCalcGrid.reactiveData.currentAreaStatus = false
-            // $vmaCalcGrid.reactiveData.currentCellEditorActive = false
-            // $vmaCalcGrid.reactiveData.currentCell =
-            //   currentSheetData[props.r!][props.c! - 1]
-            // $vmaCalcGrid.reactiveData.currentCellEditorContent =
-            //   currentSheetData[props.r!][props.c! - 1].v
           },
           onMousedown: (event: MouseEvent) => {
             // console.log('onMousedown', props.r, props.c! - 1)
@@ -746,21 +739,6 @@ export default defineComponent({
               resizeCurrentSelectArea(event)
             })
           },
-          // onMousemove: (event: MouseEvent) => {
-          //   // console.log('onMousemove', event.currentTarget)
-          //   if ($vmaCalcGrid.reactiveData.currentAreaStatus) {
-          //     // console.log('onMousemove', event.currentTarget)
-          //   }
-          // },
-          // onDrag: (event: MouseEvent) => {
-          //   // console.log('onDragging', event.target)
-          // },
-          // onDragenter: () => {
-          //   console.log('onDragenter', props.r, props.c! - 1)
-          // },
-          // onDragleave: () => {
-          //   console.log('onDragleave', props.r, props.c! - 1)
-          // },
           onDblclick: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = true
             nextTick(() => {
