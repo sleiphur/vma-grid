@@ -635,6 +635,63 @@ export default defineComponent({
           gridReactiveData.tableWidth + gridReactiveData.scrollbarWidth
         }px`
       }
+      if (
+        gridReactiveData.currentArea &&
+        Object.keys(gridReactiveData.currentArea).length > 1
+      ) {
+        const startColIndex =
+          $vmaCalcGrid.reactiveData.currentArea.start.c >
+          $vmaCalcGrid.reactiveData.currentArea.end.c
+            ? $vmaCalcGrid.reactiveData.currentArea.end.c
+            : $vmaCalcGrid.reactiveData.currentArea.start.c
+        const endColIndex =
+          $vmaCalcGrid.reactiveData.currentArea.end.c <
+          $vmaCalcGrid.reactiveData.currentArea.start.c
+            ? $vmaCalcGrid.reactiveData.currentArea.start.c
+            : $vmaCalcGrid.reactiveData.currentArea.end.c
+        const startRowIndex =
+          $vmaCalcGrid.reactiveData.currentArea.start.r >
+          $vmaCalcGrid.reactiveData.currentArea.end.r
+            ? $vmaCalcGrid.reactiveData.currentArea.end.r
+            : $vmaCalcGrid.reactiveData.currentArea.start.r
+        const endRowIndex =
+          $vmaCalcGrid.reactiveData.currentArea.end.r <
+          $vmaCalcGrid.reactiveData.currentArea.start.r
+            ? $vmaCalcGrid.reactiveData.currentArea.start.r
+            : $vmaCalcGrid.reactiveData.currentArea.end.r
+        const leftSpaceWidth = getXSpaceFromColumnWidths(
+          gridReactiveData.startColIndex,
+          rcw.value,
+          gridReactiveData.gridColumnsWidthChanged,
+          gridReactiveData.gridColumnsVisibleChanged,
+        )
+
+        const topSpaceHeight = getYSpaceFromRowHeights(
+          gridReactiveData.startIndex,
+          rrh.value,
+          gridReactiveData.gridRowsHeightChanged,
+          gridReactiveData.gridRowsVisibleChanged,
+        )
+        nextTick(() => {
+          // 为cell加上cell-active效果
+          // 先清除所有的已有cell-active效果
+          refGridBodyTable.value
+            .querySelectorAll('.cell-active')
+            .forEach((elem, index) => {
+              elem.classList.remove('cell-active')
+            })
+          // 当前范围内的cell，加上cell-active效果
+          for (let i = startRowIndex; i <= endRowIndex; i++) {
+            for (let j = startColIndex; j <= endColIndex; j++) {
+              refGridBodyTable.value
+                .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+                .forEach((cellElem: any) => {
+                  cellElem.classList.add('cell-active')
+                })
+            }
+          }
+        })
+      }
     }
 
     const calcScrollSizeX = (scrollBodyElem: HTMLDivElement): Promise<void> =>
