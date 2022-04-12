@@ -193,6 +193,24 @@ export default defineComponent({
               $vmaCalcGrid.reactiveData.currentAreaBorderStyle.height = `${h}px`
               $vmaCalcGrid.reactiveData.currentAreaBorderStyle.width = `${w}px`
             })
+
+          // 为cell加上cell-active效果
+          // 先清除所有的已有cell-active效果
+          refGridBodyTable.value
+            .querySelectorAll('.cell-active')
+            .forEach((elem, index) => {
+              elem.classList.remove('cell-active')
+            })
+          // 当前范围内的cell，加上cell-active效果
+          for (let i = startRowIndex; i <= endRowIndex; i++) {
+            for (let j = startColIndex; j <= endColIndex; j++) {
+              refGridBodyTable.value
+                .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+                .forEach((cellElem: any) => {
+                  cellElem.classList.add('cell-active')
+                })
+            }
+          }
         })
       }
     }
@@ -294,6 +312,23 @@ export default defineComponent({
                 $vmaCalcGrid.reactiveData.currentAreaBorderStyle.height = `${h}px`
                 $vmaCalcGrid.reactiveData.currentAreaBorderStyle.width = `${w}px`
               })
+            // 为cell加上cell-active效果
+            // 先清除所有的已有cell-active效果
+            refGridBodyTable.value
+              .querySelectorAll('.cell-active')
+              .forEach((elem, index) => {
+                elem.classList.remove('cell-active')
+              })
+            // 当前范围内的cell，加上cell-active效果
+            for (let i = startRowIndex; i <= endRowIndex; i++) {
+              for (let j = startColIndex; j <= endColIndex; j++) {
+                refGridBodyTable.value
+                  .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+                  .forEach((cellElem: any) => {
+                    cellElem.classList.add('cell-active')
+                  })
+              }
+            }
           })
         }
       }
@@ -762,13 +797,6 @@ export default defineComponent({
             props.cat,
             `${props.type}`,
             {
-              'cell-active':
-                props.cat === 'normal' &&
-                $vmaCalcGrid.reactiveData.currentCell &&
-                $vmaCalcGrid.reactiveData.currentCell.r !== undefined &&
-                $vmaCalcGrid.reactiveData.currentCell.c !== undefined &&
-                $vmaCalcGrid.reactiveData.currentCell.r === props.r &&
-                $vmaCalcGrid.reactiveData.currentCell.c === props.c! - 1,
               'column-indicator-active':
                 props.cat === 'column-indicator' &&
                 $vmaCalcGrid.reactiveData.currentArea &&
