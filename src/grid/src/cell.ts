@@ -216,10 +216,6 @@ export default defineComponent({
     }
 
     const resizeCurrentSelectArea = (event: MouseEvent) => {
-      $vmaCalcGrid.reactiveData.currentArea.start = {
-        r: Number(props.r),
-        c: Number(props.c!) - 1,
-      }
       const domMousemove = document.onmousemove
       const domMouseup = document.onmouseup
 
@@ -766,13 +762,74 @@ export default defineComponent({
               currentSheetData[props.r!][props.c! - 1]
             $vmaCalcGrid.reactiveData.currentCellEditorContent =
               currentSheetData[props.r!][props.c! - 1].v
-
-            // 1、清理currentArea
-            $vmaCalcGrid.reactiveData.currentArea = {}
-
-            nextTick(() => {
-              resizeCurrentSelectArea(event)
-            })
+            if (
+              $vmaCalcGrid.reactiveData.currentArea &&
+              Object.keys($vmaCalcGrid.reactiveData.currentArea).length > 1 &&
+              event.button === 2
+            ) {
+              const eventTargetNode: any = DomTools.getEventTargetNode(
+                event,
+                refGridBodyTable,
+                `normal`,
+                (target: any) =>
+                  target.attributes.hasOwnProperty('row') &&
+                  target.attributes.hasOwnProperty('col'),
+              )
+              if (eventTargetNode && eventTargetNode.flag) {
+                const targetElem: any = eventTargetNode.targetElem
+                const r = targetElem.attributes.row.value
+                const c = targetElem.attributes.col.value
+                const startColIndex =
+                  $vmaCalcGrid.reactiveData.currentArea.start.c >
+                  $vmaCalcGrid.reactiveData.currentArea.end.c
+                    ? $vmaCalcGrid.reactiveData.currentArea.end.c
+                    : $vmaCalcGrid.reactiveData.currentArea.start.c
+                const endColIndex =
+                  $vmaCalcGrid.reactiveData.currentArea.end.c <
+                  $vmaCalcGrid.reactiveData.currentArea.start.c
+                    ? $vmaCalcGrid.reactiveData.currentArea.start.c
+                    : $vmaCalcGrid.reactiveData.currentArea.end.c
+                const startRowIndex =
+                  $vmaCalcGrid.reactiveData.currentArea.start.r >
+                  $vmaCalcGrid.reactiveData.currentArea.end.r
+                    ? $vmaCalcGrid.reactiveData.currentArea.end.r
+                    : $vmaCalcGrid.reactiveData.currentArea.start.r
+                const endRowIndex =
+                  $vmaCalcGrid.reactiveData.currentArea.end.r <
+                  $vmaCalcGrid.reactiveData.currentArea.start.r
+                    ? $vmaCalcGrid.reactiveData.currentArea.start.r
+                    : $vmaCalcGrid.reactiveData.currentArea.end.r
+                if (
+                  Number(r) >= startRowIndex &&
+                  Number(r) <= endRowIndex &&
+                  Number(c - 1) >= startColIndex &&
+                  Number(c - 1) <= endColIndex
+                ) {
+                  // 如果右键事件发生在table上的选定区域内时
+                  // do nothing
+                } else {
+                  // 如果右键事件发生在table上的选定区域外时
+                  // 1、清理currentArea
+                  $vmaCalcGrid.reactiveData.currentArea = {}
+                  $vmaCalcGrid.reactiveData.currentArea.start = {
+                    r: Number(props.r),
+                    c: Number(props.c!) - 1,
+                  }
+                  nextTick(() => {
+                    resizeCurrentSelectArea(event)
+                  })
+                }
+              }
+            } else {
+              $vmaCalcGrid.reactiveData.currentArea = {}
+              $vmaCalcGrid.reactiveData.currentArea.start = {
+                r: Number(props.r),
+                c: Number(props.c!) - 1,
+              }
+              nextTick(() => {
+                resizeCurrentSelectArea(event)
+              })
+            }
           },
           onDblclick: () => {
             $vmaCalcGrid.reactiveData.currentCellEditorActive = true
