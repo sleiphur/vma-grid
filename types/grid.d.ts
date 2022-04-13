@@ -77,7 +77,7 @@ export interface VmaGridMethods {
   getParentElem(): Element | null;
   updateColumn(type: string, row: number, col: number): void
   updateRow(type: string, row: number, col: number): void
-  updateCell(type: string, row: number, col: number, item: string): void
+  updateCell(type: string, row: number, col: number, eRow: number, eCol: number, item: string): void
   getCell(type: string, row: number, col: number): any
 }
 

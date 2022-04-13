@@ -68,6 +68,8 @@ export default defineComponent({
               menu.code,
               menu.param.row,
               menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
               color,
             )
           },

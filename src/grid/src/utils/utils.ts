@@ -36,50 +36,50 @@ export function getRenderHeight(
 ): number {
   if (defaultGridRowHeight) {
     if (gridSize === 'xxx-large') {
-      return Math.max(50, defaultGridRowHeight)
+      return Math.max(44, defaultGridRowHeight)
     }
     if (gridSize === 'xx-large') {
-      return Math.max(46, defaultGridRowHeight)
+      return Math.max(40, defaultGridRowHeight)
     }
     if (gridSize === 'x-large') {
-      return Math.max(42, defaultGridRowHeight)
+      return Math.max(36, defaultGridRowHeight)
     }
     if (gridSize === 'large') {
-      return Math.max(38, defaultGridRowHeight)
+      return Math.max(32, defaultGridRowHeight)
     }
     if (gridSize === 'normal') {
-      return Math.max(34, defaultGridRowHeight)
+      return Math.max(28, defaultGridRowHeight)
     }
     if (gridSize === 'small') {
-      return Math.max(30, defaultGridRowHeight)
+      return Math.max(24, defaultGridRowHeight)
     }
     if (gridSize === 'mini') {
-      return Math.max(26, defaultGridRowHeight)
+      return Math.max(20, defaultGridRowHeight)
     }
   } else {
     if (gridSize === 'xxx-large') {
-      return 50
+      return 44
     }
     if (gridSize === 'xx-large') {
-      return 46
+      return 40
     }
     if (gridSize === 'x-large') {
-      return 42
+      return 36
     }
     if (gridSize === 'large') {
-      return 38
+      return 32
     }
     if (gridSize === 'normal') {
-      return 34
+      return 28
     }
     if (gridSize === 'small') {
-      return 30
+      return 24
     }
     if (gridSize === 'mini') {
-      return 26
+      return 20
     }
   }
-  return 34
+  return 28
 }
 
 export function getRenderWidth(

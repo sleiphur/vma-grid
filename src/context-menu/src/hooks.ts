@@ -440,6 +440,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               'updateCellFontSize',
               menu.param.row,
               menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
               menu.item,
             )
           } else if (menu.code === 'cellFontFamilyDetail') {
@@ -447,6 +449,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               'updateCellFontFamily',
               menu.param.row,
               menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
               menu.item,
             )
           } else if (menu.code === 'cellFontStyleDetail') {
@@ -454,6 +458,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
               'updateCellFontStyle',
               menu.param.row,
               menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
               menu.item,
             )
           }
@@ -572,10 +578,33 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         if (
           cellTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */
         ) {
-          openCtxMenu(evnt, 'cell', {
-            row: cellTargetNode.targetElem.getAttribute('row'),
-            col: cellTargetNode.targetElem.getAttribute('col'),
-          })
+          if (
+            reactiveData.currentArea &&
+            Object.keys(reactiveData.currentArea).length > 1
+          ) {
+            const startColIndex =
+              reactiveData.currentArea.start.c > reactiveData.currentArea.end.c
+                ? reactiveData.currentArea.end.c
+                : reactiveData.currentArea.start.c
+            const endColIndex =
+              reactiveData.currentArea.end.c < reactiveData.currentArea.start.c
+                ? reactiveData.currentArea.start.c
+                : reactiveData.currentArea.end.c
+            const startRowIndex =
+              reactiveData.currentArea.start.r > reactiveData.currentArea.end.r
+                ? reactiveData.currentArea.end.r
+                : reactiveData.currentArea.start.r
+            const endRowIndex =
+              reactiveData.currentArea.end.r < reactiveData.currentArea.start.r
+                ? reactiveData.currentArea.start.r
+                : reactiveData.currentArea.end.r
+            openCtxMenu(evnt, 'cell', {
+              row: startRowIndex,
+              col: startColIndex + 1,
+              eRow: endRowIndex,
+              eCol: endColIndex + 1,
+            })
+          }
         }
         if (
           columnTargetNode.flag /* && vmaCalcGrid.props.gridContextHeaderMenu */

@@ -1665,48 +1665,83 @@ export default defineComponent({
             })
         }
       },
-      updateCell: (type: string, row: number, col: number, item: string) => {
+      updateCell: (
+        type: string,
+        row: number,
+        col: number,
+        eRow: number,
+        eCol: number,
+        item: string,
+      ) => {
         if (type === 'cellFrontColor') {
-          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].fc =
-            item
+          for (let i = Number(row); i <= Number(eRow); i++) {
+            for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+              gridReactiveData.currentSheetData[Number(i)][Number(j)].fc = item
+            }
+          }
         }
         if (type === 'cellBackColor') {
-          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].bg =
-            item
+          for (let i = Number(row); i <= Number(eRow); i++) {
+            for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+              gridReactiveData.currentSheetData[Number(i)][Number(j)].bg = item
+            }
+          }
         }
         if (type === 'updateCellFontSize') {
-          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].fs =
-            Number(item)
+          for (let i = Number(row); i <= Number(eRow); i++) {
+            for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+              gridReactiveData.currentSheetData[Number(i)][Number(j)].fs =
+                Number(item)
+            }
+          }
         }
         if (type === 'updateCellFontFamily') {
-          gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].ff =
-            item
+          for (let i = Number(row); i <= Number(eRow); i++) {
+            for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+              gridReactiveData.currentSheetData[Number(i)][Number(j)].ff = item
+            }
+          }
         }
         if (type === 'updateCellFontStyle') {
           if (item === 'bl') {
-            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].bl =
-              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
-                .bl
+            const bl = gridReactiveData.currentCell.bl
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bl = !bl
+              }
+            }
           }
           if (item === 'it') {
-            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].it =
-              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
-                .it
+            const it = gridReactiveData.currentCell.it
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].it = !it
+              }
+            }
           }
           if (item === 'ol') {
-            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].ol =
-              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
-                .ol
+            const ol = gridReactiveData.currentCell.ol
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].ol = !ol
+              }
+            }
           }
           if (item === 'cl') {
-            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].cl =
-              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
-                .cl
+            const cl = gridReactiveData.currentCell.cl
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cl = !cl
+              }
+            }
           }
           if (item === 'ul') {
-            gridReactiveData.currentSheetData[Number(row)][Number(col) - 1].ul =
-              !gridReactiveData.currentSheetData[Number(row)][Number(col) - 1]
-                .ul
+            const ul = gridReactiveData.currentCell.ul
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].ul = !ul
+              }
+            }
           }
         }
       },
