@@ -1850,13 +1850,17 @@ export default defineComponent({
           }
         }
         if (type === 'updateCellBorder') {
-          console.log(item)
-          if (item === 'top') {
+          if (
+            item === 'top' ||
+            item === 'out' ||
+            item === 'all' ||
+            item === 'none'
+          ) {
             const bdt = gridReactiveData.currentCell.bdt
-            for (let i = Number(row); i <= Number(eRow); i++) {
+            for (let i = Number(row); i <= Number(row); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt =
-                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt
                 // 更新cell的background css type
                 if (Number(i) > 0) {
                   gridReactiveData.currentSheetData[Number(i) - 1][
@@ -1888,12 +1892,17 @@ export default defineComponent({
               }
             }
           }
-          if (item === 'bottom') {
+          if (
+            item === 'bottom' ||
+            item === 'out' ||
+            item === 'all' ||
+            item === 'none'
+          ) {
             const bdb = gridReactiveData.currentCell.bdb
-            for (let i = Number(row); i <= Number(eRow); i++) {
+            for (let i = Number(eRow); i <= Number(eRow); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb =
-                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb
                 // 更新cell的background css type
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
                   calcCellBgType(
@@ -1919,12 +1928,17 @@ export default defineComponent({
               }
             }
           }
-          if (item === 'left') {
+          if (
+            item === 'left' ||
+            item === 'out' ||
+            item === 'all' ||
+            item === 'none'
+          ) {
             const bdl = gridReactiveData.currentCell.bdl
             for (let i = Number(row); i <= Number(eRow); i++) {
-              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+              for (let j = Number(col) - 1; j <= Number(col) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl =
-                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl
                 if (Number(j) > 0) {
                   gridReactiveData.currentSheetData[Number(i)][
                     Number(j) - 1
@@ -1955,12 +1969,145 @@ export default defineComponent({
               }
             }
           }
-          if (item === 'right') {
+          if (
+            item === 'right' ||
+            item === 'out' ||
+            item === 'all' ||
+            item === 'none'
+          ) {
             const bdr = gridReactiveData.currentCell.bdr
             for (let i = Number(row); i <= Number(eRow); i++) {
-              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+              for (let j = Number(eCol) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr =
-                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                  calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bg,
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdb ||
+                      (gridReactiveData.currentSheetData[Number(i) + 1][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) + 1][
+                          Number(j)
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdr ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j) + 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j) + 1
+                        ].bdl),
+                  )
+              }
+            }
+          }
+          if (item === 'inner' || item === 'all' || item === 'none') {
+            // inner top
+            for (let i = Number(row) + 1; i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt =
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt
+                // 更新cell的background css type
+                if (Number(i) > 0) {
+                  gridReactiveData.currentSheetData[Number(i) - 1][
+                    Number(j)
+                  ].bgt = calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i) - 1][
+                      Number(j)
+                    ].bg,
+                    !!gridReactiveData.currentSheetData[Number(i) - 1][
+                      Number(j)
+                    ].bdb ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i) - 1][
+                      Number(j)
+                    ].bdr ||
+                      (gridReactiveData.currentSheetData[Number(i) - 1][
+                        Number(j) + 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) - 1][
+                          Number(j) + 1
+                        ].bdl),
+                  )
+                }
+              }
+            }
+            // inner bottom
+            for (let i = Number(row); i <= Number(eRow) - 1; i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb =
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb
+                // 更新cell的background css type
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                  calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bg,
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdb ||
+                      (gridReactiveData.currentSheetData[Number(i) + 1][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) + 1][
+                          Number(j)
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdr ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j) + 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j) + 1
+                        ].bdl),
+                  )
+              }
+            }
+            // inner left
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1 + 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl =
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl
+                if (Number(j) > 0) {
+                  gridReactiveData.currentSheetData[Number(i)][
+                    Number(j) - 1
+                  ].bgt = calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i)][
+                      Number(j) - 1
+                    ].bg,
+                    !!gridReactiveData.currentSheetData[Number(i)][
+                      Number(j) - 1
+                    ].bdb ||
+                      (gridReactiveData.currentSheetData[Number(i) + 1][
+                        Number(j) - 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) + 1][
+                          Number(j) - 1
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i)][
+                      Number(j) - 1
+                    ].bdr ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].bdl),
+                  )
+                }
+              }
+            }
+            // inner right
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(eCol) - 1; j <= Number(eCol) - 1 - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr =
+                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
                   calcCellBgType(
                     !!gridReactiveData.currentSheetData[Number(i)][Number(j)]

@@ -282,6 +282,62 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
             //         : null,
             param,
           })
+          subOptions.push({
+            name: refBorderPlugin.value.none(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'none',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdr
+            //         ? 'check'
+            //         : null,
+            param,
+          })
+          subOptions.push({
+            name: refBorderPlugin.value.all(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'all',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdr
+            //         ? 'check'
+            //         : null,
+            param,
+          })
+          subOptions.push({
+            name: refBorderPlugin.value.out(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'out',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdr
+            //         ? 'check'
+            //         : null,
+            param,
+          })
+          subOptions.push({
+            name: refBorderPlugin.value.inner(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'inner',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdr
+            //         ? 'check'
+            //         : null,
+            param,
+          })
           options.push({
             name: '边框',
             code: 'cellBorder',
