@@ -9,7 +9,10 @@ import {
   PropType,
   provide,
   reactive,
+  ref,
   resolveComponent,
+  useCssModule,
+  useCssVars,
 } from 'vue'
 import { DomTools } from '../../utils/doms'
 import { getNextColumnIndex } from '../../utils/grid'
@@ -61,6 +64,19 @@ export default defineComponent({
     } = $vmaCalcGrid.getRefs()
 
     const { currentSheetData } = $vmaCalcGrid.reactiveData
+
+    useCssVars(() => ({
+      cellBgType:
+        currentSheetData[props.r!][props.c! - 1] &&
+        currentSheetData[props.r!][props.c! - 1].bgt
+          ? currentSheetData[props.r!][props.c! - 1].bgt!
+          : '0',
+      cellBgCustom:
+        currentSheetData[props.r!][props.c! - 1] &&
+        currentSheetData[props.r!][props.c! - 1].bg
+          ? currentSheetData[props.r!][props.c! - 1].bg
+          : '',
+    }))
 
     const gridCellReactiveData = reactive({})
 
@@ -211,6 +227,23 @@ export default defineComponent({
                 })
             }
           }
+          // // 为cell加上border bottom效果
+          // // 先清除所有的已有bdb效果
+          // refGridBodyTable.value
+          //     .querySelectorAll('.cell-bdb')
+          //     .forEach((elem, index) => {
+          //       elem.classList.remove('cell-bdb')
+          //     })
+          // // 当前范围内的cell，加上cell-active效果
+          // for (let i = startRowIndex; i <= endRowIndex; i++) {
+          //   for (let j = startColIndex; j <= endColIndex; j++) {
+          //     refGridBodyTable.value
+          //         .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+          //         .forEach((cellElem: any) => {
+          //           cellElem.classList.add('cell-bdb')
+          //         })
+          //   }
+          // }
         })
       }
     }
@@ -325,6 +358,23 @@ export default defineComponent({
                   })
               }
             }
+            // // 为cell加上border bottom效果
+            // // 先清除所有的已有bdb效果
+            // refGridBodyTable.value
+            //     .querySelectorAll('.cell-bdb')
+            //     .forEach((elem, index) => {
+            //       elem.classList.remove('cell-bdb')
+            //     })
+            // // 当前范围内的cell，加上cell-active效果
+            // for (let i = startRowIndex; i <= endRowIndex; i++) {
+            //   for (let j = startColIndex; j <= endColIndex; j++) {
+            //     refGridBodyTable.value
+            //         .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+            //         .forEach((cellElem: any) => {
+            //           cellElem.classList.add('cell-bdb')
+            //         })
+            //   }
+            // }
           })
         }
       }
@@ -755,7 +805,6 @@ export default defineComponent({
             $vmaCalcGrid.reactiveData.currentAreaStatus = false
           },
           onMousedown: (event: MouseEvent) => {
-            // console.log('onMousedown', props.r, props.c! - 1)
             $vmaCalcGrid.reactiveData.currentAreaStatus = true
             $vmaCalcGrid.reactiveData.currentCellEditorActive = false
             $vmaCalcGrid.reactiveData.currentCell =
@@ -853,6 +902,12 @@ export default defineComponent({
           class: [
             props.cat,
             `${props.type}`,
+            `cell-bg-${
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].bgt
+                ? currentSheetData[props.r!][props.c! - 1].bgt
+                : '0'
+            }`,
             {
               'column-indicator-active':
                 props.cat === 'column-indicator' &&
@@ -878,29 +933,6 @@ export default defineComponent({
           ],
           style: {
             overflow: 'hidden',
-            // TODO 消除样式硬编码
-            backgroundImage:
-              props.cat === 'normal' &&
-              currentSheetData[props.r!][props.c! - 1] &&
-              currentSheetData[props.r!][props.c! - 1].bg
-                ? `linear-gradient(#dcdee0, #dcdee0), linear-gradient(#dcdee0, #dcdee0), linear-gradient(${
-                    currentSheetData[props.r!][props.c! - 1].bg
-                  }, ${currentSheetData[props.r!][props.c! - 1].bg}`
-                : null,
-            // TODO 消除样式硬编码
-            backgroundSize:
-              props.cat === 'normal' &&
-              currentSheetData[props.r!][props.c! - 1] &&
-              currentSheetData[props.r!][props.c! - 1].bg
-                ? `1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px)`
-                : null,
-            // TODO 消除样式硬编码
-            backgroundPosition:
-              props.cat === 'normal' &&
-              currentSheetData[props.r!][props.c! - 1] &&
-              currentSheetData[props.r!][props.c! - 1].bg
-                ? `right top, right bottom, left top`
-                : null,
           },
         },
         renderCell(),

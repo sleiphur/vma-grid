@@ -4,13 +4,13 @@
 @grid-background-color: @gray-2;
 @grid-corner-color: @gray-5;
 
-@grid-mini-font-size: 12px;
-@grid-small-font-size: 14px;
-@grid-normal-font-size: 16px;
-@grid-large-font-size: 18px;
-@grid-x-large-font-size: 20px;
-@grid-xx-large-font-size: 22px;
-@grid-xxx-large-font-size: 24px;
+@grid-mini-font-size: 10px;
+@grid-small-font-size: 12px;
+@grid-normal-font-size: 14px;
+@grid-large-font-size: 16px;
+@grid-x-large-font-size: 18px;
+@grid-xx-large-font-size: 20px;
+@grid-xxx-large-font-size: 22px;
 
 @grid-default-color: @gray-7;
 @grid-primary-color: @blue;
@@ -24,11 +24,27 @@
 @grid-resize-bar-warning-color: @orange;
 @grid-resize-bar-danger-color: @red;
 
+@cbg: val(--cbg);
+
 .cell-background(@bg) {
   background-image: linear-gradient(@bg, @bg), linear-gradient(@bg, @bg);
   background-repeat: no-repeat;
   background-size: 1px 100%, 100% 1px;
   background-position: right top, right bottom;
+}
+
+.cell-background-facade(@aaa) when (@aaa=normal) {
+  background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
+  background-repeat: no-repeat;
+  background-size: 1px 100%, 100% 1px;
+  background-position: right top, right bottom;
+}
+
+.cell-background-facade(@aaa) when (@aaa = active) {
+  background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+  background-repeat: no-repeat;
+  background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+  background-position: right top, right bottom, left top;
 }
 
 .vma-grid {
@@ -558,7 +574,7 @@
         //background-size: 1px 100%, 100% 1px;
         //background-position: right top, right bottom;
 
-        .cell-background(@grid-border-color);
+
 
         padding: 0;
         margin: 2px;
@@ -568,11 +584,134 @@
         cursor: default;
         height: inherit;
 
-        &.cell-active {
-          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+        &.cell-bg-0 {
+          .cell-background(@grid-border-color);
+          &.cell-active {
+            background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+        }
+
+        &.cell-bg-1 {
+          .cell-background(@grid-border-color);
+          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@gray-8, @gray-8);
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px;
+          background-position: right top, right bottom;
+          &.cell-active {
+            background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@gray-8, @gray-8), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+        }
+
+        &.cell-bg-2 {
+          .cell-background(@grid-border-color);
+          background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@grid-border-color, @grid-border-color);
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px;
+          background-position: right top, right bottom;
+          &.cell-active {
+            background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+        }
+
+        &.cell-bg-3 {
+          .cell-background(@grid-border-color);
+          background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@gray-8, @gray-8);
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px;
+          background-position: right top, right bottom;
+          &.cell-active {
+            background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@gray-8, @gray-8), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+        }
+
+        &.cell-bg-8 {
+          .cell-background(@grid-border-color);
+          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
           background-repeat: no-repeat;
           background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
           background-position: right top, right bottom, left top;
+          &.cell-active {
+            // todo not support lighten(var(--cellBgCustom), 10%)
+            background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+            background-blend-mode: lighten;
+          }
+        }
+
+        &.cell-bg-9 {
+          .cell-background(@grid-border-color);
+          background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@gray-8, @gray-8), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+          background-position: right top, right bottom, left top;
+          &.cell-active {
+            background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@gray-8, @gray-8), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+        }
+
+        &.cell-bg-10 {
+          .cell-background(@grid-border-color);
+          background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+          background-position: right top, right bottom, left top;
+          &.cell-active {
+            background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+        }
+
+        &.cell-bg-11 {
+          .cell-background(@grid-border-color);
+          background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@gray-8, @gray-8), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
+          background-repeat: no-repeat;
+          background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+          background-position: right top, right bottom, left top;
+          &.cell-active {
+            background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@gray-8, @gray-8), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+        }
+
+
+
+        &.cell-active {
+          .cell-background-facade(@cbg);
+
+          &.cell-bdb {
+            background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@gray-8, @gray-8), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
+
+          &.cell-bdr {
+            background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
+            background-repeat: no-repeat;
+            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
+            background-position: right top, right bottom, left top;
+          }
         }
 
         .cell {

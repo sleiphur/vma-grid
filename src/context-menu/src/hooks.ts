@@ -11,7 +11,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
   setupGrid(vmaCalcGrid: VmaGridConstructor) {
     const { uId, reactiveData } = vmaCalcGrid
 
-    const { refGrid, refGridCtxMenu, refStylePlugin, refColorPicker } =
+    const { refGrid, refGridCtxMenu, refStylePlugin, refBorderPlugin } =
       vmaCalcGrid.getRefs()
 
     let ctxMenuMethods = {} as VmaGridCtxMenuMethods
@@ -224,6 +224,73 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           children: subOptions,
           param,
         })
+        subOptions = []
+        if (refBorderPlugin.value) {
+          subOptions.push({
+            name: refBorderPlugin.value.top(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'top',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdt
+            //         ? 'check'
+            //         : null,
+            param,
+          })
+          subOptions.push({
+            name: refBorderPlugin.value.bottom(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'bottom',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdb
+            //         ? 'check'
+            //         : null,
+            param,
+          })
+          subOptions.push({
+            name: refBorderPlugin.value.left(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'left',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdl
+            //         ? 'check'
+            //         : null,
+            param,
+          })
+          subOptions.push({
+            name: refBorderPlugin.value.right(),
+            code: `cellBorderDetail`,
+            disabled: false,
+            visible: true,
+            item: 'right',
+            // prefixIcon:
+            //     reactiveData.currentSheetData[Number(param.row)][
+            //     Number(param.col) - 1
+            //         ].bdr
+            //         ? 'check'
+            //         : null,
+            param,
+          })
+          options.push({
+            name: '边框',
+            code: 'cellBorder',
+            disabled: false,
+            visible: true,
+            children: subOptions,
+            param,
+          })
+        }
         subOptions = []
         if (refStylePlugin.value) {
           refStylePlugin.value
@@ -456,6 +523,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } else if (menu.code === 'cellFontStyleDetail') {
             vmaCalcGrid.updateCell(
               'updateCellFontStyle',
+              menu.param.row,
+              menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
+              menu.item,
+            )
+          } else if (menu.code === 'cellBorderDetail') {
+            vmaCalcGrid.updateCell(
+              'updateCellBorder',
               menu.param.row,
               menu.param.col,
               menu.param.eRow,

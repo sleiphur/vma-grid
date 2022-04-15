@@ -5,7 +5,7 @@ import {
 } from './common'
 import {ComponentPublicInstance, ref, Ref, RenderFunction, SetupContext} from 'vue'
 import { Cell } from '../src/grid/src/helper/Cell'
-import {VmaGridStylePluginConstructor} from "../plugins/types";
+import {VmaGridBorderPluginConstructor, VmaGridStylePluginConstructor} from "../plugins/types";
 
 export type AlignHorizontalType = 'left' | 'center' | 'right'
 
@@ -71,9 +71,7 @@ export interface VmaGridMethods {
   triggerScrollXEvent(evnt: Event): void
   triggerScrollYEvent(evnt: Event): void
   calcCurrentCellPosition(): void
-  // calcCurrentAreaPosition(): void
   calcCurrentCellDisplay(): void
-  // calcCurrentAreaDisplay(): void
   getParentElem(): Element | null;
   updateColumn(type: string, row: number, col: number): void
   updateRow(type: string, row: number, col: number): void
@@ -267,6 +265,7 @@ export interface VmaGridRefs {
   refColorPicker: Ref<HTMLDivElement>
 
   refStylePlugin: Ref<VmaGridStylePluginConstructor>
+  refBorderPlugin: Ref<VmaGridBorderPluginConstructor>
 }
 
 export type VmaGridEmits = ['update:data', 'change']

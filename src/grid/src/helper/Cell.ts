@@ -36,7 +36,17 @@ export class Cell {
 
   bg?: any // background color
 
+  bgt?: string // background css type
+
   fc?: any // font color
+
+  bdt?: boolean // cell border top
+
+  bdb?: boolean // cell border bottom
+
+  bdl?: boolean // cell border left
+
+  bdr?: boolean // cell border right
 
   constructor(
     r: number,
@@ -57,7 +67,12 @@ export class Cell {
     cl: boolean | null,
     ul: boolean | null,
     bg: any,
+    bgt: string | null,
     fc: any,
+    bdt: boolean | null,
+    bdb: boolean | null,
+    bdl: boolean | null,
+    bdr: boolean | null,
   ) {
     Object.assign(this, {
       r,
@@ -78,7 +93,12 @@ export class Cell {
       cl,
       ul,
       bg,
+      bgt,
       fc,
+      bdt,
+      bdb,
+      bdl,
+      bdr,
     })
   }
 }

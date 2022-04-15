@@ -54,7 +54,10 @@ import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
 import VmaGrid from '../../vma-grid'
 import { DomTools } from '../../utils/doms'
-import { VmaGridStylePluginConstructor } from '../../../plugins/types'
+import {
+  VmaGridBorderPluginConstructor,
+  VmaGridStylePluginConstructor,
+} from '../../../plugins/types'
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -72,6 +75,10 @@ export default defineComponent({
 
     const StylePluginComponent = resolveComponent(
       'vma-grid-style-plugin',
+    ) as ComponentOptions
+
+    const StyleBorderComponent = resolveComponent(
+      'vma-grid-border-plugin',
     ) as ComponentOptions
 
     const refColumnResizeBar = ref() as Ref<HTMLDivElement>
@@ -133,6 +140,7 @@ export default defineComponent({
     const refColorPicker = ref() as Ref<HTMLDivElement>
 
     const refStylePlugin = ref() as Ref<VmaGridStylePluginConstructor>
+    const refBorderPlugin = ref() as Ref<VmaGridBorderPluginConstructor>
 
     const gridRefs: VmaGridRefs = {
       refColumnResizeBar,
@@ -203,6 +211,8 @@ export default defineComponent({
       refColorPicker,
 
       refStylePlugin,
+
+      refBorderPlugin,
     }
 
     const gridReactiveData = reactive({
@@ -382,6 +392,56 @@ export default defineComponent({
           40,
         ), // 行号列最小宽度40px
     )
+
+    // 普通 cell 0
+    // 普通 cell + border bottom 1
+    // 普通 cell + border right 2
+    // 普通 cell + border bottom + border right 3
+    // 带背景的普通 cell 8
+    // 带背景的普通 cell + border bottom 9
+    // 带背景的普通 cell + border right 10
+    // 带背景的普通 cell + border bottom + border right 11
+    // 以上状态 再加上 cell-active
+    const calcCellBgType = (
+      hasBg: boolean,
+      hasBdb: boolean,
+      hasBdr: boolean,
+    ): string => {
+      if (hasBg) {
+        // 带背景的
+        // 未选中状态的
+        if (hasBdb && hasBdr) {
+          // border bottom + border right
+          return '11'
+        }
+        if (hasBdr) {
+          // border right
+          return '10'
+        }
+        if (hasBdb) {
+          // border bottom
+          return '9'
+        }
+        // none
+        return '8'
+      }
+      // 不带背景的
+      // 未选中状态的
+      if (hasBdb && hasBdr) {
+        // border bottom + border right
+        return '3'
+      }
+      if (hasBdr) {
+        // border right
+        return '2'
+      }
+      if (hasBdb) {
+        // border bottom
+        return '1'
+      }
+      // none
+      return '0'
+    }
 
     const updateStyle = () => {
       const gridDivClientWidth = refGrid.value.clientWidth
@@ -659,19 +719,6 @@ export default defineComponent({
           $vmaCalcGrid.reactiveData.currentArea.start.r
             ? $vmaCalcGrid.reactiveData.currentArea.start.r
             : $vmaCalcGrid.reactiveData.currentArea.end.r
-        const leftSpaceWidth = getXSpaceFromColumnWidths(
-          gridReactiveData.startColIndex,
-          rcw.value,
-          gridReactiveData.gridColumnsWidthChanged,
-          gridReactiveData.gridColumnsVisibleChanged,
-        )
-
-        const topSpaceHeight = getYSpaceFromRowHeights(
-          gridReactiveData.startIndex,
-          rrh.value,
-          gridReactiveData.gridRowsHeightChanged,
-          gridReactiveData.gridRowsVisibleChanged,
-        )
         nextTick(() => {
           // 为cell加上cell-active效果
           // 先清除所有的已有cell-active效果
@@ -690,6 +737,23 @@ export default defineComponent({
                 })
             }
           }
+          // // 为cell加上border bottom效果
+          // // 先清除所有的已有bdb效果
+          // refGridBodyTable.value
+          //     .querySelectorAll('.cell-bdb')
+          //     .forEach((elem, index) => {
+          //       elem.classList.remove('cell-bdb')
+          //     })
+          // // 当前范围内的cell，加上cell-active效果
+          // for (let i = startRowIndex; i <= endRowIndex; i++) {
+          //   for (let j = startColIndex; j <= endColIndex; j++) {
+          //     refGridBodyTable.value
+          //         .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+          //         .forEach((cellElem: any) => {
+          //           cellElem.classList.add('cell-bdb')
+          //         })
+          //   }
+          // }
         })
       }
     }
@@ -1009,7 +1073,12 @@ export default defineComponent({
                   false,
                   false,
                   null,
+                  '0',
                   null,
+                  false,
+                  false,
+                  false,
+                  false,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -1129,7 +1198,12 @@ export default defineComponent({
                   false,
                   false,
                   null,
+                  '0',
                   null,
+                  false,
+                  false,
+                  false,
+                  false,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -1437,7 +1511,12 @@ export default defineComponent({
                 false,
                 false,
                 null,
+                '0',
                 null,
+                false,
+                false,
+                false,
+                false,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -1556,7 +1635,12 @@ export default defineComponent({
                 false,
                 false,
                 null,
+                '0',
                 null,
+                false,
+                false,
+                false,
+                false,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -1744,6 +1828,187 @@ export default defineComponent({
             }
           }
         }
+        if (type === 'updateCellBorder') {
+          console.log(item)
+          if (item === 'top') {
+            const bdt = gridReactiveData.currentCell.bdt
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt =
+                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt
+                // 更新cell的background css type
+                if (Number(i) > 0) {
+                  gridReactiveData.currentSheetData[Number(i) - 1][
+                    Number(j)
+                  ].bgt = calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i) - 1][
+                      Number(j)
+                    ].bg,
+                    !!gridReactiveData.currentSheetData[Number(i) - 1][
+                      Number(j)
+                    ].bdb ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i) - 1][
+                      Number(j)
+                    ].bdr ||
+                      (gridReactiveData.currentSheetData[Number(i) - 1][
+                        Number(j) + 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) - 1][
+                          Number(j) + 1
+                        ].bdl),
+                  )
+                }
+              }
+            }
+          }
+          if (item === 'bottom') {
+            const bdb = gridReactiveData.currentCell.bdb
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb =
+                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb
+                // 更新cell的background css type
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                  calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bg,
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdb ||
+                      (gridReactiveData.currentSheetData[Number(i) + 1][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) + 1][
+                          Number(j)
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdr ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j) + 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j) + 1
+                        ].bdl),
+                  )
+              }
+            }
+          }
+          if (item === 'left') {
+            const bdl = gridReactiveData.currentCell.bdl
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl =
+                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl
+                if (Number(j) > 0) {
+                  gridReactiveData.currentSheetData[Number(i)][
+                    Number(j) - 1
+                  ].bgt = calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i)][
+                      Number(j) - 1
+                    ].bg,
+                    !!gridReactiveData.currentSheetData[Number(i)][
+                      Number(j) - 1
+                    ].bdb ||
+                      (gridReactiveData.currentSheetData[Number(i) + 1][
+                        Number(j) - 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) + 1][
+                          Number(j) - 1
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i)][
+                      Number(j) - 1
+                    ].bdr ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].bdl),
+                  )
+                }
+              }
+            }
+          }
+          if (item === 'right') {
+            const bdr = gridReactiveData.currentCell.bdr
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr =
+                  !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                  calcCellBgType(
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bg,
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdb ||
+                      (gridReactiveData.currentSheetData[Number(i) + 1][
+                        Number(j)
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i) + 1][
+                          Number(j)
+                        ].bdt),
+                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                      .bdr ||
+                      (gridReactiveData.currentSheetData[Number(i)][
+                        Number(j) + 1
+                      ] &&
+                        !!gridReactiveData.currentSheetData[Number(i)][
+                          Number(j) + 1
+                        ].bdl),
+                  )
+              }
+            }
+          }
+          if (
+              gridReactiveData.currentArea &&
+              Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startColIndex =
+                $vmaCalcGrid.reactiveData.currentArea.start.c >
+                $vmaCalcGrid.reactiveData.currentArea.end.c
+                    ? $vmaCalcGrid.reactiveData.currentArea.end.c
+                    : $vmaCalcGrid.reactiveData.currentArea.start.c
+            const endColIndex =
+                $vmaCalcGrid.reactiveData.currentArea.end.c <
+                $vmaCalcGrid.reactiveData.currentArea.start.c
+                    ? $vmaCalcGrid.reactiveData.currentArea.start.c
+                    : $vmaCalcGrid.reactiveData.currentArea.end.c
+            const startRowIndex =
+                $vmaCalcGrid.reactiveData.currentArea.start.r >
+                $vmaCalcGrid.reactiveData.currentArea.end.r
+                    ? $vmaCalcGrid.reactiveData.currentArea.end.r
+                    : $vmaCalcGrid.reactiveData.currentArea.start.r
+            const endRowIndex =
+                $vmaCalcGrid.reactiveData.currentArea.end.r <
+                $vmaCalcGrid.reactiveData.currentArea.start.r
+                    ? $vmaCalcGrid.reactiveData.currentArea.start.r
+                    : $vmaCalcGrid.reactiveData.currentArea.end.r
+            nextTick(() => {
+              // 为cell加上cell-active效果
+              // 先清除所有的已有cell-active效果
+              refGridBodyTable.value
+                  .querySelectorAll('.cell-active')
+                  .forEach((elem, index) => {
+                    elem.classList.remove('cell-active')
+                  })
+              // 当前范围内的cell，加上cell-active效果
+              for (let i = startRowIndex; i <= endRowIndex; i++) {
+                for (let j = startColIndex; j <= endColIndex; j++) {
+                  refGridBodyTable.value
+                      .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+                      .forEach((cellElem: any) => {
+                        cellElem.classList.add('cell-active')
+                      })
+                }
+              }
+            })
+          }
+        }
       },
       getCell: (type: string, row: number, col: number) => {
         if (type === 'cellFrontColor') {
@@ -1774,14 +2039,6 @@ export default defineComponent({
           gridReactiveData.currentCellEditorStyle.display = 'none'
         }
       },
-      // calcCurrentAreaDisplay: () => {},
-      // calcCurrentAreaPosition: () => {
-      //   if (
-      //     gridReactiveData.currentArea &&
-      //     Object.keys(gridReactiveData.currentArea).length > 1
-      //   ) {
-      //   }
-      // },
       calcCurrentCellPosition: () => {
         if (gridReactiveData.currentCell) {
           const leftSpaceWidth = getXSpaceFromColumnWidths(
@@ -1803,7 +2060,6 @@ export default defineComponent({
             refGridBodyTable.value
               .querySelectorAll(`td[row="${r}"][col="${c! + 1}"]`)
               .forEach((cellElem: any) => {
-                // console.log(leftSpaceWidth, cellElem.offsetLeft)
                 const marginLeft = `${leftSpaceWidth + cellElem.offsetLeft}px`
                 const marginTop = `${topSpaceHeight + cellElem.offsetTop}px`
                 const borderMarginLeft = `${
@@ -2191,6 +2447,13 @@ export default defineComponent({
               const cellData = gridReactiveData.sheetData.find(
                 (data) => data.r === row.index! + 1 && data.c === col.index,
               )
+              const rightNextData = gridReactiveData.sheetData.find(
+                (data) =>
+                  data.r === row.index! + 1 && data.c === col.index! + 1,
+              )
+              const bottomNextData = gridReactiveData.sheetData.find(
+                (data) => data.r === row.index! + 1 + 1 && data.c === col.index,
+              )
               gridReactiveData.currentSheetData[row.index!][col.index! - 1] =
                 new Cell(
                   row.index!,
@@ -2211,7 +2474,18 @@ export default defineComponent({
                   !!(cellData && cellData.cl),
                   !!(cellData && cellData.ul),
                   cellData && cellData.bg ? cellData.bg : null,
+                  calcCellBgType(
+                    cellData && cellData.bg,
+                    (bottomNextData && bottomNextData.bdt) ||
+                      (cellData && cellData.bdb),
+                    (rightNextData && rightNextData.bdl) ||
+                      (cellData && cellData.bdr),
+                  ), // init cell bg type
                   cellData && cellData.fc ? cellData.fc : null,
+                  !!(cellData && cellData.bdt),
+                  !!(cellData && cellData.bdb),
+                  !!(cellData && cellData.bdl),
+                  !!(cellData && cellData.bdr),
                 ) as Cell & { [key: string]: string }
             }
           })
@@ -2660,6 +2934,12 @@ export default defineComponent({
             ? h(StylePluginComponent, {
                 type: 'font-size',
                 ref: refStylePlugin,
+              })
+            : createCommentVNode(),
+          StyleBorderComponent.name
+            ? h(StyleBorderComponent, {
+                type: 'foo',
+                ref: refBorderPlugin,
               })
             : createCommentVNode(),
         ],
