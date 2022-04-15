@@ -643,12 +643,11 @@
           background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
           background-position: right top, right bottom, left top;
           &.cell-active {
-            // todo not support lighten(var(--cellBgCustom), 10%)
             background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(var(--cellBgCustom), var(--cellBgCustom));
             background-repeat: no-repeat;
             background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
             background-position: right top, right bottom, left top;
-            background-blend-mode: lighten;
+            opacity: 0.6;
           }
         }
 
@@ -663,6 +662,7 @@
             background-repeat: no-repeat;
             background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
             background-position: right top, right bottom, left top;
+            opacity: 0.6;
           }
         }
 
@@ -677,6 +677,7 @@
             background-repeat: no-repeat;
             background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
             background-position: right top, right bottom, left top;
+            opacity: 0.6;
           }
         }
 
@@ -691,6 +692,7 @@
             background-repeat: no-repeat;
             background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
             background-position: right top, right bottom, left top;
+            opacity: 0.6;
           }
         }
 
