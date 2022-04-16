@@ -1841,37 +1841,31 @@ export default defineComponent({
             item === 'none'
           ) {
             const bdt = gridReactiveData.currentCell.bdt
-            for (let i = Number(row); i <= Number(row); i++) {
+            for (let i = Number(row) - 1; i <= Number(row); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt
-                // 更新cell的background css type
-                if (Number(i) > 0) {
-                  gridReactiveData.currentSheetData[Number(i) - 1][
-                    Number(j)
-                  ].bgt = calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i) - 1][
-                      Number(j)
-                    ].bg,
-                    !!gridReactiveData.currentSheetData[Number(i) - 1][
-                      Number(j)
-                    ].bdb ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j)
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i) - 1][
-                      Number(j)
-                    ].bdr ||
-                      (gridReactiveData.currentSheetData[Number(i) - 1][
-                        Number(j) + 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) - 1][
-                          Number(j) + 1
-                        ].bdl),
-                  )
+                gridReactiveData.currentSheetData[Number(row)][Number(j)].bdt =
+                  item !== 'none'
+                if (Number(i) >= 0) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
                 }
               }
             }
@@ -1883,32 +1877,32 @@ export default defineComponent({
             item === 'none'
           ) {
             const bdb = gridReactiveData.currentCell.bdb
-            for (let i = Number(eRow); i <= Number(eRow); i++) {
+            for (let i = Number(eRow); i <= Number(eRow) + 1; i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb
-                // 更新cell的background css type
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
-                  calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bg,
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdb ||
-                      (gridReactiveData.currentSheetData[Number(i) + 1][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) + 1][
-                          Number(j)
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdr ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j) + 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j) + 1
-                        ].bdl),
-                  )
+                gridReactiveData.currentSheetData[Number(eRow)][Number(j)].bdb =
+                  item !== 'none'
+                if (i < gridReactiveData.rowConfigs.length) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
+                }
               }
             }
           }
@@ -1920,35 +1914,31 @@ export default defineComponent({
           ) {
             const bdl = gridReactiveData.currentCell.bdl
             for (let i = Number(row); i <= Number(eRow); i++) {
-              for (let j = Number(col) - 1; j <= Number(col) - 1; j++) {
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl
-                if (Number(j) > 0) {
-                  gridReactiveData.currentSheetData[Number(i)][
-                    Number(j) - 1
-                  ].bgt = calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i)][
-                      Number(j) - 1
-                    ].bg,
-                    !!gridReactiveData.currentSheetData[Number(i)][
-                      Number(j) - 1
-                    ].bdb ||
-                      (gridReactiveData.currentSheetData[Number(i) + 1][
-                        Number(j) - 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) + 1][
-                          Number(j) - 1
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i)][
-                      Number(j) - 1
-                    ].bdr ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j)
-                        ].bdl),
-                  )
+              gridReactiveData.currentSheetData[Number(i)][
+                Number(Number(col) - 1)
+              ].bdl = item !== 'none'
+              for (let j = Number(col) - 1 - 1; j <= Number(col) - 1; j++) {
+                if (Number(j) >= 0) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
                 }
               }
             }
@@ -1961,66 +1951,62 @@ export default defineComponent({
           ) {
             const bdr = gridReactiveData.currentCell.bdr
             for (let i = Number(row); i <= Number(eRow); i++) {
-              for (let j = Number(eCol) - 1; j <= Number(eCol) - 1; j++) {
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
-                  calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bg,
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdb ||
-                      (gridReactiveData.currentSheetData[Number(i) + 1][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) + 1][
-                          Number(j)
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdr ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j) + 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j) + 1
-                        ].bdl),
-                  )
+              gridReactiveData.currentSheetData[Number(i)][
+                Number(eCol) - 1
+              ].bdr = item !== 'none'
+              for (let j = Number(eCol) - 1; j <= Number(eCol) - 1 + 1; j++) {
+                if (j < gridReactiveData.columnConfigs.length - 1) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
+                }
               }
             }
           }
           if (item === 'inner' || item === 'all' || item === 'none') {
             // inner top
-            for (let i = Number(row) + 1; i <= Number(eRow); i++) {
+            for (let i = Number(row); i <= Number(eRow); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdt
-                // 更新cell的background css type
-                if (Number(i) > 0) {
-                  gridReactiveData.currentSheetData[Number(i) - 1][
-                    Number(j)
-                  ].bgt = calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i) - 1][
-                      Number(j)
-                    ].bg,
-                    !!gridReactiveData.currentSheetData[Number(i) - 1][
-                      Number(j)
-                    ].bdb ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j)
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i) - 1][
-                      Number(j)
-                    ].bdr ||
-                      (gridReactiveData.currentSheetData[Number(i) - 1][
-                        Number(j) + 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) - 1][
-                          Number(j) + 1
-                        ].bdl),
-                  )
+                  item !== 'none'
+                if (Number(i) >= 0) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
                 }
               }
             }
@@ -2028,91 +2014,87 @@ export default defineComponent({
             for (let i = Number(row); i <= Number(eRow) - 1; i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdb
-                // 更新cell的background css type
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
-                  calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bg,
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdb ||
-                      (gridReactiveData.currentSheetData[Number(i) + 1][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) + 1][
-                          Number(j)
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdr ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j) + 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j) + 1
-                        ].bdl),
-                  )
+                  item !== 'none'
+                if (i < gridReactiveData.rowConfigs.length) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
+                }
               }
             }
             // inner left
             for (let i = Number(row); i <= Number(eRow); i++) {
-              for (let j = Number(col) - 1 + 1; j <= Number(eCol) - 1; j++) {
+              for (let j = Number(col) - 1 - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdl
-                if (Number(j) > 0) {
-                  gridReactiveData.currentSheetData[Number(i)][
-                    Number(j) - 1
-                  ].bgt = calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i)][
-                      Number(j) - 1
-                    ].bg,
-                    !!gridReactiveData.currentSheetData[Number(i)][
-                      Number(j) - 1
-                    ].bdb ||
-                      (gridReactiveData.currentSheetData[Number(i) + 1][
-                        Number(j) - 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) + 1][
-                          Number(j) - 1
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i)][
-                      Number(j) - 1
-                    ].bdr ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j)
-                        ].bdl),
-                  )
+                  item !== 'none'
+                if (Number(j) >= 0) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
                 }
               }
             }
             // inner right
             for (let i = Number(row); i <= Number(eRow); i++) {
-              for (let j = Number(eCol) - 1; j <= Number(eCol) - 1 - 1; j++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1 - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr =
-                  item !== 'none' // !gridReactiveData.currentSheetData[Number(i)][Number(j)].bdr
-                gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
-                  calcCellBgType(
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bg,
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdb ||
-                      (gridReactiveData.currentSheetData[Number(i) + 1][
-                        Number(j)
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i) + 1][
-                          Number(j)
-                        ].bdt),
-                    !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
-                      .bdr ||
-                      (gridReactiveData.currentSheetData[Number(i)][
-                        Number(j) + 1
-                      ] &&
-                        !!gridReactiveData.currentSheetData[Number(i)][
-                          Number(j) + 1
-                        ].bdl),
-                  )
+                  item !== 'none'
+                if (j < gridReactiveData.columnConfigs.length - 1) {
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].bgt =
+                    calcCellBgType(
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bg,
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdb ||
+                        (Number(i) + 1 < gridReactiveData.rowConfigs.length
+                          ? !!gridReactiveData.currentSheetData[Number(i) + 1][
+                              Number(j)
+                            ].bdt
+                          : false),
+                      !!gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .bdr ||
+                        (Number(j) + 1 <
+                        gridReactiveData.columnConfigs.length - 1
+                          ? !!gridReactiveData.currentSheetData[Number(i)][
+                              Number(j) + 1
+                            ].bdl
+                          : false),
+                    )
+                }
               }
             }
           }
@@ -2496,7 +2478,7 @@ export default defineComponent({
           vertexes,
           gridReactiveData.cells.errorMap,
         )
-        console.timeEnd('filterVertexes')
+
         const errorMapKeys = Object.keys(gridReactiveData.cells.errorMap)
         if (errorMapKeys.length > 0) {
           for (let i = 0; i < errorMapKeys.length; i++) {
@@ -2575,6 +2557,7 @@ export default defineComponent({
             }
           }
         }
+        console.timeEnd('filterVertexes')
       },
     } as VmaGridMethods
 
@@ -2928,6 +2911,58 @@ export default defineComponent({
       () => gridReactiveData.currentCellEditorActive,
       () => {
         $vmaCalcGrid.calcCurrentCellDisplay()
+      },
+    )
+
+    watch(
+      () => props.data,
+      () => {
+        console.log(props.data)
+        loadData().then(() => {
+          initCurrentSheetData().then(() => {
+            $vmaCalcGrid
+              .recalculate(true)
+              .then(() => {
+                const el = refGrid.value
+                const parentEl = $vmaCalcGrid.getParentElem()
+                resizeObserver = createResizeEvent(() => {
+                  $vmaCalcGrid.recalculate(true)
+                })
+                if (el) {
+                  resizeObserver.observe(el)
+                }
+                if (parentEl) {
+                  resizeObserver.observe(parentEl)
+                }
+                GlobalEvent.on(
+                  $vmaCalcGrid,
+                  'mousewheel',
+                  handleGlobalMousewheelEvent,
+                )
+                GlobalEvent.on(
+                  $vmaCalcGrid,
+                  'mousedown',
+                  handleGlobalMousedownEvent,
+                )
+                GlobalEvent.on(
+                  $vmaCalcGrid,
+                  'keydown',
+                  handleGlobalKeydownEvent,
+                )
+                GlobalEvent.on($vmaCalcGrid, 'resize', handleGlobalResizeEvent)
+                if ($vmaCalcGrid.handleContextmenuEvent) {
+                  GlobalEvent.on(
+                    $vmaCalcGrid,
+                    'contextmenu',
+                    $vmaCalcGrid.handleContextmenuEvent,
+                  )
+                }
+              })
+              .finally(() => {
+                $vmaCalcGrid.calc()
+              })
+          })
+        })
       },
     )
 

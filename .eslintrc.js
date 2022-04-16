@@ -9,6 +9,8 @@ const common = {
     'airbnb-base',
     'plugin:jest/all',
     'plugin:markdown/recommended', // REF: https://github.com/eslint/eslint-plugin-markdown/blob/main/lib/index.js
+    'plugin:vue/vue3-essential',
+    '@vue/standard',
     'prettier',
   ],
   rules: {
@@ -62,6 +64,9 @@ const common = {
     'class-methods-use-this': 'off',
     'prefer-regex-literals': 'off',
     'no-constructor-return': 'off',
+    'no-unmodified-loop-condition': 'off',
+    'no-useless-call': 'off',
+    'vue/no-mutating-props': 'off',
   },
 }
 
