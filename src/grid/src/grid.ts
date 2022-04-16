@@ -604,6 +604,7 @@ export default defineComponent({
           gridReactiveData.tableWidth + gridReactiveData.scrollbarWidth
         }px`
       }
+      $vmaCalcGrid.calcCurrentCellPosition()
     }
 
     const calcColumnWidth = () => {
@@ -737,23 +738,6 @@ export default defineComponent({
                 })
             }
           }
-          // // 为cell加上border bottom效果
-          // // 先清除所有的已有bdb效果
-          // refGridBodyTable.value
-          //     .querySelectorAll('.cell-bdb')
-          //     .forEach((elem, index) => {
-          //       elem.classList.remove('cell-bdb')
-          //     })
-          // // 当前范围内的cell，加上cell-active效果
-          // for (let i = startRowIndex; i <= endRowIndex; i++) {
-          //   for (let j = startColIndex; j <= endColIndex; j++) {
-          //     refGridBodyTable.value
-          //         .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
-          //         .forEach((cellElem: any) => {
-          //           cellElem.classList.add('cell-bdb')
-          //         })
-          //   }
-          // }
         })
       }
     }
