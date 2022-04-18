@@ -48,6 +48,10 @@ export class Cell {
 
   bdr?: boolean // cell border right
 
+  av?: string // cell align vertical top middle bottom
+
+  ah?: string // cell align horizontal left center right
+
   constructor(
     r: number,
     c: number,
@@ -73,6 +77,8 @@ export class Cell {
     bdb: boolean | null,
     bdl: boolean | null,
     bdr: boolean | null,
+    av: string | null,
+    ah: string | null,
   ) {
     Object.assign(this, {
       r,
@@ -99,6 +105,8 @@ export class Cell {
       bdb,
       bdl,
       bdr,
+      av,
+      ah,
     })
   }
 }

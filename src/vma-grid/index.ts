@@ -1,7 +1,7 @@
 import hooks from './hooks'
 
 export class VmaGridInstance {
-  readonly version = '0.6.5'
+  readonly version = '0.6.6'
 
   readonly hooks = hooks
 }

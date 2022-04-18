@@ -774,13 +774,27 @@ export default defineComponent({
           style: {
             display: 'flex',
             justifyContent:
-              $vmaCalcGrid.props.alignH === 'left'
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].ah
+                ? currentSheetData[props.r!][props.c! - 1].ah === 'left'
+                  ? 'flex-start'
+                  : currentSheetData[props.r!][props.c! - 1].ah === 'right'
+                  ? 'flex-end'
+                  : 'center'
+                : $vmaCalcGrid.props.alignH === 'left'
                 ? 'flex-start'
                 : $vmaCalcGrid.props.alignH === 'right'
                 ? 'flex-end'
                 : 'center',
             alignItems:
-              $vmaCalcGrid.props.alignV === 'top'
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].av
+                ? currentSheetData[props.r!][props.c! - 1].av === 'top'
+                  ? 'flex-start'
+                  : currentSheetData[props.r!][props.c! - 1].av === 'bottom'
+                  ? 'flex-end'
+                  : 'center'
+                : $vmaCalcGrid.props.alignV === 'top'
                 ? 'flex-start'
                 : $vmaCalcGrid.props.alignV === 'bottom'
                 ? 'flex-end'

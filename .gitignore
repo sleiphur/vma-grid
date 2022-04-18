@@ -10,6 +10,9 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+public
+public-web
+coverage
 *.local
 
 # Editor directories and files
@@ -67,3 +70,4 @@ docs/.vuepress/.cache/
 docs/.vuepress/.temp/
 docs/.vuepress/dist/
 /.github/workflows/deploy-docs.yml
+/public/

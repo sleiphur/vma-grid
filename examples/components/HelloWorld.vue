@@ -1,6 +1,6 @@
 <template>
   <vma-grid :data="gridData" :size="selectedSizeValue" :type="selectedThemeValue"
-            :minDimensions="[1, 1]"
+            :minDimensions="[100, 50]"
             :functions="customFunctions"
             resizeColumn resizeRow style="width: 100%; height: calc(100vh - 18px);"></vma-grid>
 </template>

@@ -55,6 +55,7 @@ import GlobalEvent from './events'
 import VmaGrid from '../../vma-grid'
 import { DomTools } from '../../utils/doms'
 import {
+  VmaGridAlignPluginConstructor,
   VmaGridBorderPluginConstructor,
   VmaGridStylePluginConstructor,
 } from '../../../plugins/types'
@@ -79,6 +80,10 @@ export default defineComponent({
 
     const StyleBorderComponent = resolveComponent(
       'vma-grid-border-plugin',
+    ) as ComponentOptions
+
+    const StyleAlignComponent = resolveComponent(
+      'vma-grid-align-plugin',
     ) as ComponentOptions
 
     const refColumnResizeBar = ref() as Ref<HTMLDivElement>
@@ -141,6 +146,7 @@ export default defineComponent({
 
     const refStylePlugin = ref() as Ref<VmaGridStylePluginConstructor>
     const refBorderPlugin = ref() as Ref<VmaGridBorderPluginConstructor>
+    const refAlignPlugin = ref() as Ref<VmaGridAlignPluginConstructor>
 
     const gridRefs: VmaGridRefs = {
       refColumnResizeBar,
@@ -211,8 +217,8 @@ export default defineComponent({
       refColorPicker,
 
       refStylePlugin,
-
       refBorderPlugin,
+      refAlignPlugin,
     }
 
     const gridReactiveData = reactive({
@@ -1063,6 +1069,8 @@ export default defineComponent({
                   false,
                   false,
                   false,
+                  null,
+                  null,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -1188,6 +1196,8 @@ export default defineComponent({
                   false,
                   false,
                   false,
+                  null,
+                  null,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -1501,6 +1511,8 @@ export default defineComponent({
                 false,
                 false,
                 false,
+                null,
+                null,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -1625,6 +1637,8 @@ export default defineComponent({
                 false,
                 false,
                 false,
+                null,
+                null,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -2143,6 +2157,62 @@ export default defineComponent({
             })
           }
         }
+        if (type === 'updateCellAlign') {
+          if (item === 'avt') {
+            // align vertical top
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].av =
+                  'top'
+              }
+            }
+          }
+          if (item === 'avm') {
+            // align vertical top
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].av =
+                  'middle'
+              }
+            }
+          }
+          if (item === 'avb') {
+            // align vertical top
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].av =
+                  'bottom'
+              }
+            }
+          }
+          if (item === 'ahl') {
+            // align horizontal left
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].ah =
+                  'left'
+              }
+            }
+          }
+          if (item === 'ahc') {
+            // align horizontal center
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].ah =
+                  'center'
+              }
+            }
+          }
+          if (item === 'ahr') {
+            // align horizontal right
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].ah =
+                  'right'
+              }
+            }
+          }
+        }
       },
       getCell: (type: string, row: number, col: number) => {
         if (type === 'cellFrontColor') {
@@ -2621,6 +2691,8 @@ export default defineComponent({
                   !!(cellData && cellData.bdb),
                   !!(cellData && cellData.bdl),
                   !!(cellData && cellData.bdr),
+                  cellData && cellData.av ? cellData.av : null,
+                  cellData && cellData.ah ? cellData.ah : null,
                 ) as Cell & { [key: string]: string }
             }
           })
@@ -3127,6 +3199,12 @@ export default defineComponent({
             ? h(StyleBorderComponent, {
                 type: 'foo',
                 ref: refBorderPlugin,
+              })
+            : createCommentVNode(),
+          StyleAlignComponent.name
+            ? h(StyleAlignComponent, {
+                type: 'foo',
+                ref: refAlignPlugin,
               })
             : createCommentVNode(),
         ],

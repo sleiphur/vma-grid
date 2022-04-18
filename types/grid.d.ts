@@ -5,7 +5,11 @@ import {
 } from './common'
 import {ComponentPublicInstance, ref, Ref, RenderFunction, SetupContext} from 'vue'
 import { Cell } from '../src/grid/src/helper/Cell'
-import {VmaGridBorderPluginConstructor, VmaGridStylePluginConstructor} from "../plugins/types";
+import {
+  VmaGridAlignPluginConstructor,
+  VmaGridBorderPluginConstructor,
+  VmaGridStylePluginConstructor
+} from "../plugins/types";
 
 export type AlignHorizontalType = 'left' | 'center' | 'right'
 
@@ -266,6 +270,7 @@ export interface VmaGridRefs {
 
   refStylePlugin: Ref<VmaGridStylePluginConstructor>
   refBorderPlugin: Ref<VmaGridBorderPluginConstructor>
+  refAlignPlugin: Ref<VmaGridAlignPluginConstructor>
 }
 
 export type VmaGridEmits = ['update:data', 'change']

@@ -11,8 +11,13 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
   setupGrid(vmaCalcGrid: VmaGridConstructor) {
     const { uId, reactiveData } = vmaCalcGrid
 
-    const { refGrid, refGridCtxMenu, refStylePlugin, refBorderPlugin } =
-      vmaCalcGrid.getRefs()
+    const {
+      refGrid,
+      refGridCtxMenu,
+      refStylePlugin,
+      refBorderPlugin,
+      refAlignPlugin,
+    } = vmaCalcGrid.getRefs()
 
     let ctxMenuMethods = {} as VmaGridCtxMenuMethods
     let ctxMenuPrivateMethods = {} as VmaGridCtxMenuPrivateMethods
@@ -224,6 +229,47 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           children: subOptions,
           param,
         })
+        subOptions = []
+        if (refAlignPlugin.value) {
+          Object.keys(refAlignPlugin.value.vertical()).map((key: string) => {
+            const cell = reactiveData.currentSheetData[Number(param.row)][
+              Number(param.col) - 1
+            ] as Cell & { [key: string]: any }
+            subOptions.push({
+              name: refAlignPlugin.value.vertical()[key],
+              code: `cellAlignDetail`,
+              disabled: false,
+              visible: true,
+              item: key,
+              // prefixIcon: cell[`${key}`] === true ? 'check' : null,
+              param,
+            })
+            return null
+          })
+          Object.keys(refAlignPlugin.value.horizontal()).map((key: string) => {
+            const cell = reactiveData.currentSheetData[Number(param.row)][
+              Number(param.col) - 1
+            ] as Cell & { [key: string]: any }
+            subOptions.push({
+              name: refAlignPlugin.value.horizontal()[key],
+              code: `cellAlignDetail`,
+              disabled: false,
+              visible: true,
+              item: key,
+              // prefixIcon: cell[`${key}`] === true ? 'check' : null,
+              param,
+            })
+            return null
+          })
+          options.push({
+            name: '对齐方式',
+            code: 'cellAlign',
+            disabled: false,
+            visible: true,
+            children: subOptions,
+            param,
+          })
+        }
         subOptions = []
         if (refBorderPlugin.value) {
           subOptions.push({
@@ -588,6 +634,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } else if (menu.code === 'cellBorderDetail') {
             vmaCalcGrid.updateCell(
               'updateCellBorder',
+              menu.param.row,
+              menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
+              menu.item,
+            )
+          } else if (menu.code === 'cellAlignDetail') {
+            vmaCalcGrid.updateCell(
+              'updateCellAlign',
               menu.param.row,
               menu.param.col,
               menu.param.eRow,
