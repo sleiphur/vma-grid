@@ -12,10 +12,8 @@ import {
 } from 'vue'
 import { Guid } from '../../utils/guid'
 import {
-  VmaGridButtonConstructor,
   VmaGridColorPickerConstructor,
   VmaGridColorPickerRefs,
-  VmaGridRefs,
 } from '../../../types'
 import { getAbsolutePos } from '../../utils/doms'
 
