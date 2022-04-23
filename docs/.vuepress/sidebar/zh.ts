@@ -13,12 +13,12 @@ export const zh = defineSidebarConfig({
       children: "structure",
     },
     {
-      text: "文章",
+      text: "表格",
       icon: "note",
       prefix: "posts/",
       children: [
         {
-          text: "文章 1-4",
+          text: "基础",
           icon: "note",
           collapsable: true,
           prefix: "article/",

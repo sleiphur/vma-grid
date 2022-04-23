@@ -5,16 +5,16 @@ export const zh = defineNavbarConfig([
   "/zh/home",
   { text: "使用指南", icon: "creative", link: "/zh/guide/" },
   {
-    text: "博文",
+    text: "使用示例",
     icon: "edit",
     prefix: "/zh/posts/",
     children: [
       {
-        text: "文章 1-4",
+        text: "表格",
         icon: "edit",
         prefix: "article/",
         children: [
-          { text: "文章 1", icon: "edit", link: "article1" },
+          { text: "表格初始化", icon: "edit", link: "article1" },
           { text: "文章 2", icon: "edit", link: "article2" },
           "article3",
           "article4",

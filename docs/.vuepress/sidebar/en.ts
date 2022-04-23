@@ -13,12 +13,12 @@ export const en = defineSidebarConfig({
       children: "structure",
     },
     {
-      text: "Articles",
+      text: "Grid",
       icon: "note",
       prefix: "posts/",
       children: [
         {
-          text: "Articles 1-4",
+          text: "Basic",
           icon: "note",
           collapsable: true,
           prefix: "article/",

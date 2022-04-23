@@ -17,13 +17,13 @@ export default defineHopeConfig({
   locales: {
     "/": {
       lang: "en-US",
-      title: "Theme Demo",
-      description: "A demo for vuepress-theme-hope",
+      title: "Vma-Grid",
+      description: "A grid library based on Vue3 Typescript",
     },
     "/zh/": {
       lang: "zh-CN",
-      title: "主题演示",
-      description: "vuepress-theme-hope 的演示",
+      title: "Vma-Grid",
+      description: "一个基于Vue3 Typescript的表格组件",
     },
   },
 

@@ -5,16 +5,16 @@ export const en = defineNavbarConfig([
   "/home",
   { text: "Guide", icon: "creative", link: "/guide/" },
   {
-    text: "Posts",
+    text: "Example of use",
     icon: "edit",
     prefix: "/posts/",
     children: [
       {
-        text: "Articles 1-4",
+        text: "Grid",
         icon: "edit",
         prefix: "article/",
         children: [
-          { text: "Article 1", icon: "edit", link: "article1" },
+          { text: "Grid initialization", icon: "edit", link: "article1" },
           { text: "Article 2", icon: "edit", link: "article2" },
           "article3",
           "article4",

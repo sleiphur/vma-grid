@@ -2,7 +2,7 @@
 home: true
 layout: Blog
 icon: home
-title: Blog Home
+title: Vma-Grid
 heroImage: /logo.svg
 heroText: the name of your blog
 tagline: You can put your slogan here

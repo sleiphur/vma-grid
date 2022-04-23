@@ -30,6 +30,10 @@ export function getRowIndicatorRenderWidth(
   return 12
 }
 
+export function isObject(obj: any) {
+  return Object.prototype.toString.call(obj) === '[object Object]'
+}
+
 export function getRenderHeight(
   defaultGridRowHeight: number | undefined,
   gridSize: VmaGridPropTypes.Size,
@@ -472,7 +476,7 @@ export const getXSpaceFromColumnWidths = (
     }
     return xSpace
   }
-  return Math.max(0, startColIndex * colWidth)
+  return Math.max(0, (startColIndex - 1) * colWidth)
 }
 
 export const getRealVisibleWidthSize = (
