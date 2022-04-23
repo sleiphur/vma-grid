@@ -24,27 +24,11 @@
 @grid-resize-bar-warning-color: @orange;
 @grid-resize-bar-danger-color: @red;
 
-@cbg: val(--cbg);
-
 .cell-background(@bg) {
   background-image: linear-gradient(@bg, @bg), linear-gradient(@bg, @bg);
   background-repeat: no-repeat;
   background-size: 1px 100%, 100% 1px;
   background-position: right top, right bottom;
-}
-
-.cell-background-facade(@aaa) when (@aaa=normal) {
-  background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color);
-  background-repeat: no-repeat;
-  background-size: 1px 100%, 100% 1px;
-  background-position: right top, right bottom;
-}
-
-.cell-background-facade(@aaa) when (@aaa = active) {
-  background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
-  background-repeat: no-repeat;
-  background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
-  background-position: right top, right bottom, left top;
 }
 
 .vma-grid {
@@ -689,49 +673,16 @@
           }
         }
 
-
-
-        &.cell-active {
-          .cell-background-facade(@cbg);
-
-          &.cell-bdb {
-            background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@gray-8, @gray-8), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
-            background-repeat: no-repeat;
-            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
-            background-position: right top, right bottom, left top;
-          }
-
-          &.cell-bdr {
-            background-image: linear-gradient(@gray-8, @gray-8), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
-            background-repeat: no-repeat;
-            background-size: 1px 100%, 100% 1px, calc(100% - 1px) calc(100% - 1px);
-            background-position: right top, right bottom, left top;
-          }
-        }
-
         .cell {
           white-space:nowrap;
           overflow:hidden;
           word-break:keep-all;
           text-overflow:ellipsis;
-          //white-space: pre-line;
-          //word-break: break-all;
           width: 100%;
           height: inherit;
-          //line-height: 1.5;
           display: flex;
           justify-content: center;
           align-items: center;
-          //&.column--current {
-          //  background-color: @grid-column-current-background-color;
-          //}
-          //&.cell--current {
-          //  //background-color: @grid-cell-current-background-color;
-          //  background-image: linear-gradient(@grid-cell-current-background-color, @grid-cell-current-background-color), linear-gradient(@grid-cell-current-background-color, @grid-cell-current-background-color);
-          //  background-repeat: no-repeat;
-          //  background-size: calc(100% - 1px) calc(100% - 1px), calc(100% - 1px) calc(100% - 5px);
-          //  background-position:  0 0, 0 0;
-          //}
         }
       }
       td.row-indicator {

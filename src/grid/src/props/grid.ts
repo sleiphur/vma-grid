@@ -11,7 +11,7 @@ export default {
 
   type: {
     type: String as PropType<VmaGridPropTypes.Type>,
-    default: 'default',
+    default: 'primary',
   },
 
   size: {
@@ -37,17 +37,17 @@ export default {
 
   minDimensions: {
     type: Array as PropType<VmaGridPropTypes.MinDimensions>,
-    default: [50, 30], // [row, column]
+    default: [10, 10], // [row, column]
   },
 
   resizeColumn: {
     type: Boolean as PropType<VmaGridPropTypes.ResizeColumn>,
-    default: false,
+    default: true,
   },
 
   resizeRow: {
     type: Boolean as PropType<VmaGridPropTypes.ResizeRow>,
-    default: false,
+    default: true,
   },
 
   gridRowHeight: {

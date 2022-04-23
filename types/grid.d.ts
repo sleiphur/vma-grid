@@ -93,6 +93,7 @@ export interface VmaGridReactiveData {
   sheets: any[]
   sheet: any
   sheetData: any[]
+  sheetDataType: string
   sheetConfig: {
     rh: Record<string, any>[]
     cw: Record<string, any>[]
