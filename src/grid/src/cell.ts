@@ -46,6 +46,14 @@ export default defineComponent({
     },
     r: Number,
     c: Number,
+    rs: {
+      type: Number,
+      default: 1,
+    },
+    cs: {
+      type: Number,
+      default: 1,
+    },
   },
   setup(props, context) {
     // const { slots, emit } = context
@@ -913,6 +921,8 @@ export default defineComponent({
       h(
         props.cat === 'normal' || props.cat === 'row-indicator' ? 'td' : 'th',
         {
+          rowspan: props.rs,
+          colspan: props.cs,
           class: [
             props.cat,
             `${props.type}`,
