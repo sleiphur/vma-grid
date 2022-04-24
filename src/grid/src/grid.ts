@@ -48,7 +48,8 @@ import {
   getRealVisibleWidthSize,
   getRealVisibleHeightSize,
   getCurrentAreaWidth,
-  getCurrentAreaHeight, isObject,
+  getCurrentAreaHeight,
+  isObject,
 } from './utils/utils'
 import { debounce } from './utils/debounce/debounce'
 import GlobalEvent from './events'
@@ -59,7 +60,6 @@ import {
   VmaGridBorderPluginConstructor,
   VmaGridStylePluginConstructor,
 } from '../../../plugins/types'
-import cell from "./cell";
 
 export default defineComponent({
   name: 'VmaGrid',
@@ -615,45 +615,45 @@ export default defineComponent({
       }
       $vmaCalcGrid.calcCurrentCellPosition()
       if (
-          gridReactiveData.currentArea &&
-          Object.keys(gridReactiveData.currentArea).length > 1
+        gridReactiveData.currentArea &&
+        Object.keys(gridReactiveData.currentArea).length > 1
       ) {
         const startColIndex =
-            $vmaCalcGrid.reactiveData.currentArea.start.c >
-            $vmaCalcGrid.reactiveData.currentArea.end.c
-                ? $vmaCalcGrid.reactiveData.currentArea.end.c
-                : $vmaCalcGrid.reactiveData.currentArea.start.c
+          $vmaCalcGrid.reactiveData.currentArea.start.c >
+          $vmaCalcGrid.reactiveData.currentArea.end.c
+            ? $vmaCalcGrid.reactiveData.currentArea.end.c
+            : $vmaCalcGrid.reactiveData.currentArea.start.c
         const endColIndex =
-            $vmaCalcGrid.reactiveData.currentArea.end.c <
-            $vmaCalcGrid.reactiveData.currentArea.start.c
-                ? $vmaCalcGrid.reactiveData.currentArea.start.c
-                : $vmaCalcGrid.reactiveData.currentArea.end.c
+          $vmaCalcGrid.reactiveData.currentArea.end.c <
+          $vmaCalcGrid.reactiveData.currentArea.start.c
+            ? $vmaCalcGrid.reactiveData.currentArea.start.c
+            : $vmaCalcGrid.reactiveData.currentArea.end.c
         const startRowIndex =
-            $vmaCalcGrid.reactiveData.currentArea.start.r >
-            $vmaCalcGrid.reactiveData.currentArea.end.r
-                ? $vmaCalcGrid.reactiveData.currentArea.end.r
-                : $vmaCalcGrid.reactiveData.currentArea.start.r
+          $vmaCalcGrid.reactiveData.currentArea.start.r >
+          $vmaCalcGrid.reactiveData.currentArea.end.r
+            ? $vmaCalcGrid.reactiveData.currentArea.end.r
+            : $vmaCalcGrid.reactiveData.currentArea.start.r
         const endRowIndex =
-            $vmaCalcGrid.reactiveData.currentArea.end.r <
-            $vmaCalcGrid.reactiveData.currentArea.start.r
-                ? $vmaCalcGrid.reactiveData.currentArea.start.r
-                : $vmaCalcGrid.reactiveData.currentArea.end.r
+          $vmaCalcGrid.reactiveData.currentArea.end.r <
+          $vmaCalcGrid.reactiveData.currentArea.start.r
+            ? $vmaCalcGrid.reactiveData.currentArea.start.r
+            : $vmaCalcGrid.reactiveData.currentArea.end.r
         nextTick(() => {
           // 为cell加上cell-active效果
           // 先清除所有的已有cell-active效果
           refGridBodyTable.value
-              .querySelectorAll('.cell-active')
-              .forEach((elem, index) => {
-                elem.classList.remove('cell-active')
-              })
+            .querySelectorAll('.cell-active')
+            .forEach((elem, index) => {
+              elem.classList.remove('cell-active')
+            })
           // 当前范围内的cell，加上cell-active效果
           for (let i = startRowIndex; i <= endRowIndex; i++) {
             for (let j = startColIndex; j <= endColIndex; j++) {
               refGridBodyTable.value
-                  .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
-                  .forEach((cellElem: any) => {
-                    cellElem.classList.add('cell-active')
-                  })
+                .querySelectorAll(`td[row="${i}"][col="${j + 1}"]`)
+                .forEach((cellElem: any) => {
+                  cellElem.classList.add('cell-active')
+                })
             }
           }
         })
@@ -1005,6 +1005,121 @@ export default defineComponent({
           $vmaCalcGrid.recalculate(true).then(() => {
             $vmaCalcGrid.calcCurrentCellPosition()
           })
+        }
+        if (type === 'insertFirstColumn') {
+          gridReactiveData.columnConfigs.map((item: Column) => {
+            if (item.index! >= 1) {
+              item.index! += 1
+            }
+            return item
+          })
+          gridReactiveData.columnConfigs.splice(
+            1,
+            0,
+            new Column(1, null, null, 'default', null, true, false, 'center'),
+          )
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startColIndex =
+              gridReactiveData.currentArea.start.c >
+              gridReactiveData.currentArea.end.c
+                ? gridReactiveData.currentArea.end.c
+                : gridReactiveData.currentArea.start.c
+            const endColIndex =
+              gridReactiveData.currentArea.end.c <
+              gridReactiveData.currentArea.start.c
+                ? gridReactiveData.currentArea.start.c
+                : gridReactiveData.currentArea.end.c
+            if (1 - 1 <= startColIndex) {
+              gridReactiveData.currentArea.start.c += 1
+              gridReactiveData.currentArea.end.c += 1
+            } else if (1 - 1 > startColIndex && 1 - 1 <= endColIndex) {
+              gridReactiveData.currentArea.end.c += 1
+            }
+          }
+          const gridColumnsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsVisibleChanged).map((key) => {
+            if (Number(key) >= 1) {
+              const newKey = Number(key) + 1
+              gridColumnsVisibleChangedNew[newKey] =
+                gridReactiveData.gridColumnsVisibleChanged[key]
+            } else {
+              gridColumnsVisibleChangedNew[key] =
+                gridReactiveData.gridColumnsVisibleChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsVisibleChanged =
+            gridColumnsVisibleChangedNew
+
+          const gridColumnsWidthChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridColumnsWidthChanged).map((key) => {
+            if (Number(key) >= 1) {
+              const newKey = Number(key) + 1
+              gridColumnsWidthChangedNew[newKey] =
+                gridReactiveData.gridColumnsWidthChanged[key]
+            } else {
+              gridColumnsWidthChangedNew[key] =
+                gridReactiveData.gridColumnsWidthChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridColumnsWidthChanged = gridColumnsWidthChangedNew
+
+          gridReactiveData.currentSheetData.map(
+            (row: Cell[], index: number) => {
+              row.map((cell: Cell) => {
+                if (cell.c! >= 1 - 1) {
+                  cell.c! += 1
+                }
+                return null
+              })
+              row.splice(
+                Number(1 - 1),
+                0,
+                new Cell(
+                  index,
+                  1 - 1,
+                  null,
+                  null,
+                  null,
+                  false,
+                  null,
+                  0,
+                  1,
+                  1,
+                  null,
+                  null,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  null,
+                  '0',
+                  null,
+                  false,
+                  false,
+                  false,
+                  false,
+                  null,
+                  null,
+                ) as Cell & { [key: string]: string },
+              )
+              return null
+            },
+          )
+          // TODO 公式调整
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
         if (type === 'insertColumnBefore') {
           gridReactiveData.columnConfigs.map((item: Column) => {
@@ -1447,6 +1562,123 @@ export default defineComponent({
           $vmaCalcGrid.recalculate(true).then(() => {
             $vmaCalcGrid.calcCurrentCellPosition()
           })
+        }
+        if (type === 'insertFirstRow') {
+          gridReactiveData.rowConfigs.map((item: Row) => {
+            if (item.index! >= 0) {
+              item.index! += 1
+            }
+            return item
+          })
+          gridReactiveData.rowConfigs.splice(
+            0,
+            0,
+            new Row(0, null, null, 'default', null, true, false, 'center'),
+          )
+          if (
+            gridReactiveData.currentArea &&
+            Object.keys(gridReactiveData.currentArea).length > 1
+          ) {
+            const startRowIndex =
+              gridReactiveData.currentArea.start.r >
+              gridReactiveData.currentArea.end.r
+                ? gridReactiveData.currentArea.end.r
+                : gridReactiveData.currentArea.start.r
+            const endRowIndex =
+              gridReactiveData.currentArea.end.r <
+              gridReactiveData.currentArea.start.r
+                ? gridReactiveData.currentArea.start.r
+                : gridReactiveData.currentArea.end.r
+            if (startRowIndex >= 0) {
+              gridReactiveData.currentArea.start.r += 1
+              gridReactiveData.currentArea.end.r += 1
+            } else if (
+              Number(row) > startRowIndex &&
+              Number(row) <= endRowIndex
+            ) {
+              gridReactiveData.currentArea.end.r += 1
+            }
+          }
+          const gridRowsVisibleChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsVisibleChanged).map((key) => {
+            if (Number(key) >= 0) {
+              const newKey = Number(key) + 1
+              gridRowsVisibleChangedNew[newKey] =
+                gridReactiveData.gridRowsVisibleChanged[key]
+            } else {
+              gridRowsVisibleChangedNew[key] =
+                gridReactiveData.gridRowsVisibleChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridRowsVisibleChanged = gridRowsVisibleChangedNew
+          const gridRowsHeightChangedNew: Record<string, number> = {}
+          Object.keys(gridReactiveData.gridRowsHeightChanged).map((key) => {
+            if (Number(key) >= 0) {
+              const newKey = Number(key) + 1
+              gridRowsHeightChangedNew[newKey] =
+                gridReactiveData.gridRowsHeightChanged[key]
+            } else {
+              gridRowsHeightChangedNew[key] =
+                gridReactiveData.gridRowsHeightChanged[key]
+            }
+            return null
+          })
+          gridReactiveData.gridRowsHeightChanged = gridRowsHeightChangedNew
+          gridReactiveData.currentSheetData.map(
+            (aRow: Cell[], index: number) => {
+              aRow.map((cell: Cell) => {
+                if (cell.r! >= 0) {
+                  cell.r! += 1
+                }
+                return null
+              })
+              return null
+            },
+          )
+          const aNewRow: Cell[] = []
+          for (let i = 0; i < gridReactiveData.columnConfigs.length - 1; i++) {
+            aNewRow.push(
+              new Cell(
+                0,
+                i,
+                null,
+                null,
+                null,
+                false,
+                null,
+                0,
+                1,
+                1,
+                null,
+                null,
+                false,
+                false,
+                false,
+                false,
+                false,
+                null,
+                '0',
+                null,
+                false,
+                false,
+                false,
+                false,
+                null,
+                null,
+              ) as Cell & { [key: string]: string },
+            )
+          }
+          gridReactiveData.currentSheetData.splice(0, 0, aNewRow)
+          // TODO 公式调整
+          $vmaCalcGrid
+            .recalculate(true)
+            .then(() => {
+              $vmaCalcGrid.calc()
+            })
+            .then(() => {
+              $vmaCalcGrid.calcCurrentCellPosition()
+            })
         }
         if (type === 'insertRowBefore') {
           gridReactiveData.rowConfigs.map((item: Row) => {
@@ -2701,29 +2933,48 @@ export default defineComponent({
               let bottomNextData
               if (gridReactiveData.sheetDataType === 'map') {
                 cellData = gridReactiveData.sheetData.find(
-                    (data) => data.r === row.index! + 1 && data.c === col.index,
+                  (data) => data.r === row.index! + 1 && data.c === col.index,
                 )
                 rightNextData = gridReactiveData.sheetData.find(
-                    (data) =>
-                        data.r === row.index! + 1 && data.c === col.index! + 1,
+                  (data) =>
+                    data.r === row.index! + 1 && data.c === col.index! + 1,
                 )
                 bottomNextData = gridReactiveData.sheetData.find(
-                    (data) => data.r === row.index! + 1 + 1 && data.c === col.index,
+                  (data) =>
+                    data.r === row.index! + 1 + 1 && data.c === col.index,
                 )
               }
               if (gridReactiveData.sheetDataType === 'table') {
-                cellData = gridReactiveData.sheetData[row.index!] && gridReactiveData.sheetData[row.index!][col.index! - 1] ? gridReactiveData.sheetData[row.index!][col.index! - 1] : null
-                rightNextData = gridReactiveData.sheetData[row.index!] && gridReactiveData.sheetData[row.index!][col.index!] ? gridReactiveData.sheetData[row.index!][col.index!] : null
-                bottomNextData = gridReactiveData.sheetData[row.index! + 1] && gridReactiveData.sheetData[row.index!][col.index! - 1] ? gridReactiveData.sheetData[row.index! + 1][col.index! - 1] : null
+                cellData =
+                  gridReactiveData.sheetData[row.index!] &&
+                  gridReactiveData.sheetData[row.index!][col.index! - 1]
+                    ? gridReactiveData.sheetData[row.index!][col.index! - 1]
+                    : null
+                rightNextData =
+                  gridReactiveData.sheetData[row.index!] &&
+                  gridReactiveData.sheetData[row.index!][col.index!]
+                    ? gridReactiveData.sheetData[row.index!][col.index!]
+                    : null
+                bottomNextData =
+                  gridReactiveData.sheetData[row.index! + 1] &&
+                  gridReactiveData.sheetData[row.index!][col.index! - 1]
+                    ? gridReactiveData.sheetData[row.index! + 1][col.index! - 1]
+                    : null
               }
 
               gridReactiveData.currentSheetData[row.index!][col.index! - 1] =
                 new Cell(
                   row.index!,
                   col.index! - 1,
-                  gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.v ? cellData.v : null) : (
-                      isObject(cellData) ? (cellData && cellData.v ? cellData.v : null) : cellData
-                  ) ,
+                  gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.v
+                      ? cellData.v
+                      : null
+                    : isObject(cellData)
+                    ? cellData && cellData.v
+                      ? cellData.v
+                      : null
+                    : cellData,
                   null,
                   null,
                   false,
@@ -2731,66 +2982,128 @@ export default defineComponent({
                   0,
                   1,
                   1,
-                    gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.fs ? cellData.fs : null) : (
-                        isObject(cellData) ? (cellData && cellData.fs ? cellData.fs : null) : null
-                    ),
-                    gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.ff ? cellData.ff : null) : (
-                        isObject(cellData) ? (cellData && cellData.ff ? cellData.ff : null) : null
-                    ),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bl) : (
-                        isObject(cellData) ? (cellData && cellData.bl) : null
-                    )),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.it) : (
-                        isObject(cellData) ? (cellData && cellData.it) : null
-                    )),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.ol) : (
-                        isObject(cellData) ? (cellData && cellData.ol) : null
-                    )),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.cl) : (
-                        isObject(cellData) ? (cellData && cellData.cl) : null
-                    )),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.ul) : (
-                        isObject(cellData) ? (cellData && cellData.ul) : null
-                    )),
-                    gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bg ? cellData.bg : null) : (
-                        isObject(cellData) ? (cellData && cellData.bg ? cellData.bg : null) : null
-                    ),
+                  gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.fs
+                      ? cellData.fs
+                      : null
+                    : isObject(cellData)
+                    ? cellData && cellData.fs
+                      ? cellData.fs
+                      : null
+                    : null,
+                  gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.ff
+                      ? cellData.ff
+                      : null
+                    : isObject(cellData)
+                    ? cellData && cellData.ff
+                      ? cellData.ff
+                      : null
+                    : null,
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.bl
+                    : isObject(cellData)
+                    ? cellData && cellData.bl
+                    : null),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.it
+                    : isObject(cellData)
+                    ? cellData && cellData.it
+                    : null),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.ol
+                    : isObject(cellData)
+                    ? cellData && cellData.ol
+                    : null),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.cl
+                    : isObject(cellData)
+                    ? cellData && cellData.cl
+                    : null),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.ul
+                    : isObject(cellData)
+                    ? cellData && cellData.ul
+                    : null),
+                  gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.bg
+                      ? cellData.bg
+                      : null
+                    : isObject(cellData)
+                    ? cellData && cellData.bg
+                      ? cellData.bg
+                      : null
+                    : null,
                   calcCellBgType(
-                      gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bg ? cellData.bg : null) : (
-                          isObject(cellData) ? (cellData && cellData.bg ? cellData.bg : null) : null
-                      ),
-                    (gridReactiveData.sheetDataType === 'map' ? (bottomNextData && bottomNextData.bdt) : (
-                  isObject(bottomNextData) ? (bottomNextData && bottomNextData.bdt) : null
-              )) ||
-                      (gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bdb) : (
-                          isObject(cellData) ? (cellData && cellData.bdb) : null
-                      )),
-                    (gridReactiveData.sheetDataType === 'map' ? (rightNextData && rightNextData.bdl) : (
-                        isObject(rightNextData) ? (rightNextData && rightNextData.bdl) : null
-                    )) ||
-                      (gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bdr) : (
-                          isObject(cellData) ? (cellData && cellData.bdr) : null
-                      )),
+                    gridReactiveData.sheetDataType === 'map'
+                      ? cellData && cellData.bg
+                        ? cellData.bg
+                        : null
+                      : isObject(cellData)
+                      ? cellData && cellData.bg
+                        ? cellData.bg
+                        : null
+                      : null,
+                    (gridReactiveData.sheetDataType === 'map'
+                      ? bottomNextData && bottomNextData.bdt
+                      : isObject(bottomNextData)
+                      ? bottomNextData && bottomNextData.bdt
+                      : null) ||
+                      (gridReactiveData.sheetDataType === 'map'
+                        ? cellData && cellData.bdb
+                        : isObject(cellData)
+                        ? cellData && cellData.bdb
+                        : null),
+                    (gridReactiveData.sheetDataType === 'map'
+                      ? rightNextData && rightNextData.bdl
+                      : isObject(rightNextData)
+                      ? rightNextData && rightNextData.bdl
+                      : null) ||
+                      (gridReactiveData.sheetDataType === 'map'
+                        ? cellData && cellData.bdr
+                        : isObject(cellData)
+                        ? cellData && cellData.bdr
+                        : null),
                   ), // init cell bg type
                   cellData && cellData.fc ? cellData.fc : null,
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bdt) : (
-                        isObject(cellData) ? (cellData && cellData.bdt) : null
-                    )),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bdb) : (
-                        isObject(cellData) ? (cellData && cellData.bdb) : null
-                    )),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bdl) : (
-                        isObject(cellData) ? (cellData && cellData.bdl) : null
-                    )),
-                    !!(gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.bdr) : (
-                        isObject(cellData) ? (cellData && cellData.bdr) : null
-                    )),
-                    gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.av ? cellData.av : null) : (
-                        isObject(cellData) ? (cellData && cellData.av ? cellData.av : null) : null
-                    ),
-                    gridReactiveData.sheetDataType === 'map' ? (cellData && cellData.ah ? cellData.ah : null) : (
-                        isObject(cellData) ? (cellData && cellData.ah ? cellData.ah : null) : null
-                    ),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.bdt
+                    : isObject(cellData)
+                    ? cellData && cellData.bdt
+                    : null),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.bdb
+                    : isObject(cellData)
+                    ? cellData && cellData.bdb
+                    : null),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.bdl
+                    : isObject(cellData)
+                    ? cellData && cellData.bdl
+                    : null),
+                  !!(gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.bdr
+                    : isObject(cellData)
+                    ? cellData && cellData.bdr
+                    : null),
+                  gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.av
+                      ? cellData.av
+                      : null
+                    : isObject(cellData)
+                    ? cellData && cellData.av
+                      ? cellData.av
+                      : null
+                    : null,
+                  gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.ah
+                      ? cellData.ah
+                      : null
+                    : isObject(cellData)
+                    ? cellData && cellData.ah
+                      ? cellData.ah
+                      : null
+                    : null,
                 ) as Cell & { [key: string]: string }
             }
           })
@@ -2820,7 +3133,10 @@ export default defineComponent({
         }
         // 当前sheet的dataType map 或 table
         // map 默认
-        if (gridReactiveData.sheet.dataType && gridReactiveData.sheet.dataType === 'table') {
+        if (
+          gridReactiveData.sheet.dataType &&
+          gridReactiveData.sheet.dataType === 'table'
+        ) {
           gridReactiveData.sheetDataType = 'table'
         }
         if (gridReactiveData.sheet.data) {
@@ -2840,7 +3156,10 @@ export default defineComponent({
             if (gridReactiveData.sheetData.length > props.minDimensions[0]) {
               props.minDimensions[0] = gridReactiveData.sheetData.length
             }
-            if (gridReactiveData.sheetData.length > 0 && gridReactiveData.sheetData[0].length > props.minDimensions[1]) {
+            if (
+              gridReactiveData.sheetData.length > 0 &&
+              gridReactiveData.sheetData[0].length > props.minDimensions[1]
+            ) {
               props.minDimensions[1] = gridReactiveData.sheetData[0].length
             }
           }

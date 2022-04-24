@@ -601,9 +601,9 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } else if (menu.code === 'deleteRow') {
             vmaCalcGrid.updateRow('deleteRow', menu.param.row, menu.param.col)
           } else if (menu.code === 'insertFirstColumn') {
-            // TODO 插入首列
+            vmaCalcGrid.updateColumn('insertFirstColumn', 0, 0)
           } else if (menu.code === 'insertFirstRow') {
-            // TODO 插入首行
+            vmaCalcGrid.updateRow('insertFirstRow', 0, 0)
           } else if (menu.code === 'cellFontSizeDetail') {
             vmaCalcGrid.updateCell(
               'updateCellFontSize',
