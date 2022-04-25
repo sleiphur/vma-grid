@@ -187,6 +187,9 @@ export default defineComponent({
                 row: rf.index,
                 col: cf.index,
                 id: `${rf.index}_${cf.index}`,
+                cf: $vmaCalcGrid.reactiveData.currentSheetData[rf.index][
+                  cf.index - 1
+                ].cf,
               }),
             )
           }

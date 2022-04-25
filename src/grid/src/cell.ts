@@ -9,9 +9,7 @@ import {
   PropType,
   provide,
   reactive,
-  ref,
   resolveComponent,
-  useCssModule,
   useCssVars,
 } from 'vue'
 import { DomTools } from '../../utils/doms'
@@ -31,7 +29,7 @@ import {
   getXSpaceFromColumnWidths,
   getYSpaceFromRowHeights,
 } from './utils/utils'
-import { debounce } from './utils/debounce/debounce'
+import { SSF } from '../../formula'
 
 export default defineComponent({
   name: 'VmaGridCell',
@@ -53,6 +51,13 @@ export default defineComponent({
     cs: {
       type: Number,
       default: 1,
+    },
+    cf: {
+      type: Object as PropType<Record<string, string>>,
+      default: () => ({
+        fd: 'General',
+        t: 'g',
+      }),
     },
   },
   setup(props, context) {
@@ -112,6 +117,18 @@ export default defineComponent({
     const getCellContent = () => {
       const c = currentSheetData[props.r!][props.c! - 1]
       if (c && c.mv) {
+        if (c.cf) {
+          const beforeTextNumber = Number(c.mv)
+          try {
+            if (isNaN(beforeTextNumber)) {
+              c.mv = SSF.format(c.cf.fd, c.mv)
+            } else {
+              c.mv = SSF.format(c.cf.fd, beforeTextNumber)
+            }
+          } catch (e) {
+            console.error(e)
+          }
+        }
         return c.mv
       }
       return null

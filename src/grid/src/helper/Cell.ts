@@ -52,6 +52,8 @@ export class Cell {
 
   ah?: string // cell align horizontal left center right
 
+  cf?: Record<string, string>
+
   constructor(
     r: number,
     c: number,
@@ -79,6 +81,7 @@ export class Cell {
     bdr: boolean | null,
     av: string | null,
     ah: string | null,
+    cf: Record<string, string> | null,
   ) {
     Object.assign(this, {
       r,
@@ -107,6 +110,7 @@ export class Cell {
       bdr,
       av,
       ah,
+      cf,
     })
   }
 }

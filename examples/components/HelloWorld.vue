@@ -132,9 +132,9 @@ export default defineComponent({
     ]
 
     const mapTypeGridData = [
-      { r: 1,   c: 2,   v: '35',                fs: 12,  },
-      { r: 1,   c: 3,   v: '=3 / 0',            fs: 18,         ff: 'Verdana',  },
-      { r: 1,   c: 4,   v: '= 1 - EXP(C1 ^ 3)', bg: '#e6e0ec',  },
+      { r: 1,   c: 2,   v: '24862',             fs: 12,         cf: { fd: 'yyyy-mm-dd', t: 'd' }},
+      { r: 1,   c: 3,   v: '=3 / 10',           fs: 18,         ff: 'Verdana',                        cf: { fd: '#,##0%', t: 'n' }},
+      { r: 1,   c: 4,   v: '= 1 - EXP(C1 ^ 3)', bg: '#e6e0ec',  cf: { fd: '##.0000', t: 'n' }},
       { r: 10,  c: 15,  v: '=D1 + 3'  },
       { r: 2,   c: 4,   v: '=SUM(B1, T10) + AD50',  },
       { r: 7,   c: 4,   v: '一小段测试文本3',      fs: 16,         ff: '华文行楷',   ol: 1,   cl: 1,      ul: 1,   it: 1,          bl: 1,           bg: '#0071be',   fc: '#f2f2f2',    bdt: true,  },
@@ -158,18 +158,18 @@ export default defineComponent({
           {r: 10, c: 12, rs: 6, cs: 5,},
         ],
         rh: [
-          {r: 2, h: 48,},
-          {r: 4, h: 48,},
+          {r: 3, h: 48,},
+          {r: 5, h: 48,},
         ],
         cw: [
           {c: 3, w: 120,},
           {c: 4, w: 200,}],
         rv: [// 0 隐藏行 1 显示行 若配置为1，因为行默认显示，则该配置不起作用
-          {r: 7, v: 0,},
-          {r: 8, v: 0,}
+          {r: 8, v: 0,},
+          {r: 9, v: 0,}
         ],
         cv: [// 0 隐藏列 1 显示列 若配置为1，因为列默认显示，则该配置不起作用
-          {c: 7, v: 0,}
+          {c: 8, v: 0,}
         ],
       },
       // 初始化数据， map类型， 适合零散的数据初始化

@@ -1106,6 +1106,7 @@ export default defineComponent({
                   false,
                   null,
                   null,
+                  null,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -1233,6 +1234,7 @@ export default defineComponent({
                   false,
                   null,
                   null,
+                  null,
                 ) as Cell & { [key: string]: string },
               )
               return null
@@ -1358,6 +1360,7 @@ export default defineComponent({
                   false,
                   false,
                   false,
+                  null,
                   null,
                   null,
                 ) as Cell & { [key: string]: string },
@@ -1666,6 +1669,7 @@ export default defineComponent({
                 false,
                 null,
                 null,
+                null,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -1792,6 +1796,7 @@ export default defineComponent({
                 false,
                 null,
                 null,
+                null,
               ) as Cell & { [key: string]: string },
             )
           }
@@ -1916,6 +1921,7 @@ export default defineComponent({
                 false,
                 false,
                 false,
+                null,
                 null,
                 null,
               ) as Cell & { [key: string]: string },
@@ -3104,6 +3110,15 @@ export default defineComponent({
                       ? cellData.ah
                       : null
                     : null,
+                  gridReactiveData.sheetDataType === 'map'
+                    ? cellData && cellData.cf
+                      ? cellData.cf
+                      : null
+                    : isObject(cellData)
+                    ? cellData && cellData.cf
+                      ? cellData.cf
+                      : null
+                    : null,
                 ) as Cell & { [key: string]: string }
             }
           })
@@ -3213,7 +3228,10 @@ export default defineComponent({
                 isNumeric(gridReactiveData.sheetConfig.cv[i].v) &&
                 gridReactiveData.sheetConfig.cv[i].v === 0
               ) {
-                if (Number(gridReactiveData.sheetConfig.cv[i].c) - 1 === index) {
+                if (
+                  Number(gridReactiveData.sheetConfig.cv[i].c) - 1 ===
+                  index
+                ) {
                   cvConf = true
                   gridReactiveData.gridColumnsVisibleChanged[`${index}`] =
                     gridReactiveData.sheetConfig.cv[i].v
@@ -3257,7 +3275,10 @@ export default defineComponent({
                 gridReactiveData.sheetConfig.rh[i].hasOwnProperty('h') &&
                 isNumeric(gridReactiveData.sheetConfig.rh[i].h)
               ) {
-                if (Number(gridReactiveData.sheetConfig.rh[i].r) - 1 === index) {
+                if (
+                  Number(gridReactiveData.sheetConfig.rh[i].r) - 1 ===
+                  index
+                ) {
                   rhConf = gridReactiveData.sheetConfig.rh[i].h
                   gridReactiveData.gridRowsHeightChanged[`${index}`] =
                     gridReactiveData.sheetConfig.rh[i].h
@@ -3278,7 +3299,10 @@ export default defineComponent({
                 isNumeric(gridReactiveData.sheetConfig.rv[i].v) &&
                 gridReactiveData.sheetConfig.rv[i].v === 0
               ) {
-                if (Number(gridReactiveData.sheetConfig.rv[i].r) - 1 === index) {
+                if (
+                  Number(gridReactiveData.sheetConfig.rv[i].r) - 1 ===
+                  index
+                ) {
                   rvConf = true
                   gridReactiveData.gridRowsVisibleChanged[`${index}`] =
                     gridReactiveData.sheetConfig.rv[i].v
