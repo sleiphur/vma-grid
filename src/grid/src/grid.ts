@@ -1425,7 +1425,7 @@ export default defineComponent({
             gridColumnsVisibleChangedNew
           const gridColumnsWidthChangedNew: Record<string, number> = {}
           Object.keys(gridReactiveData.gridColumnsWidthChanged).map((key) => {
-            if (Number(key) !== Number(col) - 1) {
+            if (Number(key) !== Number(col)) {
               if (Number(key) >= Number(col)) {
                 const newKey = Number(key) - 1
                 gridColumnsWidthChangedNew[newKey] =
