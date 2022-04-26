@@ -203,22 +203,98 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         options = []
         subOptions = []
         subOptions.push({
-          name: '自动',
-          code: 'cellFormat-auto',
+          name: '千分位',
+          code: 'cellFastFormat-thousandths',
           disabled: false,
           visible: true,
         })
         subOptions.push({
-          name: '文本',
-          code: 'cellFormat-string',
+          name: '增加小数位',
+          code: 'cellFastFormat-decimal-places-add',
           disabled: false,
           visible: true,
+        })
+        subOptions.push({
+          name: '减少小数位',
+          code: 'cellFastFormat-decimal-places-reduce',
+          disabled: false,
+          visible: true,
+        })
+        options.push({
+          name: '快捷格式',
+          prefixIcon: 'info',
+          code: 'cellFastFormat',
+          disabled: false,
+          visible: true,
+          children: subOptions,
+          param,
+        })
+        // list.push(options)
+        // options = []
+        subOptions = []
+        subOptions.push({
+          name: '常规',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          item: 'general',
+          param,
+        })
+        subOptions.push({
+          name: '日期',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          item: 'date',
+          param,
+        })
+        subOptions.push({
+          name: '时间',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          item: 'time',
+          param,
+        })
+        subOptions.push({
+          name: '百分比',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          item: 'percent',
+          param,
+        })
+        subOptions.push({
+          name: '分数',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          item: 'fraction',
+          param,
+        })
+        subOptions.push({
+          name: '科学计数',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          item: 'scientific-notation',
+          param,
         })
         subOptions.push({
           name: '数字',
-          code: 'cellFormat-number',
+          code: 'cellFormat',
           disabled: false,
           visible: true,
+          item: 'number',
+          param,
+        })
+        subOptions.push({
+          name: '文本',
+          code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          item: 'string',
+          param,
         })
         options.push({
           name: '格式',
@@ -229,6 +305,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           children: subOptions,
           param,
         })
+        list.push(options)
+        options = []
         subOptions = []
         if (refAlignPlugin.value) {
           Object.keys(refAlignPlugin.value.vertical()).map((key: string) => {
@@ -643,6 +721,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } else if (menu.code === 'cellAlignDetail') {
             vmaCalcGrid.updateCell(
               'updateCellAlign',
+              menu.param.row,
+              menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
+              menu.item,
+            )
+          } else if (menu.code === 'cellFormat') {
+            vmaCalcGrid.updateCell(
+              'updateCellFormat',
               menu.param.row,
               menu.param.col,
               menu.param.eRow,

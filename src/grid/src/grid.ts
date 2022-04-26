@@ -2498,6 +2498,88 @@ export default defineComponent({
             }
           }
         }
+        if (type === 'updateCellFormat') {
+          if (item === 'general') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: '',
+                  t: 'g',
+                }
+              }
+            }
+          }
+          if (item === 'date') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: 'yyyy-mm-dd',
+                  t: 'd',
+                }
+              }
+            }
+          }
+          if (item === 'time') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: 'yyyy-mm-dd hh:mm:ss',
+                  t: 'd',
+                }
+              }
+            }
+          }
+          if (item === 'fraction') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: '0/0',
+                  t: 'd',
+                }
+              }
+            }
+          }
+          if (item === 'scientific-notation') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: '0.00E+0',
+                  t: 'd',
+                }
+              }
+            }
+          }
+          if (item === 'number') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: '###0;-###0;0',
+                  t: 'd',
+                }
+              }
+            }
+          }
+          if (item === 'string') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: '@',
+                  t: 's',
+                }
+              }
+            }
+          }
+          if (item === 'percent') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
+                  fd: '###0.00%',
+                  t: 'n',
+                }
+              }
+            }
+          }
+        }
       },
       getCell: (type: string, row: number, col: number) => {
         if (type === 'cellFrontColor') {

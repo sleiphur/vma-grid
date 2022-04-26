@@ -114,22 +114,27 @@ export default defineComponent({
       ),
     )
 
+    const renderCellContentWithFormat = (mv: any) => {
+      const c = currentSheetData[props.r!][props.c! - 1]
+      if (c.cf && c.cf.t && c.cf.t !== 'g') {
+        const beforeTextNumber = Number(c.mv)
+        try {
+          if (isNaN(beforeTextNumber)) {
+            mv = SSF.format(c.cf.fd, c.mv)
+          } else {
+            mv = SSF.format(c.cf.fd, beforeTextNumber)
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
+      return mv
+    }
+
     const getCellContent = () => {
       const c = currentSheetData[props.r!][props.c! - 1]
       if (c && c.mv) {
-        if (c.cf) {
-          const beforeTextNumber = Number(c.mv)
-          try {
-            if (isNaN(beforeTextNumber)) {
-              c.mv = SSF.format(c.cf.fd, c.mv)
-            } else {
-              c.mv = SSF.format(c.cf.fd, beforeTextNumber)
-            }
-          } catch (e) {
-            console.error(e)
-          }
-        }
-        return c.mv
+        return renderCellContentWithFormat(c.mv)
       }
       return null
     }
