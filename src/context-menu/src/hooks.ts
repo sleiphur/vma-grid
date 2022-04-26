@@ -200,37 +200,8 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         list.push(options)
-        options = []
-        subOptions = []
-        subOptions.push({
-          name: '千分位',
-          code: 'cellFastFormat-thousandths',
-          disabled: false,
-          visible: true,
-        })
-        subOptions.push({
-          name: '增加小数位',
-          code: 'cellFastFormat-decimal-places-add',
-          disabled: false,
-          visible: true,
-        })
-        subOptions.push({
-          name: '减少小数位',
-          code: 'cellFastFormat-decimal-places-reduce',
-          disabled: false,
-          visible: true,
-        })
-        options.push({
-          name: '快捷格式',
-          prefixIcon: 'info',
-          code: 'cellFastFormat',
-          disabled: false,
-          visible: true,
-          children: subOptions,
-          param,
-        })
         // list.push(options)
-        // options = []
+        options = []
         subOptions = []
         subOptions.push({
           name: '常规',
@@ -300,6 +271,38 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           name: '格式',
           prefixIcon: 'info',
           code: 'cellFormat',
+          disabled: false,
+          visible: true,
+          children: subOptions,
+          param,
+        })
+        // list.push(options)
+        // options = []
+        subOptions = []
+        subOptions.push({
+          name: '千分位',
+          code: 'cellFastFormat',
+          disabled: false,
+          visible: true,
+          item: 'thousandths',
+          param,
+        })
+        subOptions.push({
+          name: '增加小数位',
+          code: 'cellFastFormat-decimal-places-add',
+          disabled: false,
+          visible: true,
+        })
+        subOptions.push({
+          name: '减少小数位',
+          code: 'cellFastFormat-decimal-places-reduce',
+          disabled: false,
+          visible: true,
+        })
+        options.push({
+          name: '格式设置',
+          prefixIcon: 'info',
+          code: 'cellFastFormat',
           disabled: false,
           visible: true,
           children: subOptions,
@@ -730,6 +733,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           } else if (menu.code === 'cellFormat') {
             vmaCalcGrid.updateCell(
               'updateCellFormat',
+              menu.param.row,
+              menu.param.col,
+              menu.param.eRow,
+              menu.param.eCol,
+              menu.item,
+            )
+          } else if (menu.code === 'cellFastFormat') {
+            vmaCalcGrid.updateCell(
+              'updateCellFastFormat',
               menu.param.row,
               menu.param.col,
               menu.param.eRow,

@@ -2514,7 +2514,7 @@ export default defineComponent({
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
                   fd: 'yyyy-mm-dd',
-                  t: 'd',
+                  t: 'dd',
                 }
               }
             }
@@ -2524,7 +2524,7 @@ export default defineComponent({
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
                   fd: 'yyyy-mm-dd hh:mm:ss',
-                  t: 'd',
+                  t: 'dt',
                 }
               }
             }
@@ -2533,8 +2533,8 @@ export default defineComponent({
             for (let i = Number(row); i <= Number(eRow); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
-                  fd: '0/0',
-                  t: 'd',
+                  fd: '0/00',
+                  t: 'df',
                 }
               }
             }
@@ -2544,7 +2544,7 @@ export default defineComponent({
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
                   fd: '0.00E+0',
-                  t: 'd',
+                  t: 'ds',
                 }
               }
             }
@@ -2553,8 +2553,8 @@ export default defineComponent({
             for (let i = Number(row); i <= Number(eRow); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
-                  fd: '###0;-###0;0',
-                  t: 'd',
+                  fd: '#,##0.00;-#,##0.00;0',
+                  t: 'dn',
                 }
               }
             }
@@ -2573,8 +2573,70 @@ export default defineComponent({
             for (let i = Number(row); i <= Number(eRow); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
-                  fd: '###0.00%',
-                  t: 'n',
+                  fd: '#,##0.00%',
+                  t: 'dp',
+                }
+              }
+            }
+          }
+        }
+        if (type === 'updateCellFastFormat') {
+          if (item === 'thousandths') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                if (
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].cf &&
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                    .t &&
+                  (gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                    .t === 'dn' ||
+                    gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                      .t === 'dp')
+                ) {
+                  if (
+                    gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                      .t === 'dn'
+                  ) {
+                    if (
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.indexOf(',') >= 0
+                    ) {
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd = gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.replaceAll(',', '')
+                    } else {
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd = gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.replaceAll('###', '#,##')
+                    }
+                  }
+                  if (
+                    gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                      .t === 'dp'
+                  ) {
+                    if (
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.indexOf(',') >= 0
+                    ) {
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd = gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.replaceAll(',', '')
+                    } else {
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd = gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.replaceAll('###', '#,##')
+                    }
+                  }
                 }
               }
             }

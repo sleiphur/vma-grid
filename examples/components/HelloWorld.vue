@@ -132,9 +132,9 @@ export default defineComponent({
     ]
 
     const mapTypeGridData = [
-      { r: 1,   c: 2,   v: '24862',             fs: 12,         cf: { fd: 'yyyy-mm-dd', t: 'd' }},
-      { r: 1,   c: 3,   v: '=3.123 / 10',           fs: 18,         ff: 'Verdana',                        cf: { fd: '#,##0.00%', t: 'n' }},
-      { r: 1,   c: 4,   v: '= 1 - EXP(C1 ^ 3)', bg: '#e6e0ec',  cf: { fd: '##.0000', t: 'n' }},
+      { r: 1,   c: 2,   v: '24862',             fs: 12,         cf: { fd: 'yyyy-mm-dd', t: 'dd' }},
+      { r: 1,   c: 3,   v: '=3.123 / 10',           fs: 18,         ff: 'Verdana',                        cf: { fd: '#,##0.00%', t: 'dp' }},
+      { r: 1,   c: 4,   v: '= 1 - EXP(C1 ^ 3)', bg: '#e6e0ec',  cf: { fd: '#,##0.00;-#,##0.00;0', t: 'dn' }},
       { r: 10,  c: 15,  v: '=D1 + 3'  },
       { r: 2,   c: 4,   v: '=SUM(B1, T10) + AD50',  },
       { r: 7,   c: 4,   v: '一小段测试文本3',      fs: 16,         ff: '华文行楷',   ol: 1,   cl: 1,      ul: 1,   it: 1,          bl: 1,           bg: '#0071be',   fc: '#f2f2f2',    bdt: true,  },
