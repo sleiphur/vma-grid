@@ -2523,7 +2523,7 @@ export default defineComponent({
             for (let i = Number(row); i <= Number(eRow); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
                 gridReactiveData.currentSheetData[Number(i)][Number(j)].cf = {
-                  fd: 'yyyy-mm-dd hh:mm:ss',
+                  fd: 'hh:mm:ss',
                   t: 'dt',
                 }
               }
@@ -2581,6 +2581,135 @@ export default defineComponent({
           }
         }
         if (type === 'updateCellFastFormat') {
+          if (item === 'decimal-places-add') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                if (
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].cf &&
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                    .t &&
+                  (gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                    .t === 'dp' ||
+                    gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                      .t === 'ds' ||
+                    gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                      .t === 'dn')
+                ) {
+                  // 查找目标串用以替换
+                  const r0 = new RegExp('0[.]*[0]*[;,%E]', 'g')
+                  if (
+                    r0.test(
+                      gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .cf!.fd,
+                    )
+                  ) {
+                    console.log(
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0],
+                    )
+                    if (
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0].length === 2
+                    ) {
+                      const toReplaceStr =
+                        gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0]
+                      const replaceStr = `${toReplaceStr.slice(
+                        0,
+                        1,
+                      )}.0${toReplaceStr.slice(1)}`
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd = gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.replaceAll(toReplaceStr, replaceStr)
+                    } else if (
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0].length > 2
+                    ) {
+                      const toReplaceStr =
+                        gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0]
+                      console.log(toReplaceStr)
+                      const replaceStr = `${toReplaceStr.slice(
+                        0,
+                        gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0].length - 1,
+                      )}0${toReplaceStr.slice(
+                        gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0].length - 1,
+                      )}`
+                      console.log(replaceStr)
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd = gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.replaceAll(toReplaceStr, replaceStr)
+                    }
+                  }
+                }
+              }
+            }
+          }
+          if (item === 'decimal-places-reduce') {
+            for (let i = Number(row); i <= Number(eRow); i++) {
+              for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {
+                if (
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].cf &&
+                  gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                    .t &&
+                  (gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                    .t === 'dp' ||
+                    gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                      .t === 'ds' ||
+                    gridReactiveData.currentSheetData[Number(i)][Number(j)].cf!
+                      .t === 'dn')
+                ) {
+                  // 查找目标串用以替换
+                  const r0 = new RegExp('0[.]*[0]*[;,%E]', 'g')
+                  if (
+                    r0.test(
+                      gridReactiveData.currentSheetData[Number(i)][Number(j)]
+                        .cf!.fd,
+                    )
+                  ) {
+                    if (
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0].length > 3
+                    ) {
+                      const toReplaceStr =
+                        gridReactiveData.currentSheetData[Number(i)][
+                          Number(j)
+                        ].cf!.fd.match(/0[.]*[0]*[;,%E]/g)![0]
+                      let replaceStr =
+                        toReplaceStr.slice(0, toReplaceStr.length - 2) +
+                        toReplaceStr.slice(
+                          toReplaceStr.length - 1,
+                          toReplaceStr.length,
+                        )
+                      if (replaceStr.length === 3) {
+                        replaceStr =
+                          replaceStr.slice(0, 1) + replaceStr.slice(2)
+                      }
+                      gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd = gridReactiveData.currentSheetData[Number(i)][
+                        Number(j)
+                      ].cf!.fd.replaceAll(toReplaceStr, replaceStr)
+                    }
+                  }
+                }
+              }
+            }
+          }
           if (item === 'thousandths') {
             for (let i = Number(row); i <= Number(eRow); i++) {
               for (let j = Number(col) - 1; j <= Number(eCol) - 1; j++) {

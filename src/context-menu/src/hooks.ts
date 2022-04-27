@@ -289,15 +289,19 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         })
         subOptions.push({
           name: '增加小数位',
-          code: 'cellFastFormat-decimal-places-add',
+          code: 'cellFastFormat',
           disabled: false,
           visible: true,
+          item: 'decimal-places-add',
+          param,
         })
         subOptions.push({
           name: '减少小数位',
-          code: 'cellFastFormat-decimal-places-reduce',
+          code: 'cellFastFormat',
           disabled: false,
           visible: true,
+          item: 'decimal-places-reduce',
+          param,
         })
         options.push({
           name: '格式设置',
