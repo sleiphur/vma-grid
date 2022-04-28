@@ -1,0 +1,1 @@
+const e={key:"v-1a1874fc",path:"/formula/",title:"Vue 3 + Typescript + Vite",lang:"en-US",frontmatter:{},excerpt:"",headers:[{level:2,title:"Recommended IDE Setup",slug:"recommended-ide-setup",children:[]},{level:2,title:"Type Support For .vue Imports in TS",slug:"type-support-for-vue-imports-in-ts",children:[]}]};export{e as data};

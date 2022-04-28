@@ -1,0 +1,1 @@
+const t={key:"v-4ba29552",path:"/zh/posts/article9.html",title:"\u6587\u7AE0 9",lang:"zh-CN",frontmatter:{icon:"edit",date:"2022-01-09T00:00:00.000Z",category:["CategoryA","CategoryB"],tag:["tag A","tag B"]},excerpt:"",headers:[{level:2,title:"\u6807\u9898 2",slug:"\u6807\u9898-2",children:[{level:3,title:"\u6807\u9898 3",slug:"\u6807\u9898-3",children:[]}]}]};export{t as data};

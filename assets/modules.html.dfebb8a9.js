@@ -1,0 +1,1 @@
+const e={key:"v-e0e76f98",path:"/formula/modules.html",title:"vma-grid",lang:"en-US",frontmatter:{},excerpt:"",headers:[{level:2,title:"Table of contents",slug:"table-of-contents",children:[{level:3,title:"Modules",slug:"modules",children:[]}]}]};export{e as data};

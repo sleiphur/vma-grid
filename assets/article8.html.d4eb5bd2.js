@@ -1,0 +1,1 @@
+const e={key:"v-0f7612e9",path:"/posts/article/article8.html",title:"Article 8",lang:"en-US",frontmatter:{icon:"edit",date:"2022-01-08T00:00:00.000Z",category:["CategoryA","CategoryB"],tag:["tag A","tag B"]},excerpt:"",headers:[{level:2,title:"Heading 2",slug:"heading-2",children:[{level:3,title:"Heading 3",slug:"heading-3",children:[]}]}]};export{e as data};
