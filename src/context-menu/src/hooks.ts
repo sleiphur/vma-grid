@@ -69,14 +69,14 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         list.push(options)
-        options = []
-        options.push({
-          name: '清除固定',
-          code: 'clearFix',
-          disabled: false,
-          visible: true,
-        })
-        list.push(options)
+        // options = []
+        // options.push({
+        //   name: '清除固定',
+        //   code: 'clearFix',
+        //   disabled: false,
+        //   visible: true,
+        // })
+        // list.push(options)
       }
       if (type === 'column-indicator') {
         let options = []
@@ -95,15 +95,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         list.push(options)
-        options = []
-        options.push({
-          name: '固定列',
-          code: 'fixColumn',
-          disabled: false,
-          visible: true,
-          param,
-        })
-        list.push(options)
+        // options = []
+        // options.push({
+        //   name: '固定列',
+        //   code: 'fixColumn',
+        //   disabled: false,
+        //   visible: true,
+        //   param,
+        // })
+        // list.push(options)
         options = []
         options.push({
           name: '删除列',
@@ -147,15 +147,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         list.push(options)
-        options = []
-        options.push({
-          name: '固定行',
-          code: 'fixRow',
-          disabled: false,
-          visible: true,
-          param,
-        })
-        list.push(options)
+        // options = []
+        // options.push({
+        //   name: '固定行',
+        //   code: 'fixRow',
+        //   disabled: false,
+        //   visible: true,
+        //   param,
+        // })
+        // list.push(options)
         options = []
         options.push({
           name: '删除行',
@@ -185,21 +185,21 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
       if (type === 'cell') {
         let options = []
         let subOptions: any = []
-        options.push({
-          name: '复制',
-          code: 'copyCell',
-          disabled: false,
-          visible: true,
-          param,
-        })
-        options.push({
-          name: '粘贴',
-          code: 'pasteCell',
-          disabled: false,
-          visible: true,
-          param,
-        })
-        list.push(options)
+        // options.push({
+        //   name: '复制',
+        //   code: 'copyCell',
+        //   disabled: false,
+        //   visible: true,
+        //   param,
+        // })
+        // options.push({
+        //   name: '粘贴',
+        //   code: 'pasteCell',
+        //   disabled: false,
+        //   visible: true,
+        //   param,
+        // })
+        // list.push(options)
         // list.push(options)
         options = []
         subOptions = []
@@ -269,7 +269,7 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
         })
         options.push({
           name: '格式',
-          prefixIcon: 'info',
+          prefixIcon: 'info-circle',
           code: 'cellFormat',
           disabled: false,
           visible: true,
@@ -579,15 +579,15 @@ const gridCtxMenuHook: VmaGridGlobalHooksHandlers.HookOptions = {
           param,
         })
         list.push(options)
-        options = []
-        options.push({
-          name: '固定单元格',
-          code: 'fixCell',
-          disabled: false,
-          visible: true,
-          param,
-        })
-        list.push(options)
+        // options = []
+        // options.push({
+        //   name: '固定单元格',
+        //   code: 'fixCell',
+        //   disabled: false,
+        //   visible: true,
+        //   param,
+        // })
+        // list.push(options)
       }
       evnt.preventDefault()
       const { scrollTop, scrollLeft } = DomTools.getDomNode()
