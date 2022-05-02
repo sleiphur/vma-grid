@@ -35,8 +35,6 @@ export default defineComponent({
 
     const $vmaCalcGrid = inject('$vmaCalcGrid', {} as VmaGridConstructor)
 
-    const { columnConfigs } = $vmaCalcGrid.reactiveData
-
     const {
       refGridHeader,
       refGridLeftFixedHeader,
@@ -60,8 +58,6 @@ export default defineComponent({
       reactiveData: gridHeaderReactiveData,
     } as unknown as VmaGridHeaderConstructor
 
-    const cfs = computed(() => columnConfigs)
-
     const renderHeaderColgroup = () => {
       const cols: any = []
       if ($vmaCalcGrid.reactiveData.startColIndex !== 0) {
@@ -69,7 +65,7 @@ export default defineComponent({
           h('col', {
             idx: 0,
             style: {
-              width: `${cfs.value[0].renderWidth}px`,
+              width: `${$vmaCalcGrid.reactiveData.columnConfigs[0].renderWidth}px`,
             },
           }),
         )
@@ -79,14 +75,14 @@ export default defineComponent({
         index <= $vmaCalcGrid.reactiveData.endColIndex;
         index++
       ) {
-        if (index > cfs.value.length - 1) {
+        if (index > $vmaCalcGrid.reactiveData.columnConfigs.length - 1) {
           break
         }
         cols.push(
           h('col', {
             idx: index,
             style: {
-              width: `${cfs.value[index].renderWidth}px`,
+              width: `${$vmaCalcGrid.reactiveData.columnConfigs[index].renderWidth}px`,
             },
           }),
         )
@@ -130,7 +126,7 @@ export default defineComponent({
         //     indexCol <= $vmaCalcGrid.reactiveData.endColIndex;
         //     indexCol++
         // ) {
-        if (index > cfs.value.length - 1) {
+        if (index > $vmaCalcGrid.reactiveData.columnConfigs.length - 1) {
           break
         }
         if (index === 0) {
@@ -145,7 +141,7 @@ export default defineComponent({
             }),
           )
         } else {
-          const cf: any = cfs.value[index]
+          const cf: any = $vmaCalcGrid.reactiveData.columnConfigs[index]
           cols.push(
             h(GridCellComponent, {
               cat: 'column-indicator',

@@ -119,7 +119,7 @@ export default defineComponent({
         index <= $vmaCalcGrid.reactiveData.endColIndex;
         index++
       ) {
-        if (index > cfs.value.length - 1) {
+        if (index > $vmaCalcGrid.reactiveData.columnConfigs.length - 1) {
           break
         }
         cols.push(
@@ -138,10 +138,10 @@ export default defineComponent({
         index <= $vmaCalcGrid.reactiveData.endIndex;
         index++
       ) {
-        if (index > rfs.value.length - 1) {
+        if (index > $vmaCalcGrid.reactiveData.rowConfigs.length - 1) {
           break
         }
-        const rf: any = rfs.value[index]
+        const rf: any = $vmaCalcGrid.reactiveData.rowConfigs[index]
 
         const cols: any = []
         if ($vmaCalcGrid.reactiveData.startColIndex !== 0) {
@@ -161,7 +161,7 @@ export default defineComponent({
           indexCol <= $vmaCalcGrid.reactiveData.endColIndex;
           indexCol++
         ) {
-          if (indexCol > cfs.value.length - 1) {
+          if (indexCol > $vmaCalcGrid.reactiveData.columnConfigs.length - 1) {
             break
           }
           if (indexCol === 0) {
@@ -177,7 +177,7 @@ export default defineComponent({
               }),
             )
           } else {
-            const cf: any = cfs.value[indexCol]
+            const cf: any = $vmaCalcGrid.reactiveData.columnConfigs[indexCol]
             cols.push(
               h(GridCellComponent, {
                 cat: 'normal',

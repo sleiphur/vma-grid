@@ -174,7 +174,7 @@ export interface VmaGridReactiveData {
     noCycleMap: Record<string, any>
   }
 
-  currentCell: Cell
+  currentCell: any
   currentCellBorderStyle: Record<string, any>
   currentCellEditorStyle: Record<string, any>
   currentCellEditorActive: boolean

@@ -3205,8 +3205,256 @@ export default defineComponent({
       }
     })
 
-    const initCurrentSheetData = (): Promise<void> =>
+    const loadData = (): Promise<void> =>
       new Promise((resolve): void => {
+        // 1 寻找当前status为1的sheet，如果没有，默认第一个
+        gridReactiveData.sheet = props.data!.find((item) => item.status === 1)
+        if (gridReactiveData.sheet === undefined && props.data!.length > 0) {
+          gridReactiveData.sheet = props.data![0]
+        }
+        gridReactiveData.dimensionX = props.minDimensions[1]
+        gridReactiveData.dimensionY = props.minDimensions[0]
+        gridReactiveData.columnConfigs = []
+        gridReactiveData.rowConfigs = []
+        gridReactiveData.currentSheetData = []
+        gridReactiveData.currentCell = null
+        gridReactiveData.currentCellEditorActive = false
+        gridReactiveData.currentCellEditorContent = null
+        gridReactiveData.currentCellEditorStyle = {
+          transform: 'translateX(0) translateY(0)',
+          display: 'none',
+          left: 0,
+          top: 0,
+          width: 0,
+          height: 0,
+        }
+        gridReactiveData.currentCellBorderStyle = {
+          transform: 'translateX(0) translateY(0)',
+          // display: 'none',
+          left: 0,
+          top: 0,
+          width: 0,
+          height: 0,
+        }
+        gridReactiveData.currentArea = {}
+        gridReactiveData.currentAreaStatus = false
+        gridReactiveData.currentAreaBorderStyle = {
+          transform: 'translateX(0) translateY(0)',
+          // display: 'none',
+          left: 0,
+          top: 0,
+          width: 0,
+          height: 0,
+        }
+        // 2 确定表格行数和列数
+        if (
+          gridReactiveData.sheet.r &&
+          gridReactiveData.sheet.r > gridReactiveData.dimensionY
+        ) {
+          gridReactiveData.dimensionY = gridReactiveData.sheet.r
+        }
+        if (
+          gridReactiveData.sheet.c &&
+          gridReactiveData.sheet.c > gridReactiveData.dimensionX
+        ) {
+          gridReactiveData.dimensionX = gridReactiveData.sheet.c
+        }
+        // 当前sheet的dataType map 或 table
+        // map 默认
+        if (
+          gridReactiveData.sheet.dataType &&
+          gridReactiveData.sheet.dataType === 'table'
+        ) {
+          gridReactiveData.sheetDataType = 'table'
+        } else {
+          gridReactiveData.sheetDataType = 'map'
+        }
+        if (gridReactiveData.sheet.data) {
+          gridReactiveData.sheetData = gridReactiveData.sheet.data
+          if (gridReactiveData.sheetDataType === 'map') {
+            // eslint-disable-next-line array-callback-return
+            gridReactiveData.sheetData.map((item) => {
+              if (item.r && item.r > gridReactiveData.dimensionY) {
+                gridReactiveData.dimensionY = item.r
+              }
+              if (item.c && item.c > gridReactiveData.dimensionX) {
+                gridReactiveData.dimensionX = item.c
+              }
+            })
+          }
+          if (gridReactiveData.sheetDataType === 'table') {
+            if (
+              gridReactiveData.sheetData.length > gridReactiveData.dimensionY
+            ) {
+              gridReactiveData.dimensionY = gridReactiveData.sheetData.length
+            }
+            if (
+              gridReactiveData.sheetData.length > 0 &&
+              gridReactiveData.sheetData[0].length > gridReactiveData.dimensionX
+            ) {
+              gridReactiveData.dimensionX = gridReactiveData.sheetData[0].length
+            }
+          }
+        }
+        if (gridReactiveData.sheet.config) {
+          gridReactiveData.sheetConfig = gridReactiveData.sheet.config
+        }
+        // 3 组成行列
+        const columns = [
+          ...Array<Record<string, unknown>>(
+            gridReactiveData.dimensionX.valueOf(),
+          ),
+        ]
+        // const rcw = getRenderWidth(props.gridColumnWidth, props.size)
+        gridReactiveData.columnConfigs.push(
+          new Column(0, null, null, 'default', null, true, false, 'center'),
+        )
+        columns.forEach((_, index) => {
+          let cwConf = null
+          let cvConf = false
+          if (
+            gridReactiveData.sheetConfig.cw &&
+            gridReactiveData.sheetConfig.cw.length
+          ) {
+            for (let i = 0; i < gridReactiveData.sheetConfig.cw.length; i++) {
+              if (
+                gridReactiveData.sheetConfig.cw[i].hasOwnProperty('c') &&
+                isNumeric(gridReactiveData.sheetConfig.cw[i].c) &&
+                gridReactiveData.sheetConfig.cw[i].hasOwnProperty('w') &&
+                isNumeric(gridReactiveData.sheetConfig.cw[i].w)
+              ) {
+                if (
+                  Number(gridReactiveData.sheetConfig.cw[i].c) ===
+                  index + 1
+                ) {
+                  cwConf = gridReactiveData.sheetConfig.cw[i].w
+                  gridReactiveData.gridColumnsWidthChanged[`${index + 1}`] =
+                    gridReactiveData.sheetConfig.cw[i].w
+                  break
+                }
+              }
+            }
+          }
+          if (
+            gridReactiveData.sheetConfig.cv &&
+            gridReactiveData.sheetConfig.cv.length
+          ) {
+            for (let i = 0; i < gridReactiveData.sheetConfig.cv.length; i++) {
+              if (
+                gridReactiveData.sheetConfig.cv[i].hasOwnProperty('c') &&
+                isNumeric(gridReactiveData.sheetConfig.cv[i].c) &&
+                gridReactiveData.sheetConfig.cv[i].hasOwnProperty('v') &&
+                isNumeric(gridReactiveData.sheetConfig.cv[i].v) &&
+                gridReactiveData.sheetConfig.cv[i].v === 0
+              ) {
+                if (
+                  Number(gridReactiveData.sheetConfig.cv[i].c) - 1 ===
+                  index
+                ) {
+                  cvConf = true
+                  gridReactiveData.gridColumnsVisibleChanged[`${index}`] =
+                    gridReactiveData.sheetConfig.cv[i].v
+                  break
+                }
+              }
+            }
+          }
+          gridReactiveData.columnConfigs.push(
+            new Column(
+              index + 1,
+              null,
+              null,
+              cwConf || 'default',
+              null,
+              !cvConf,
+              false,
+              'center',
+            ),
+          )
+        })
+
+        console.log(gridReactiveData.columnConfigs)
+        gridReactiveData.startColIndex = 0
+        gridReactiveData.endColIndex = 0
+
+        const rows = [
+          ...Array<Record<string, unknown>>(
+            gridReactiveData.dimensionY.valueOf(),
+          ),
+        ]
+
+        rows.forEach((_, index) => {
+          let rhConf = null
+          let rvConf = false
+          if (
+            gridReactiveData.sheetConfig.rh &&
+            gridReactiveData.sheetConfig.rh.length
+          ) {
+            for (let i = 0; i < gridReactiveData.sheetConfig.rh.length; i++) {
+              if (
+                gridReactiveData.sheetConfig.rh[i].hasOwnProperty('r') &&
+                isNumeric(gridReactiveData.sheetConfig.rh[i].r) &&
+                gridReactiveData.sheetConfig.rh[i].hasOwnProperty('h') &&
+                isNumeric(gridReactiveData.sheetConfig.rh[i].h)
+              ) {
+                if (
+                  Number(gridReactiveData.sheetConfig.rh[i].r) - 1 ===
+                  index
+                ) {
+                  rhConf = gridReactiveData.sheetConfig.rh[i].h
+                  gridReactiveData.gridRowsHeightChanged[`${index}`] =
+                    gridReactiveData.sheetConfig.rh[i].h
+                  break
+                }
+              }
+            }
+          }
+          if (
+            gridReactiveData.sheetConfig.rv &&
+            gridReactiveData.sheetConfig.rv.length
+          ) {
+            for (let i = 0; i < gridReactiveData.sheetConfig.rv.length; i++) {
+              if (
+                gridReactiveData.sheetConfig.rv[i].hasOwnProperty('r') &&
+                isNumeric(gridReactiveData.sheetConfig.rv[i].r) &&
+                gridReactiveData.sheetConfig.rv[i].hasOwnProperty('v') &&
+                isNumeric(gridReactiveData.sheetConfig.rv[i].v) &&
+                gridReactiveData.sheetConfig.rv[i].v === 0
+              ) {
+                if (
+                  Number(gridReactiveData.sheetConfig.rv[i].r) - 1 ===
+                  index
+                ) {
+                  rvConf = true
+                  gridReactiveData.gridRowsVisibleChanged[`${index}`] =
+                    gridReactiveData.sheetConfig.rv[i].v
+                  break
+                }
+              }
+            }
+          }
+          gridReactiveData.rowConfigs.push(
+            new Row(
+              index,
+              null,
+              null,
+              rhConf || 'default',
+              null,
+              !rvConf,
+              false,
+              'center',
+            ),
+          )
+        })
+        console.log(gridReactiveData.rowConfigs)
+        gridReactiveData.startIndex = 0
+        gridReactiveData.endIndex = 0
+
+        // 总是初始化一个updateCurrentSheetData，与当前的row， column尺寸大小一致
+        gridReactiveData.currentSheetData = new Array(rows.length)
+          .fill(null)
+          .map(() => new Array(columns.length - 1).fill(null))
+
         gridReactiveData.rowConfigs.forEach((row: Row) => {
           // const rowData = []
           gridReactiveData.columnConfigs.forEach((col: Column, colIndex) => {
@@ -3400,214 +3648,7 @@ export default defineComponent({
             }
           })
         })
-        resolve()
-      })
-
-    const loadData = (): Promise<void> =>
-      new Promise((resolve): void => {
-        // 1 寻找当前status为1的sheet，如果没有，默认第一个
-        gridReactiveData.sheet = props.data!.find((item) => item.status === 1)
-        if (gridReactiveData.sheet === undefined && props.data!.length > 0) {
-          gridReactiveData.sheet = props.data![0]
-        }
-        // 2 确定表格行数和列数
-        if (
-          gridReactiveData.sheet.r &&
-          gridReactiveData.sheet.r > props.minDimensions[0]
-        ) {
-          props.minDimensions[0] = gridReactiveData.sheet.r
-        }
-        if (
-          gridReactiveData.sheet.c &&
-          gridReactiveData.sheet.c > props.minDimensions[1]
-        ) {
-          props.minDimensions[1] = gridReactiveData.sheet.c
-        }
-        // 当前sheet的dataType map 或 table
-        // map 默认
-        if (
-          gridReactiveData.sheet.dataType &&
-          gridReactiveData.sheet.dataType === 'table'
-        ) {
-          gridReactiveData.sheetDataType = 'table'
-        }
-        if (gridReactiveData.sheet.data) {
-          gridReactiveData.sheetData = gridReactiveData.sheet.data
-          if (gridReactiveData.sheetDataType === 'map') {
-            // eslint-disable-next-line array-callback-return
-            gridReactiveData.sheetData.map((item) => {
-              if (item.r && item.r > props.minDimensions[0]) {
-                props.minDimensions[0] = item.r
-              }
-              if (item.c && item.c > props.minDimensions[1]) {
-                props.minDimensions[1] = item.c
-              }
-            })
-          }
-          if (gridReactiveData.sheetDataType === 'table') {
-            if (gridReactiveData.sheetData.length > props.minDimensions[0]) {
-              props.minDimensions[0] = gridReactiveData.sheetData.length
-            }
-            if (
-              gridReactiveData.sheetData.length > 0 &&
-              gridReactiveData.sheetData[0].length > props.minDimensions[1]
-            ) {
-              props.minDimensions[1] = gridReactiveData.sheetData[0].length
-            }
-          }
-        }
-        if (gridReactiveData.sheet.config) {
-          gridReactiveData.sheetConfig = gridReactiveData.sheet.config
-        }
-        // 3 组成行列
-        const columns = [
-          ...Array<Record<string, unknown>>(props.minDimensions[1].valueOf()),
-        ]
-        // const rcw = getRenderWidth(props.gridColumnWidth, props.size)
-        gridReactiveData.columnConfigs.push(
-          new Column(0, null, null, 'default', null, true, false, 'center'),
-        )
-        columns.forEach((_, index) => {
-          let cwConf = null
-          let cvConf = false
-          if (
-            gridReactiveData.sheetConfig.cw &&
-            gridReactiveData.sheetConfig.cw.length
-          ) {
-            for (let i = 0; i < gridReactiveData.sheetConfig.cw.length; i++) {
-              if (
-                gridReactiveData.sheetConfig.cw[i].hasOwnProperty('c') &&
-                isNumeric(gridReactiveData.sheetConfig.cw[i].c) &&
-                gridReactiveData.sheetConfig.cw[i].hasOwnProperty('w') &&
-                isNumeric(gridReactiveData.sheetConfig.cw[i].w)
-              ) {
-                if (
-                  Number(gridReactiveData.sheetConfig.cw[i].c) ===
-                  index + 1
-                ) {
-                  cwConf = gridReactiveData.sheetConfig.cw[i].w
-                  gridReactiveData.gridColumnsWidthChanged[`${index + 1}`] =
-                    gridReactiveData.sheetConfig.cw[i].w
-                  break
-                }
-              }
-            }
-          }
-          if (
-            gridReactiveData.sheetConfig.cv &&
-            gridReactiveData.sheetConfig.cv.length
-          ) {
-            for (let i = 0; i < gridReactiveData.sheetConfig.cv.length; i++) {
-              if (
-                gridReactiveData.sheetConfig.cv[i].hasOwnProperty('c') &&
-                isNumeric(gridReactiveData.sheetConfig.cv[i].c) &&
-                gridReactiveData.sheetConfig.cv[i].hasOwnProperty('v') &&
-                isNumeric(gridReactiveData.sheetConfig.cv[i].v) &&
-                gridReactiveData.sheetConfig.cv[i].v === 0
-              ) {
-                if (
-                  Number(gridReactiveData.sheetConfig.cv[i].c) - 1 ===
-                  index
-                ) {
-                  cvConf = true
-                  gridReactiveData.gridColumnsVisibleChanged[`${index}`] =
-                    gridReactiveData.sheetConfig.cv[i].v
-                  break
-                }
-              }
-            }
-          }
-          gridReactiveData.columnConfigs.push(
-            new Column(
-              index + 1,
-              null,
-              null,
-              cwConf || 'default',
-              null,
-              !cvConf,
-              false,
-              'center',
-            ),
-          )
-        })
-
-        gridReactiveData.startColIndex = 0
-        gridReactiveData.endColIndex = 0
-
-        const rows = [
-          ...Array<Record<string, unknown>>(props.minDimensions[0].valueOf()),
-        ]
-
-        rows.forEach((_, index) => {
-          let rhConf = null
-          let rvConf = false
-          if (
-            gridReactiveData.sheetConfig.rh &&
-            gridReactiveData.sheetConfig.rh.length
-          ) {
-            for (let i = 0; i < gridReactiveData.sheetConfig.rh.length; i++) {
-              if (
-                gridReactiveData.sheetConfig.rh[i].hasOwnProperty('r') &&
-                isNumeric(gridReactiveData.sheetConfig.rh[i].r) &&
-                gridReactiveData.sheetConfig.rh[i].hasOwnProperty('h') &&
-                isNumeric(gridReactiveData.sheetConfig.rh[i].h)
-              ) {
-                if (
-                  Number(gridReactiveData.sheetConfig.rh[i].r) - 1 ===
-                  index
-                ) {
-                  rhConf = gridReactiveData.sheetConfig.rh[i].h
-                  gridReactiveData.gridRowsHeightChanged[`${index}`] =
-                    gridReactiveData.sheetConfig.rh[i].h
-                  break
-                }
-              }
-            }
-          }
-          if (
-            gridReactiveData.sheetConfig.rv &&
-            gridReactiveData.sheetConfig.rv.length
-          ) {
-            for (let i = 0; i < gridReactiveData.sheetConfig.rv.length; i++) {
-              if (
-                gridReactiveData.sheetConfig.rv[i].hasOwnProperty('r') &&
-                isNumeric(gridReactiveData.sheetConfig.rv[i].r) &&
-                gridReactiveData.sheetConfig.rv[i].hasOwnProperty('v') &&
-                isNumeric(gridReactiveData.sheetConfig.rv[i].v) &&
-                gridReactiveData.sheetConfig.rv[i].v === 0
-              ) {
-                if (
-                  Number(gridReactiveData.sheetConfig.rv[i].r) - 1 ===
-                  index
-                ) {
-                  rvConf = true
-                  gridReactiveData.gridRowsVisibleChanged[`${index}`] =
-                    gridReactiveData.sheetConfig.rv[i].v
-                  break
-                }
-              }
-            }
-          }
-          gridReactiveData.rowConfigs.push(
-            new Row(
-              index,
-              null,
-              null,
-              rhConf || 'default',
-              null,
-              !rvConf,
-              false,
-              'center',
-            ),
-          )
-        })
-        gridReactiveData.startIndex = 0
-        gridReactiveData.endIndex = 0
-
-        // 总是初始化一个updateCurrentSheetData，与当前的row， column尺寸大小一致
-        gridReactiveData.currentSheetData = new Array(rows.length)
-          .fill(null)
-          .map(() => new Array(columns.length - 1).fill(null))
+        console.log(gridReactiveData.currentSheetData)
         resolve()
       })
 
@@ -3714,59 +3755,7 @@ export default defineComponent({
       () => {
         console.log(props.data)
         loadData().then(() => {
-          initCurrentSheetData().then(() => {
-            $vmaCalcGrid
-              .recalculate(true)
-              .then(() => {
-                const el = refGrid.value
-                const parentEl = $vmaCalcGrid.getParentElem()
-                resizeObserver = createResizeEvent(() => {
-                  $vmaCalcGrid.recalculate(true)
-                })
-                if (el) {
-                  resizeObserver.observe(el)
-                }
-                if (parentEl) {
-                  resizeObserver.observe(parentEl)
-                }
-                GlobalEvent.on(
-                  $vmaCalcGrid,
-                  'mousewheel',
-                  handleGlobalMousewheelEvent,
-                )
-                GlobalEvent.on(
-                  $vmaCalcGrid,
-                  'mousedown',
-                  handleGlobalMousedownEvent,
-                )
-                GlobalEvent.on(
-                  $vmaCalcGrid,
-                  'keydown',
-                  handleGlobalKeydownEvent,
-                )
-                GlobalEvent.on($vmaCalcGrid, 'resize', handleGlobalResizeEvent)
-                if ($vmaCalcGrid.handleContextmenuEvent) {
-                  GlobalEvent.on(
-                    $vmaCalcGrid,
-                    'contextmenu',
-                    $vmaCalcGrid.handleContextmenuEvent,
-                  )
-                }
-              })
-              .finally(() => {
-                $vmaCalcGrid.calc()
-              })
-          })
-        })
-      },
-      {
-        deep: true,
-      },
-    )
-
-    onMounted(() => {
-      loadData().then(() => {
-        initCurrentSheetData().then(() => {
+          // initCurrentSheetData().then(() => {
           $vmaCalcGrid
             .recalculate(true)
             .then(() => {
@@ -3804,7 +3793,55 @@ export default defineComponent({
             .finally(() => {
               $vmaCalcGrid.calc()
             })
+          // })
         })
+      },
+      {
+        deep: true,
+      },
+    )
+
+    onMounted(() => {
+      loadData().then(() => {
+        // initCurrentSheetData().then(() => {
+        $vmaCalcGrid
+          .recalculate(true)
+          .then(() => {
+            const el = refGrid.value
+            const parentEl = $vmaCalcGrid.getParentElem()
+            resizeObserver = createResizeEvent(() => {
+              $vmaCalcGrid.recalculate(true)
+            })
+            if (el) {
+              resizeObserver.observe(el)
+            }
+            if (parentEl) {
+              resizeObserver.observe(parentEl)
+            }
+            GlobalEvent.on(
+              $vmaCalcGrid,
+              'mousewheel',
+              handleGlobalMousewheelEvent,
+            )
+            GlobalEvent.on(
+              $vmaCalcGrid,
+              'mousedown',
+              handleGlobalMousedownEvent,
+            )
+            GlobalEvent.on($vmaCalcGrid, 'keydown', handleGlobalKeydownEvent)
+            GlobalEvent.on($vmaCalcGrid, 'resize', handleGlobalResizeEvent)
+            if ($vmaCalcGrid.handleContextmenuEvent) {
+              GlobalEvent.on(
+                $vmaCalcGrid,
+                'contextmenu',
+                $vmaCalcGrid.handleContextmenuEvent,
+              )
+            }
+          })
+          .finally(() => {
+            $vmaCalcGrid.calc()
+          })
+        // })
       })
     })
 
