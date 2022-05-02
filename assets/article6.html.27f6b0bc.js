@@ -1,1 +1,0 @@
-const e={key:"v-0c0c61ab",path:"/posts/article/article6.html",title:"Article 6",lang:"en-US",frontmatter:{icon:"edit",date:"2022-01-06T00:00:00.000Z",category:["CategoryA","CategoryB"],tag:["tag A","tag B"],star:10},excerpt:"",headers:[{level:2,title:"Heading 2",slug:"heading-2",children:[{level:3,title:"Heading 3",slug:"heading-3",children:[]}]}]};export{e as data};

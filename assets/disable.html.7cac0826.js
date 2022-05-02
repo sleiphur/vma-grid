@@ -1,2 +1,0 @@
-const e={key:"v-4c863446",path:"/guide/disable.html",title:"Component disabled",lang:"en-US",frontmatter:{index:3,title:"Component disabled",icon:"config",category:["Guide"],tag:["disable"],navbar:!1,sidebar:!1,breadcrumb:!1,pageInfo:!1,contributors:!1,editLink:!1,lastUpdated:!1,prev:!1,next:!1,comment:!1,footer:!1,backtotop:!1},excerpt:`<p>You can disable some functions on the page by setting the Frontmatter of the page.</p>
-`,headers:[]};export{e as data};

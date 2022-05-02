@@ -1,2 +1,0 @@
-const e={key:"v-3f1f8b68",path:"/zh/guide/disable.html",title:"\u7EC4\u4EF6\u7981\u7528",lang:"zh-CN",frontmatter:{index:3,title:"\u7EC4\u4EF6\u7981\u7528",icon:"config",category:["\u4F7F\u7528\u6307\u5357"],tag:["\u7981\u7528"],navbar:!1,sidebar:!1,breadcrumb:!1,pageInfo:!1,contributors:!1,editLink:!1,lastUpdated:!1,prev:!1,next:!1,comment:!1,footer:!1,backtotop:!1},excerpt:`<p>\u4F60\u53EF\u4EE5\u901A\u8FC7\u8BBE\u7F6E\u9875\u9762\u7684 Frontmatter\uFF0C\u5728\u9875\u9762\u7981\u7528\u4E00\u4E9B\u529F\u80FD\u3002</p>
-`,headers:[]};export{e as data};
