@@ -90,6 +90,9 @@ export interface VmaGridReactiveData {
   // 表格加载状态
   loading: boolean
 
+  dimensionX: number
+  dimensionY: number
+
   sheets: any[]
   sheet: any
   sheetData: any[]

@@ -226,6 +226,9 @@ export default defineComponent({
       // grid加载状态
       loading: false,
 
+      dimensionX: 0,
+      dimensionY: 0,
+
       // 所有的sheet定义
       sheets: [],
       // 当前status为1的sheet
@@ -3157,6 +3160,7 @@ export default defineComponent({
         for (let i = 0; i < topological.length; i++) {
           if (
             noCycleVertexes[topological[i]] &&
+            noCycleVertexes[topological[i]].ref &&
             noCycleVertexes[topological[i]].ref.v &&
             typeof noCycleVertexes[topological[i]].ref.v === 'string' &&
             noCycleVertexes[topological[i]].ref.v.trim().startsWith('=')
@@ -3698,16 +3702,6 @@ export default defineComponent({
       },
     )
 
-    // watch(
-    //     () => gridReactiveData.currentArea,
-    //     () => {
-    //       $vmaCalcGrid.calcCurrentCellPosition()
-    //     },
-    //     {
-    //       deep: true,
-    //     },
-    // )
-
     watch(
       () => gridReactiveData.currentCellEditorActive,
       () => {
@@ -3764,6 +3758,9 @@ export default defineComponent({
               })
           })
         })
+      },
+      {
+        deep: true,
       },
     )
 
