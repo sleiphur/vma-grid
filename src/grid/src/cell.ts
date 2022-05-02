@@ -78,18 +78,22 @@ export default defineComponent({
 
     const { currentSheetData } = $vmaCalcGrid.reactiveData
 
-    useCssVars(() => ({
-      cellBgType:
-        currentSheetData[props.r!][props.c! - 1] &&
-        currentSheetData[props.r!][props.c! - 1].bgt
-          ? currentSheetData[props.r!][props.c! - 1].bgt!
-          : '0',
-      cellBgCustom:
-        currentSheetData[props.r!][props.c! - 1] &&
-        currentSheetData[props.r!][props.c! - 1].bg
-          ? currentSheetData[props.r!][props.c! - 1].bg
-          : '',
-    }))
+    useCssVars(() =>
+      props.cat === 'normal' && props.c
+        ? {
+            cellBgType:
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].bgt
+                ? currentSheetData[props.r!][props.c! - 1].bgt!
+                : '0',
+            cellBgCustom:
+              currentSheetData[props.r!][props.c! - 1] &&
+              currentSheetData[props.r!][props.c! - 1].bg
+                ? currentSheetData[props.r!][props.c! - 1].bg
+                : '',
+          }
+        : { cellBgType: '', cellBgCustom: '' },
+    )
 
     const gridCellReactiveData = reactive({})
 
