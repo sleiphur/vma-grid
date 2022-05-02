@@ -11,8 +11,8 @@
 
   <vma-grid-radio-group type="primary" v-model="selectedDataTypeValues" v-on:change="selectedDataTypChangeMethod">
     <vma-grid-radio label="1">使用Map数据结构的数据初始化表格</vma-grid-radio>
-    <vma-grid-radio label="2">使用普通二位数组数据结构的数据初始化表格</vma-grid-radio>
-    <vma-grid-radio label="3">使用带对象定义的二位数组数据结构的数据初始化表格</vma-grid-radio>
+    <vma-grid-radio label="2">使用普通二维数组数据结构的数据初始化表格</vma-grid-radio>
+    <vma-grid-radio label="3">使用带对象定义的二维数组数据结构的数据初始化表格</vma-grid-radio>
   </vma-grid-radio-group>
 
 </template>
