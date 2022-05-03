@@ -953,6 +953,8 @@ export default defineComponent({
             props.cat,
             `${props.type}`,
             `cell-bg-${
+              props.cat === 'normal' &&
+              props.c &&
               currentSheetData[props.r!][props.c! - 1] &&
               currentSheetData[props.r!][props.c! - 1].bgt
                 ? currentSheetData[props.r!][props.c! - 1].bgt
