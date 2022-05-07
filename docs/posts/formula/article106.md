@@ -1,16 +1,15 @@
 ---
 icon: edit
-date: 2022-01-06
+date: 2022-01-07
 category:
   - CategoryA
   - CategoryB
 tag:
   - tag A
   - tag B
-star: 10
 ---
 
-# 单元格边框、背景、颜色
+# 信息函数
 
 ## 标题 2
 

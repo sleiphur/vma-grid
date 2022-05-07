@@ -8,7 +8,7 @@ tag:
 ---
 
 
-# Grid initialization
+# Grid initialization data
 
 ## Default data type initialization
 

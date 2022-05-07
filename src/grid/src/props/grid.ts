@@ -6,7 +6,7 @@ export default {
 
   editable: {
     type: Boolean as PropType<VmaGridPropTypes.Editable>,
-    default: false,
+    default: true,
   },
 
   type: {

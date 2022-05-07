@@ -41,8 +41,8 @@ Formula Error.
 ### Accessors
 
 - [details](index.FormulaError.md#details)
-- [error](index.FormulaError.md#error)
-- [name](index.FormulaError.md#name)
+- [error](index.FormulaError.md#error-1)
+- [name](index.FormulaError.md#name-1)
 
 ### Methods
 

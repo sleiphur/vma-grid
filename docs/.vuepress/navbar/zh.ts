@@ -14,6 +14,7 @@ export const zh = defineNavbarConfig([
         icon: "edit",
         prefix: "article/",
         children: [
+          { text: "表格配置项", icon: "edit", link: "article0" },
           { text: "表格初始化", icon: "edit", link: "article1" },
           { text: "文章 2", icon: "edit", link: "article2" },
           "article3",

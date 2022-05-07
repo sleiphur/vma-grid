@@ -8,7 +8,7 @@ tag:
   - tag B
 ---
 
-# Article 0
+# Grid configuration
 
 ## Heading 2
 

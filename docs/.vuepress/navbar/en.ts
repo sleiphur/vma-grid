@@ -14,6 +14,7 @@ export const en = defineNavbarConfig([
         icon: "edit",
         prefix: "article/",
         children: [
+          { text: "Grid configuration", icon: "edit", link: "article0" },
           { text: "Grid initialization", icon: "edit", link: "article1" },
           { text: "Article 2", icon: "edit", link: "article2" },
           "article3",

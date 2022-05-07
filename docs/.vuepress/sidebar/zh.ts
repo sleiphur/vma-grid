@@ -22,7 +22,7 @@ export const zh = defineSidebarConfig({
           icon: "note",
           collapsable: true,
           prefix: "article/",
-          children: ["article1", "article2", "article3", "article4"],
+          children: ["article0", "article1", "article2", "article3", "article4"],
         },
         {
           text: "文章 5-12",

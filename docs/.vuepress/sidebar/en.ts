@@ -22,7 +22,7 @@ export const en = defineSidebarConfig({
           icon: "note",
           collapsable: true,
           prefix: "article/",
-          children: ["article1", "article2", "article3", "article4"],
+          children: ["article0", "article1", "article2", "article3", "article4"],
         },
         {
           text: "Articles 5-12",
