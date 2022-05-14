@@ -87,16 +87,6 @@ export default defineComponent({
           }),
         )
       }
-      // $vmaCalcGrid.reactiveData.columnConfigs.forEach((cf, index) => {
-      //   cols.push(
-      //     h('col', {
-      //       idx: index,
-      //       style: {
-      //         width: `${cf.renderWidth}px`,
-      //       },
-      //     }),
-      //   )
-      // })
       return cols
     }
 
@@ -121,11 +111,6 @@ export default defineComponent({
         index <= $vmaCalcGrid.reactiveData.endColIndex;
         index++
       ) {
-        // for (
-        //     let indexCol = $vmaCalcGrid.reactiveData.startColIndex;
-        //     indexCol <= $vmaCalcGrid.reactiveData.endColIndex;
-        //     indexCol++
-        // ) {
         if (index > $vmaCalcGrid.reactiveData.columnConfigs.length - 1) {
           break
         }
@@ -153,23 +138,6 @@ export default defineComponent({
             }),
           )
         }
-        // }
-
-        // trs.push(
-        //     h(
-        //         'tr',
-        //         {
-        //             row: index,
-        //             style: {
-        //                 height:
-        //                     typeof rf.renderHeight === 'string'
-        //                         ? `${rrh.value}px`
-        //                         : `${rf.renderHeight}px`,
-        //             },
-        //         },
-        //         cols,
-        //     ),
-        // )
       }
 
       cols.concat(
