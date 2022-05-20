@@ -15,7 +15,7 @@
     "coverage:unit": "yarn test:unit --coverage",
     "coverage:integration": "yarn test:integration --coverage",
     "coverage:show": "live-server coverage",
-    "docs:build": "vuepress build docs",
+    "docs:build": "vuepress build docs --dest public",
     "docs:build-web": "cross-env BUILD_WEB=true vuepress build docs --dest public-web",
     "docs:dev": "vuepress dev docs",
     "lint": "eslint --ext .js,.ts,.md",
@@ -23,7 +23,7 @@
     "lint:md": "markdownlint --ignore node_modules --ignore .git",
     "format": "yarn lint --fix",
     "format:md": "yarn lint:md --fix",
-    "docs:clean-dev": "vuepress dev docs --clean-cache"
+    "docs:clean-dev": "vuepress dev docs --clean-cache --dest public"
   },
   "main": "dist/index.es.js",
   "module": "dist/index.es.js",
