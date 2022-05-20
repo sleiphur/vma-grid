@@ -46,7 +46,7 @@ export default defineComponent({
     } = $vmaCalcGrid.getRefs()
 
     const GridCellComponent = resolveComponent(
-      'vma-grid-cell',
+      'VmaGridCell',
     ) as ComponentOptions
 
     const gridHeaderReactiveData = reactive({})

@@ -69,22 +69,22 @@ export default defineComponent({
     // const { slots, emit } = context
 
     const GridHeaderComponent = resolveComponent(
-      'vma-grid-header',
+      'VmaGridHeader',
     ) as ComponentOptions
     const GridBodyComponent = resolveComponent(
-      'vma-grid-body',
+      'VmaGridBody',
     ) as ComponentOptions
 
     const StylePluginComponent = resolveComponent(
-      'vma-grid-style-plugin',
+      'VmaGridStylePlugin',
     ) as ComponentOptions
 
     const StyleBorderComponent = resolveComponent(
-      'vma-grid-border-plugin',
+      'VmaGridBorderPlugin',
     ) as ComponentOptions
 
     const StyleAlignComponent = resolveComponent(
-      'vma-grid-align-plugin',
+      'VmaGridAlignPlugin',
     ) as ComponentOptions
 
     const refColumnResizeBar = ref() as Ref<HTMLDivElement>
@@ -3900,7 +3900,7 @@ export default defineComponent({
                   : {},
               })
             : createCommentVNode(),
-          h(resolveComponent('vma-grid-ctx-menu') as ComponentOptions, {
+          h(resolveComponent('VmaGridCtxMenu') as ComponentOptions, {
             ref: refGridCtxMenu,
           }),
           // Header

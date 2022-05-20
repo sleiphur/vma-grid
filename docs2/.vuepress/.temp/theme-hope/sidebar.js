@@ -1,0 +1,1 @@
+export const sidebarData = {"/":["README.md",{"text":"Guides","icon":"creative","collapsable":true,"prefix":"guide/","children":["page.md","markdown.md","disable.md","encrypt.md"]},"intro.md","home.md","slide.md",{"text":"Vue 3 + Typescript + Vite","collapsable":true,"prefix":"formula/","children":["README.md","modules.md"]}]}

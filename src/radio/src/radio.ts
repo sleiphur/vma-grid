@@ -42,7 +42,7 @@ export default defineComponent({
       context,
     } as unknown as VmaGridRadioConstructor
 
-    const IconComponent = resolveComponent('vma-grid-icon') as ComponentOptions
+    const IconComponent = resolveComponent('VmaGridIcon') as ComponentOptions
 
     const $vmaGridRadioGroup = inject(
       '$vmaGridRadioGroup',

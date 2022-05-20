@@ -2,9 +2,9 @@
 icon: edit
 date: 2022-04-18
 category:
-  - Grid
+- Grid
 tag:
-  - 基础表格
+- 基础表格
 ---
 
 # 表格初始化数据
@@ -12,10 +12,10 @@ tag:
 ## 默认数据类型初始化
 
 <vma-grid :data="gridData"
-    :minDimensions="[10, 10]"
-    resizeColumn
-    resizeRow
-    style="height: 400px;">
+:minDimensions="[10, 10]"
+resizeColumn
+resizeRow
+style="height: 400px;">
 </vma-grid>
 
 :::: code-group
@@ -40,10 +40,10 @@ data: [
 ### 常规二维数组数据
 
 <vma-grid :data="gridTableTypeData"
-    :minDimensions="[10, 10]"
-    resizeColumn
-    resizeRow
-    style="height: 400px;">
+:minDimensions="[10, 10]"
+resizeColumn
+resizeRow
+style="height: 400px;">
 </vma-grid>
 
 
@@ -94,10 +94,10 @@ data: [
 ### 包含对象的二维数组数据
 
 <vma-grid :data="gridAdvancedTableTypeData"
-    :minDimensions="[10, 10]"
-    resizeColumn
-    resizeRow
-    style="height: 400px;">
+:minDimensions="[10, 10]"
+resizeColumn
+resizeRow
+style="height: 400px;">
 </vma-grid>
 
 

@@ -1,0 +1,74 @@
+{
+  "hash": "305fa581",
+  "browserHash": "1b23eb31",
+  "optimized": {
+    "@vue/devtools-api": {
+      "src": "../../../../node_modules/@vue/devtools-api/lib/esm/index.js",
+      "file": "@vue_devtools-api.js",
+      "fileHash": "3d7ae9df",
+      "needsInterop": false
+    },
+    "@vuepress/shared": {
+      "src": "../../../../node_modules/@vuepress/shared/dist/index.js",
+      "file": "@vuepress_shared.js",
+      "fileHash": "e72d2c47",
+      "needsInterop": false
+    },
+    "bahttext": {
+      "src": "../../../../node_modules/bahttext/src/index.js",
+      "file": "bahttext.js",
+      "fileHash": "4e92cfd2",
+      "needsInterop": true
+    },
+    "bessel": {
+      "src": "../../../../node_modules/bessel/bessel.js",
+      "file": "bessel.js",
+      "fileHash": "eb8b1910",
+      "needsInterop": true
+    },
+    "chevrotain": {
+      "src": "../../../../node_modules/chevrotain/lib_esm/api_esm.mjs",
+      "file": "chevrotain.js",
+      "fileHash": "1d49721c",
+      "needsInterop": false
+    },
+    "jstat": {
+      "src": "../../../../node_modules/jstat/dist/jstat.js",
+      "file": "jstat.js",
+      "fileHash": "1a630354",
+      "needsInterop": true
+    },
+    "vue": {
+      "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "cbf6b2e2",
+      "needsInterop": false
+    },
+    "vue-router": {
+      "src": "../../../../node_modules/vue-router/dist/vue-router.esm-bundler.js",
+      "file": "vue-router.js",
+      "fileHash": "4b15d441",
+      "needsInterop": false
+    },
+    "@vueuse/core": {
+      "src": "../../../../node_modules/@vueuse/core/index.mjs",
+      "file": "@vueuse_core.js",
+      "fileHash": "e919a32f",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-HFRDCTSY": {
+      "file": "chunk-HFRDCTSY.js"
+    },
+    "chunk-H43JNAQD": {
+      "file": "chunk-H43JNAQD.js"
+    },
+    "chunk-5DX2ADU7": {
+      "file": "chunk-5DX2ADU7.js"
+    },
+    "chunk-K7JT3UW2": {
+      "file": "chunk-K7JT3UW2.js"
+    }
+  }
+}

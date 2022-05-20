@@ -56,10 +56,10 @@ export default defineComponent({
     } as unknown as VmaGridButtonConstructor
 
     const LoadingComponent = resolveComponent(
-      'vma-grid-loading',
+      'VmaGridLoading',
     ) as ComponentOptions
 
-    const IconComponent = resolveComponent('vma-grid-icon') as ComponentOptions
+    const IconComponent = resolveComponent('VmaGridIcon') as ComponentOptions
 
     const renderText = () => {
       let text

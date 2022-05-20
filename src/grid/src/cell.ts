@@ -65,7 +65,7 @@ export default defineComponent({
 
     const $vmaCalcGrid = inject('$vmaCalcGrid', {} as VmaGridConstructor)
 
-    const IconComponent = resolveComponent('vma-grid-icon') as ComponentOptions
+    const IconComponent = resolveComponent('VmaGridIcon') as ComponentOptions
 
     const {
       refGridHeader,

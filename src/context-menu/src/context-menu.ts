@@ -32,9 +32,9 @@ export default defineComponent({
       {} as VmaGridConstructor & VmaGridMethods & VmaGridPrivateMethods,
     )
 
-    const IconComponent = resolveComponent('vma-grid-icon') as ComponentOptions
+    const IconComponent = resolveComponent('VmaGridIcon') as ComponentOptions
     const ColorPickerComponent = resolveComponent(
-      'vma-grid-color-picker',
+      'VmaGridColorPicker',
     ) as ComponentOptions
 
     const { reactiveData } = $vmaCalcGrid

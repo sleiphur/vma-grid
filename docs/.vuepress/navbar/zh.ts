@@ -1,21 +1,20 @@
-import { defineNavbarConfig } from "vuepress-theme-hope";
+import { navbar } from "vuepress-theme-hope";
 
-export const zh = defineNavbarConfig([
+export const zh = navbar([
   "/zh/",
   "/zh/home",
   { text: "使用指南", icon: "creative", link: "/zh/guide/" },
   {
-    text: "使用示例",
+    text: "博文",
     icon: "edit",
     prefix: "/zh/posts/",
     children: [
       {
-        text: "表格",
+        text: "文章 1-4",
         icon: "edit",
         prefix: "article/",
         children: [
-          { text: "表格配置项", icon: "edit", link: "article0" },
-          { text: "表格初始化", icon: "edit", link: "article1" },
+          { text: "文章 1", icon: "edit", link: "article1" },
           { text: "文章 2", icon: "edit", link: "article2" },
           "article3",
           "article4",

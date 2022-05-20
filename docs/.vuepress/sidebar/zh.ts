@@ -1,6 +1,6 @@
-import { defineSidebarConfig } from "vuepress-theme-hope";
+import { sidebar } from "vuepress-theme-hope";
 
-export const zh = defineSidebarConfig({
+export const zh = sidebar({
   "/zh/": [
     "",
     "home",
@@ -13,16 +13,16 @@ export const zh = defineSidebarConfig({
       children: "structure",
     },
     {
-      text: "表格",
+      text: "文章",
       icon: "note",
       prefix: "posts/",
       children: [
         {
-          text: "基础",
+          text: "文章 1-4",
           icon: "note",
           collapsable: true,
           prefix: "article/",
-          children: ["article0", "article1", "article2", "article3", "article4"],
+          children: ["article1", "article2", "article3", "article4"],
         },
         {
           text: "文章 5-12",

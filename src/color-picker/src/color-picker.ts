@@ -35,7 +35,7 @@ export default defineComponent({
   setup(props, context) {
     const { slots, emit } = context
     const ButtonComponent = resolveComponent(
-      'vma-grid-button',
+      'VmaGridButton',
     ) as ComponentOptions
 
     const refColorPickerPallet = ref() as Ref<HTMLDivElement>

@@ -1,21 +1,20 @@
-import { defineNavbarConfig } from "vuepress-theme-hope";
+import { navbar } from "vuepress-theme-hope";
 
-export const en = defineNavbarConfig([
+export const en = navbar([
   "/",
   "/home",
   { text: "Guide", icon: "creative", link: "/guide/" },
   {
-    text: "Example of use",
+    text: "Posts",
     icon: "edit",
     prefix: "/posts/",
     children: [
       {
-        text: "Grid",
+        text: "Articles 1-4",
         icon: "edit",
         prefix: "article/",
         children: [
-          { text: "Grid configuration", icon: "edit", link: "article0" },
-          { text: "Grid initialization", icon: "edit", link: "article1" },
+          { text: "Article 1", icon: "edit", link: "article1" },
           { text: "Article 2", icon: "edit", link: "article2" },
           "article3",
           "article4",

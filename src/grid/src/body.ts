@@ -71,7 +71,7 @@ export default defineComponent({
     const { columnConfigs, rowConfigs } = $vmaCalcGrid.reactiveData
 
     const GridCellComponent = resolveComponent(
-      'vma-grid-cell',
+      'VmaGridCell',
     ) as ComponentOptions
 
     const rrh = computed(() =>
@@ -98,7 +98,7 @@ export default defineComponent({
     } as unknown as VmaGridBodyConstructor
 
     const TextareaComponent = resolveComponent(
-      'vma-grid-textarea',
+      'VmaGridTextarea',
     ) as ComponentOptions
 
     const cfs = computed(() => columnConfigs)

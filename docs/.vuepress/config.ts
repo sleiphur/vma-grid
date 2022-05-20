@@ -1,7 +1,7 @@
-import { defineHopeConfig } from "vuepress-theme-hope";
-import themeConfig from "./themeConfig";
+import { defineUserConfig } from "vuepress";
+import theme from "./theme";
 
-export default defineHopeConfig({
+export default defineUserConfig({
   base: process.env.BUILD_WEB === 'true' ? '/' : '/vma-grid/',
 
   head: [
@@ -27,20 +27,20 @@ export default defineHopeConfig({
     },
   },
 
-  plugins: [[
-    'vuepress-plugin-typedoc',
-    // Plugin / TypeDoc options
-    {
-      entryPoints: ['./src/formula/index.ts', './src/formula/formulas/index.ts'],
-      tsconfig: './tsconfig.json',
-      // Plugin options
-      out: 'formula',
-      sidebar: {
-        fullNames: true,
-        parentCategory: 'API',
-      },
-    },
-  ]],
+  // plugins: [[
+  //   'vuepress-plugin-typedoc',
+  //   // Plugin / TypeDoc options
+  //   {
+  //     entryPoints: ['./src/formula/index.ts', './src/formula/formulas/index.ts'],
+  //     tsconfig: './tsconfig.json',
+  //     // Plugin options
+  //     out: 'formula',
+  //     sidebar: {
+  //       fullNames: true,
+  //       parentCategory: 'API',
+  //     },
+  //   },
+  // ]],
 
-  themeConfig,
+  theme,
 });

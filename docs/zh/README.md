@@ -2,7 +2,7 @@
 home: true
 layout: Blog
 icon: home
-title: Vma-Grid
+title: 博客主页
 heroImage: /logo.svg
 heroText: 你博客的名称
 heroFullScreen: true

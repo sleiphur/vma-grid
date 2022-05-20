@@ -1,6 +1,6 @@
-import { defineSidebarConfig } from "vuepress-theme-hope";
+import { sidebar } from "vuepress-theme-hope";
 
-export const en = defineSidebarConfig({
+export const en = sidebar({
   "/": [
     "",
     "home",
@@ -13,16 +13,16 @@ export const en = defineSidebarConfig({
       children: "structure",
     },
     {
-      text: "Grid",
+      text: "Articles",
       icon: "note",
       prefix: "posts/",
       children: [
         {
-          text: "Basic",
+          text: "Articles 1-4",
           icon: "note",
           collapsable: true,
           prefix: "article/",
-          children: ["article0", "article1", "article2", "article3", "article4"],
+          children: ["article1", "article2", "article3", "article4"],
         },
         {
           text: "Articles 5-12",
