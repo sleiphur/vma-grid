@@ -563,6 +563,17 @@
 
         &.cell-bg-0 {
           .cell-background(@grid-border-color);
+          //&::after {
+          //  content: "";
+          //  position: absolute;
+          //  top: 0;
+          //  left: 0;
+          //  min-width: calc(200% - 2px);
+          //  height: calc(200% - 2px);
+          //  border: 1px solid @grid-border-color;
+          //  transform-origin: 0 0;
+          //  transform: scale(.5, .5);
+          //}
           &.cell-active {
             background-image: linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(@grid-border-color, @grid-border-color), linear-gradient(lighten(@grid-border-color, 10%), lighten(@grid-border-color, 10%));
             background-repeat: no-repeat;
