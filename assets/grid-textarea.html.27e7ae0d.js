@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-0016c312","path":"/basic/grid-textarea.html","title":"","lang":"zh-CN","frontmatter":{},"excerpt":"","headers":[{"level":3,"title":"3.1","slug":"_3-1","children":[]}],"git":{"updatedTime":1654680036000,"contributors":[{"name":"MaHongming","email":"99596783@qq.com","commits":4}]},"filePathRelative":"basic/grid-textarea.md"}');export{e as data};
